@@ -1,0 +1,1 @@
+{"generator": "data.image", "seed": "c1", "palette": "sci", "size": [120, 80], "scale": 3, "input": {"path": "data/testcard-480x320.png"}, "params": {"resample": "area", "dither": "floyd", "ramp": "all"}, "output": "convert-sci-floyd.png"}

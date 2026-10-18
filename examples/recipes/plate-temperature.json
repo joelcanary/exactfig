@@ -1,0 +1,1 @@
+{"generator": "data.field", "seed": "plate", "palette": "sci", "size": [256, 256], "input": {"path": "data/plate-129.npy"}, "params": {"ramp": "seq", "interval": 0.1}, "output": "plate-temperature.png"}

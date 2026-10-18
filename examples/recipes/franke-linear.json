@@ -1,0 +1,1 @@
+{"generator": "data.scatter", "seed": "franke", "palette": "sci", "size": [256, 256], "input": {"path": "data/franke-halton-256.csv"}, "params": {"method": "linear", "contours": 9, "points": "dot"}, "output": "franke-linear.png"}

@@ -1,0 +1,1 @@
+{"generator": "data.field", "seed": "dem", "palette": "sci", "size": [384, 384], "input": {"path": "data/dem-192.pgm"}, "params": {"mode": "shade", "ramp": "grey", "cell": 60.0, "exaggeration": 0.030518043793392843, "dither": "bayer"}, "output": "dem-hillshade.png"}

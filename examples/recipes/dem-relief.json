@@ -1,0 +1,1 @@
+{"generator": "data.field", "seed": "dem", "palette": "sci", "size": [384, 384], "input": {"path": "data/dem-192.pgm"}, "params": {"mode": "relief", "ramp": "seq", "cell": 60.0, "exaggeration": 0.030518043793392843, "relief": 2.0, "interval": 6553.5}, "output": "dem-relief.png"}

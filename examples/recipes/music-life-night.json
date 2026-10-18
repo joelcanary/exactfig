@@ -1,0 +1,1 @@
+{"generator": "music.piece", "seed": "glider-demo", "params": {"title": "Glider (Night)", "text": "Conway glider, B3/S23", "source": "conway_glider", "mode": "aeolian", "tonic": 57, "bpm": 80, "bars": 16, "ensemble": "mist", "kind": "night"}, "output": "music-life-night.mid"}

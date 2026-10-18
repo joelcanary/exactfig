@@ -1,0 +1,1 @@
+{"generator": "music.piece", "seed": "lsystem-demo", "params": {"title": "Lindenmayer", "text": "L-system growth as melody", "source": "lsystem", "mode": "mixolydian", "tonic": 60, "bpm": 104, "bars": 16, "ensemble": "meadow", "perc": "hand"}, "output": "music-lsystem.mid"}

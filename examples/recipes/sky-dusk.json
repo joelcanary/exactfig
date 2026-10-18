@@ -1,0 +1,1 @@
+{"generator": "forge.sky.gradient", "seed": "evening", "palette": "mf32", "size": [96, 48], "scale": 2, "params": {"ramps": ["dusk", "ember"], "dither": "floyd"}, "output": "sky-dusk.png"}

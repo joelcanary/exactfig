@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use exactfig for a figure in a publication, please cite it as below, and publish the manifest_sha256 of the figures."
+title: "exactfig: reproducible figures, animations and sonifications from data and published mathematics, verifiable bit for bit"
+type: software
+authors:
+  - family-names: "Cruz Cabrera"
+    given-names: "Joel"
+    alias: "joelcanary"
+version: "0.2.0"
+date-released: "2026-10-18"
+repository-code: "https://github.com/joelcanary/exactfig"
+keywords:
+  - reproducibility
+  - provenance
+  - scientific visualization
+  - Delaunay triangulation
+  - cellular automata
+  - Fourier analysis
+  - Lean 4

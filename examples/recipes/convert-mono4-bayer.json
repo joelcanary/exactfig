@@ -1,0 +1,1 @@
+{"generator": "data.image", "seed": "c2", "palette": "mono4", "size": [120, 80], "scale": 3, "input": {"path": "data/testcard-480x320.png"}, "params": {"resample": "area", "dither": "bayer", "spread": 96.0}, "output": "convert-mono4-bayer.png"}

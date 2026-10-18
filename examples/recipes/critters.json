@@ -1,0 +1,1 @@
+{"generator": "forge.sprite.critters", "seed": "brood", "palette": "mf32", "size": [128, 32], "scale": 3, "params": {"cell": 16, "cols": 8, "count": 16}, "output": "critters.png"}

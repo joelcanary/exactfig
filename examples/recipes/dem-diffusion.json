@@ -1,0 +1,1 @@
+{"generator": "anim.diffuse", "seed": "heat", "palette": "sci", "size": [96, 96], "scale": 3, "input": {"path": "data/dem-192.pgm"}, "params": {"frames": 40, "every": 20}, "output": "dem-diffusion.gif"}

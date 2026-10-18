@@ -1,0 +1,1 @@
+{"generator": "forge.tile.terrain", "seed": "isle", "palette": "mf32", "size": [64, 64], "scale": 2, "params": {"world_x": 1, "world_y": 0}, "output": "terrain-1-0.png"}

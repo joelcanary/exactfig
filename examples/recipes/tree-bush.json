@@ -1,0 +1,1 @@
+{"generator": "forge.flora.tree", "seed": "oak-3", "palette": "mf32", "size": [48, 48], "scale": 3, "params": {"preset": "bush", "iterations": 5, "angle": 22, "leaf_size": 4}, "output": "tree-bush.png"}

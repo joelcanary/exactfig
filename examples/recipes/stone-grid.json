@@ -1,0 +1,1 @@
+{"generator": "forge.tile.stone", "seed": "grid-01", "palette": "mf32", "size": [32, 32], "scale": 4, "params": {"cells": 4, "jitter": 0.0, "mortar": 0.08, "ramp": "sun"}, "output": "stone-grid.png"}

@@ -1,0 +1,4655 @@
+{
+ "format": "exactfig.manifest/1",
+ "assets": {
+  "cave.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.tile.cave",
+    "version": "1",
+    "code_sha256": "a8668e6b64c2525c60185dc6db70e10b25bc07dec5b53a08ee4fe0723db72fb2"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.tile.cave",
+    "seed": "hollow-7",
+    "params": {
+     "fill": 0.53,
+     "steps": 4,
+     "moss": 0.35,
+     "ramp": "stone",
+     "floor_ramp": "stone"
+    },
+    "palette": "mf32",
+    "size": [
+     48,
+     48
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "4b262df5679f3a6cef247b64eca70e45ea6d4f3bf3de32e5c3b90ceb4327deca",
+   "output": {
+    "file_sha256": "3c5ec0cb241ddeb36e9ab0d4474f5ef3528cd499673f90d3e8f783c93b0e5928",
+    "content_sha256": "be036e41e75ace049d55abae76c8ee75ffc36075da7e5943b414667108423778",
+    "bytes": 1060,
+    "width": 144,
+    "height": 144
+   },
+   "budget": {
+    "recipe_bytes": 172,
+    "pixels": 2304
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "4b262df5679f3a6cef247b64eca70e45ea6d4f3bf3de32e5c3b90ceb4327deca",
+     "content_sha256": "8e964dd1ff32a19a4452f6c1264b16b4de5377adadb25bc3c03a7b9d819862e8",
+     "generator": {
+      "name": "forge.tile.cave",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "convert-kmeans16-edges.png": {
+   "kind": "image",
+   "generator": {
+    "name": "data.image",
+    "version": "1",
+    "code_sha256": "c37fa4341d5a9b37fe7e90974262590e3f598a69baa8609acb76c24428ee9bea"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "data.image",
+    "seed": "c3",
+    "params": {
+     "resample": "area",
+     "dither": "none",
+     "spread": 48.0,
+     "ramp": "all",
+     "edges": true,
+     "edge_threshold": 0.3,
+     "edge_ramp": "ink"
+    },
+    "input": {
+     "path": "data/testcard-480x320.png",
+     "format": "png",
+     "sha256": "6c1669d9aca2422bc6e1e1f66df207a031c0101d57bbbc054b7d5897c9d7bb56"
+    },
+    "palette": {
+     "name": "testcard-k16",
+     "colors": [
+      "#0d0f18",
+      "#20349f",
+      "#802622",
+      "#762a60",
+      "#225c20",
+      "#115a6e",
+      "#8b5b12",
+      "#2f75a0",
+      "#bc3e3d",
+      "#8a5fa6",
+      "#428740",
+      "#559faa",
+      "#b18878",
+      "#00d400",
+      "#bab5b3",
+      "#f8ec88"
+     ],
+     "ramps": {
+      "all": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15
+      ],
+      "ink": [
+       0
+      ],
+      "paper": [
+       15
+      ]
+     }
+    },
+    "size": [
+     120,
+     80
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "1c4636b08c1f4bab7e588f652d0f3dd4ef3c5435dbf4eb9caa5df70dd3d0e97c",
+   "output": {
+    "file_sha256": "b5e1561713045c5612d916ef9431aff0a213fa1208a962d2d03328009772a958",
+    "content_sha256": "ece4ef73a164315b22765beeeeddc5bee3d612fc738f69f47eba3bf21b213b45",
+    "bytes": 974,
+    "width": 360,
+    "height": 240
+   },
+   "budget": {
+    "recipe_bytes": 608,
+    "pixels": 9600,
+    "input_bytes": 135404
+   },
+   "palette": [
+    "#0d0f18",
+    "#20349f",
+    "#802622",
+    "#762a60",
+    "#225c20",
+    "#115a6e",
+    "#8b5b12",
+    "#2f75a0",
+    "#bc3e3d",
+    "#8a5fa6",
+    "#428740",
+    "#559faa",
+    "#b18878",
+    "#00d400",
+    "#bab5b3",
+    "#f8ec88"
+   ],
+   "inputs": [
+    {
+     "path": "data/testcard-480x320.png",
+     "format": "png",
+     "sha256": "6c1669d9aca2422bc6e1e1f66df207a031c0101d57bbbc054b7d5897c9d7bb56",
+     "bytes": 135404,
+     "shape": [
+      320,
+      480
+     ],
+     "opaque": 153600
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "1c4636b08c1f4bab7e588f652d0f3dd4ef3c5435dbf4eb9caa5df70dd3d0e97c",
+     "content_sha256": "7085ed5e37976ae2f4938b8af97aa1a37e8e1614193b48d767c77e4e253a6e49",
+     "generator": {
+      "name": "data.image",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "convert-mono4-bayer.png": {
+   "kind": "image",
+   "generator": {
+    "name": "data.image",
+    "version": "1",
+    "code_sha256": "c37fa4341d5a9b37fe7e90974262590e3f598a69baa8609acb76c24428ee9bea"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "data.image",
+    "seed": "c2",
+    "params": {
+     "resample": "area",
+     "dither": "bayer",
+     "spread": 96.0,
+     "ramp": "all",
+     "edges": false,
+     "edge_threshold": 0.25,
+     "edge_ramp": "ink"
+    },
+    "input": {
+     "path": "data/testcard-480x320.png",
+     "format": "png",
+     "sha256": "6c1669d9aca2422bc6e1e1f66df207a031c0101d57bbbc054b7d5897c9d7bb56"
+    },
+    "palette": "mono4",
+    "size": [
+     120,
+     80
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "6c5aecda49e826c0ecaed14bd283754d95dc33f9bf61a6aad74150b0894b6b71",
+   "output": {
+    "file_sha256": "7c4b43436f66c49a62ac98610c8ac93f3c2e71a619a1ec33770c9fd116a1bf18",
+    "content_sha256": "c63e85a6b99c518cc11d6114b818a720a3a90901169fa87ac5bbf86d6b15c086",
+    "bytes": 1578,
+    "width": 360,
+    "height": 240
+   },
+   "budget": {
+    "recipe_bytes": 345,
+    "pixels": 9600,
+    "input_bytes": 135404
+   },
+   "palette": [
+    "#1a260d",
+    "#4d5b37",
+    "#88956e",
+    "#cad3b2"
+   ],
+   "inputs": [
+    {
+     "path": "data/testcard-480x320.png",
+     "format": "png",
+     "sha256": "6c1669d9aca2422bc6e1e1f66df207a031c0101d57bbbc054b7d5897c9d7bb56",
+     "bytes": 135404,
+     "shape": [
+      320,
+      480
+     ],
+     "opaque": 153600
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "6c5aecda49e826c0ecaed14bd283754d95dc33f9bf61a6aad74150b0894b6b71",
+     "content_sha256": "77af2f80095a75f161fdff9b86c0e7e5e374880ac92f7fd9c1a3e95633b78b0d",
+     "generator": {
+      "name": "data.image",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "convert-sci-floyd.png": {
+   "kind": "image",
+   "generator": {
+    "name": "data.image",
+    "version": "1",
+    "code_sha256": "c37fa4341d5a9b37fe7e90974262590e3f598a69baa8609acb76c24428ee9bea"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "data.image",
+    "seed": "c1",
+    "params": {
+     "resample": "area",
+     "dither": "floyd",
+     "spread": 48.0,
+     "ramp": "all",
+     "edges": false,
+     "edge_threshold": 0.25,
+     "edge_ramp": "ink"
+    },
+    "input": {
+     "path": "data/testcard-480x320.png",
+     "format": "png",
+     "sha256": "6c1669d9aca2422bc6e1e1f66df207a031c0101d57bbbc054b7d5897c9d7bb56"
+    },
+    "palette": "sci",
+    "size": [
+     120,
+     80
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "570f3844876e8542bfe66022336e678bf33206ad9c0b34e35968823acbd256c9",
+   "output": {
+    "file_sha256": "c11b1c40217d002dd156af374a2fc55b82cbdee0e476a1a4e7fbfdab996da68b",
+    "content_sha256": "2a0739adce8c01ced030425c1f424e37c7dd7826ef8873e5a0f193b2c6bc5ec0",
+    "bytes": 4258,
+    "width": 360,
+    "height": 240
+   },
+   "budget": {
+    "recipe_bytes": 343,
+    "pixels": 9600,
+    "input_bytes": 135404
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/testcard-480x320.png",
+     "format": "png",
+     "sha256": "6c1669d9aca2422bc6e1e1f66df207a031c0101d57bbbc054b7d5897c9d7bb56",
+     "bytes": 135404,
+     "shape": [
+      320,
+      480
+     ],
+     "opaque": 153600
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "570f3844876e8542bfe66022336e678bf33206ad9c0b34e35968823acbd256c9",
+     "content_sha256": "7f7c8a060c666fc38e5196ee8113f1a4c4762c970d037f7141008995b88016df",
+     "generator": {
+      "name": "data.image",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "critters.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.sprite.critters",
+    "version": "1",
+    "code_sha256": "4d80e8d3eae61b9d5a7ecba01efb10469869b96aae3ae29ba63dff0f333a2502"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.sprite.critters",
+    "seed": "brood",
+    "params": {
+     "cell": 16,
+     "cols": 8,
+     "count": 16,
+     "ramps": [
+      "moss",
+      "sea",
+      "ember",
+      "sun",
+      "dusk"
+     ],
+     "variety": 0.12
+    },
+    "palette": "mf32",
+    "size": [
+     128,
+     32
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "b2a11339e6b21317ebd2e7403cc3e4f1b2b783d931ed716afacd3b0511dd272a",
+   "output": {
+    "file_sha256": "8d9c7b463b4bc8c426db9fdd29775e6620b8c02a0a8d0749f6089f17c95fd362",
+    "content_sha256": "6d2fc3d72694c8dcde34f197bd630c08a8c9df74a8a0ac04fb770780c0e0a3a8",
+    "bytes": 1699,
+    "width": 384,
+    "height": 96
+   },
+   "budget": {
+    "recipe_bytes": 195,
+    "pixels": 4096
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "b2a11339e6b21317ebd2e7403cc3e4f1b2b783d931ed716afacd3b0511dd272a",
+     "content_sha256": "74d41f9881c15665d9dee225dd92c251a6b1b9bf8eacae6be1bd38019bcc53c1",
+     "generator": {
+      "name": "forge.sprite.critters",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "dem-diffusion.gif": {
+   "kind": "animation",
+   "generator": {
+    "name": "anim.diffuse",
+    "version": "1",
+    "code_sha256": "442fa31533a33e4351f0fb14b17c3426e40a3f2b64cdc4f785c6c58362c142ba"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "anim.diffuse",
+    "seed": "heat",
+    "params": {
+     "alpha": 0.2,
+     "frames": 40,
+     "every": 20,
+     "delay": 80,
+     "ramp": "seq",
+     "range": null
+    },
+    "input": {
+     "path": "data/dem-192.pgm",
+     "format": "pgm",
+     "sha256": "917ce369001f8b62fc6cd13711b2f05013209d399627195238e0395d06f2e129"
+    },
+    "palette": "sci",
+    "size": [
+     96,
+     96
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "bc41b66f46bdf7966d2b94bea57b1d0d507a43ab99401318b5f4e383ac55dfb5",
+   "output": {
+    "file_sha256": "460e381659808d68eb61da234177c7b9c0c38a2434574e241a3b78b4320d3aa5",
+    "content_sha256": "bee499804c611403897e5e49653682ef1edbd921277c2fea7c7b35280b2bf6ca",
+    "bytes": 139149,
+    "width": 288,
+    "height": 288,
+    "frames": 40,
+    "duration_ms": 3200
+   },
+   "budget": {
+    "recipe_bytes": 293,
+    "pixels": 368640,
+    "input_bytes": 73745
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/dem-192.pgm",
+     "format": "pgm",
+     "sha256": "917ce369001f8b62fc6cd13711b2f05013209d399627195238e0395d06f2e129",
+     "bytes": 73745,
+     "shape": [
+      192,
+      192
+     ],
+     "missing": 0,
+     "min": 0.0,
+     "max": 65535.0
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "bc41b66f46bdf7966d2b94bea57b1d0d507a43ab99401318b5f4e383ac55dfb5",
+     "content_sha256": "784a24a92db53d0fcf531902a5498f3c77d0044615c7583904dd99677460623d",
+     "generator": {
+      "name": "anim.diffuse",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "dem-hillshade.png": {
+   "kind": "image",
+   "generator": {
+    "name": "data.field",
+    "version": "1",
+    "code_sha256": "c37fa4341d5a9b37fe7e90974262590e3f598a69baa8609acb76c24428ee9bea"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "data.field",
+    "seed": "dem",
+    "params": {
+     "mode": "shade",
+     "ramp": "grey",
+     "dither": "bayer",
+     "range": null,
+     "contours": 0,
+     "interval": 0.0,
+     "contour_ramp": "ink",
+     "azimuth": 315.0,
+     "altitude": 45.0,
+     "exaggeration": 0.030518043793392843,
+     "cell": 60.0,
+     "relief": 2.0,
+     "nodata_ramp": "",
+     "resample": "bilinear"
+    },
+    "input": {
+     "path": "data/dem-192.pgm",
+     "format": "pgm",
+     "sha256": "917ce369001f8b62fc6cd13711b2f05013209d399627195238e0395d06f2e129"
+    },
+    "palette": "sci",
+    "size": [
+     384,
+     384
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "4d6f5432fce314cc4517eb7b7c9dbe43ea9dff54b0e2c761a515637d8ef9983c",
+   "output": {
+    "file_sha256": "aa743304b51db400c32985de805ea3728b039d841f283865a1820b613e10555c",
+    "content_sha256": "8e2373cb9697149666bb4ed13f900691cfddc02c0f1e9b7a92199ccb0cff9be4",
+    "bytes": 14032,
+    "width": 384,
+    "height": 384
+   },
+   "budget": {
+    "recipe_bytes": 460,
+    "pixels": 147456,
+    "input_bytes": 73745
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/dem-192.pgm",
+     "format": "pgm",
+     "sha256": "917ce369001f8b62fc6cd13711b2f05013209d399627195238e0395d06f2e129",
+     "bytes": 73745,
+     "shape": [
+      192,
+      192
+     ],
+     "missing": 0,
+     "min": 0.0,
+     "max": 65535.0
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "4d6f5432fce314cc4517eb7b7c9dbe43ea9dff54b0e2c761a515637d8ef9983c",
+     "content_sha256": "a40616d676505f73b4cfe1834df57666ae0421b8aff821c6f282e2cd5523e94b",
+     "generator": {
+      "name": "data.field",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "dem-relief.png": {
+   "kind": "image",
+   "generator": {
+    "name": "data.field",
+    "version": "1",
+    "code_sha256": "c37fa4341d5a9b37fe7e90974262590e3f598a69baa8609acb76c24428ee9bea"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "data.field",
+    "seed": "dem",
+    "params": {
+     "mode": "relief",
+     "ramp": "seq",
+     "dither": "none",
+     "range": null,
+     "contours": 0,
+     "interval": 6553.5,
+     "contour_ramp": "ink",
+     "azimuth": 315.0,
+     "altitude": 45.0,
+     "exaggeration": 0.030518043793392843,
+     "cell": 60.0,
+     "relief": 2.0,
+     "nodata_ramp": "",
+     "resample": "bilinear"
+    },
+    "input": {
+     "path": "data/dem-192.pgm",
+     "format": "pgm",
+     "sha256": "917ce369001f8b62fc6cd13711b2f05013209d399627195238e0395d06f2e129"
+    },
+    "palette": "sci",
+    "size": [
+     384,
+     384
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "3327284ec8a2991d8c4a294cf5abf5e0b569eaa66dba9e513eae948eefec7835",
+   "output": {
+    "file_sha256": "fd9aafbf051fc71ef2bc23788e63a96bf187ba49218745a8c375d280873d21ac",
+    "content_sha256": "bc897f3feb52a53d02b024dbdaaee0c55c3716d8cb0ae4ebab27bccbd52ef048",
+    "bytes": 11857,
+    "width": 384,
+    "height": 384
+   },
+   "budget": {
+    "recipe_bytes": 462,
+    "pixels": 147456,
+    "input_bytes": 73745
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/dem-192.pgm",
+     "format": "pgm",
+     "sha256": "917ce369001f8b62fc6cd13711b2f05013209d399627195238e0395d06f2e129",
+     "bytes": 73745,
+     "shape": [
+      192,
+      192
+     ],
+     "missing": 0,
+     "min": 0.0,
+     "max": 65535.0
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "3327284ec8a2991d8c4a294cf5abf5e0b569eaa66dba9e513eae948eefec7835",
+     "content_sha256": "a0b8b6d074b5a2f20db21144c7271bd7be1160b74ce2fc0704cfb46bbb51e857",
+     "generator": {
+      "name": "data.field",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "domain-roots.png": {
+   "kind": "image",
+   "generator": {
+    "name": "math.domain",
+    "version": "1",
+    "code_sha256": "bbe14758fdc6e0e95e65e912e0b494072831f07bfcba15565071543caf23b768"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "math.domain",
+    "seed": "d",
+    "params": {
+     "function": "z^3-1",
+     "centre": [
+      0.0,
+      0.0
+     ],
+     "span": 3.0,
+     "modulus_lines": true,
+     "ramp": "cyc",
+     "line_ramp": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     256,
+     256
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "0fa39f1eafed90e8aac11513100b361c50de480b71c45c158b1ecddf17767409",
+   "output": {
+    "file_sha256": "f38ef1d6ee12ece5e8dcbfd6783f183d314fd183fb69bb468a03254e8ddf40d6",
+    "content_sha256": "95182b9a91317983a33cab043f4e21f443fc54d39ef58afdd6733b558b27939a",
+    "bytes": 5358,
+    "width": 256,
+    "height": 256
+   },
+   "budget": {
+    "recipe_bytes": 193,
+    "pixels": 65536
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "0fa39f1eafed90e8aac11513100b361c50de480b71c45c158b1ecddf17767409",
+     "content_sha256": "8287183e5950c7091de68422481d7280e9499925b5d2c8a251c835adbc44392c",
+     "generator": {
+      "name": "math.domain",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "domain-wegert.png": {
+   "kind": "image",
+   "generator": {
+    "name": "math.domain",
+    "version": "1",
+    "code_sha256": "bbe14758fdc6e0e95e65e912e0b494072831f07bfcba15565071543caf23b768"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "math.domain",
+    "seed": "d",
+    "params": {
+     "function": "(z^2-1)(z-2-i)^2/(z^2+2+2i)",
+     "centre": [
+      0.0,
+      0.0
+     ],
+     "span": 6.0,
+     "modulus_lines": true,
+     "ramp": "cyc",
+     "line_ramp": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     256,
+     256
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "24aacf05f6eb760483d8a2e3a304936d9b579c3de791e113a223bf90205d54e0",
+   "output": {
+    "file_sha256": "5d7d029aaea27c9cca37717baea1a1f96168fca66ce6c6ef553ede277727a2ea",
+    "content_sha256": "d9dc4c1660f3816e494da7b8772748caf03daedb266fbb6f7635fd52e0cc8ce9",
+    "bytes": 6342,
+    "width": 256,
+    "height": 256
+   },
+   "budget": {
+    "recipe_bytes": 215,
+    "pixels": 65536
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "24aacf05f6eb760483d8a2e3a304936d9b579c3de791e113a223bf90205d54e0",
+     "content_sha256": "a20c389ea5daeb38054902abdffbac9017cd575af2ee2e983bb22e8781369fe6",
+     "generator": {
+      "name": "math.domain",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "epicycles-heart.gif": {
+   "kind": "animation",
+   "generator": {
+    "name": "anim.epicycles",
+    "version": "1",
+    "code_sha256": "05157d290bc14b39b04b335b477271e732005c7161217c4066ae2bf04557d3a0"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "anim.epicycles",
+    "seed": "e",
+    "params": {
+     "curve": "heart",
+     "samples": 256,
+     "terms": 24,
+     "frames": 120,
+     "delay": 40,
+     "ramp": "seq",
+     "circle_ramp": "grey",
+     "curve_ramp": "grey",
+     "background": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     192,
+     192
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "b4b8c4fd9c47f00e974dbc75ba609bc1afaadf1f27553ef20ec8433612d0efc8",
+   "output": {
+    "file_sha256": "fd777a90a87d7a6867d6993aabb865a774168a16b0316dc40ee45cde0ceaa7ea",
+    "content_sha256": "156202db51471ff8cb0ffc6c9ce668beb8e392b82c57c68c18e3d014acce9243",
+    "bytes": 353485,
+    "width": 384,
+    "height": 384,
+    "frames": 120,
+    "duration_ms": 4800
+   },
+   "budget": {
+    "recipe_bytes": 233,
+    "pixels": 4423680
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "b4b8c4fd9c47f00e974dbc75ba609bc1afaadf1f27553ef20ec8433612d0efc8",
+     "content_sha256": "ec61d06b6e6f51c20f6fcc4be893b7f9b946a4201a678f7781d976c12bd466f6",
+     "generator": {
+      "name": "anim.epicycles",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "epicycles-square.gif": {
+   "kind": "animation",
+   "generator": {
+    "name": "anim.epicycles",
+    "version": "1",
+    "code_sha256": "05157d290bc14b39b04b335b477271e732005c7161217c4066ae2bf04557d3a0"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "anim.epicycles",
+    "seed": "e",
+    "params": {
+     "curve": "square",
+     "samples": 256,
+     "terms": 40,
+     "frames": 120,
+     "delay": 40,
+     "ramp": "seq",
+     "circle_ramp": "grey",
+     "curve_ramp": "grey",
+     "background": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     192,
+     192
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "318a090dff9c8c963fe3b9f54bf275268eb7c41e3a49eb3b8ebfcc356867da5f",
+   "output": {
+    "file_sha256": "66a0ea5dfaa7e768e216d705f546029a76e17e4d0ae392aba77fa109c005d884",
+    "content_sha256": "2b24a188fd7dad673454204c9ab31775176c0992809435e1f0fd090b685b7d5c",
+    "bytes": 362380,
+    "width": 384,
+    "height": 384,
+    "frames": 120,
+    "duration_ms": 4800
+   },
+   "budget": {
+    "recipe_bytes": 234,
+    "pixels": 4423680
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "318a090dff9c8c963fe3b9f54bf275268eb7c41e3a49eb3b8ebfcc356867da5f",
+     "content_sha256": "d9f41dbcba658a959f1bb0489264dd739ad8d23ba1b676f426634a4d49d78453",
+     "generator": {
+      "name": "anim.epicycles",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "figure-franke.png": {
+   "kind": "image",
+   "generator": {
+    "name": "compose",
+    "version": "1+data.scatter@1+draw.annotate@1",
+    "code_sha256": "10b7b35d125cdb9e2a45b15f4d0af0cbf9941ef75fcb6558d79ba422629acbdb"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "compose",
+    "seed": "fig-franke",
+    "params": {},
+    "layers": [
+     {
+      "generator": "draw.annotate",
+      "seed": "fig-franke",
+      "params": {
+       "shapes": [
+        {
+         "type": "rect",
+         "points": [
+          [
+           0,
+           0
+          ],
+          [
+           255,
+           255
+          ]
+         ],
+         "fill": true,
+         "ramp": "paper"
+        }
+       ]
+      },
+      "blend": "over"
+     },
+     {
+      "generator": "data.scatter",
+      "seed": "fig-franke",
+      "params": {
+       "mode": "value",
+       "ramp": "div",
+       "dither": "none",
+       "range": null,
+       "contours": 9,
+       "interval": 0.0,
+       "contour_ramp": "ink",
+       "azimuth": 315.0,
+       "altitude": 45.0,
+       "exaggeration": 1.0,
+       "cell": 1.0,
+       "relief": 2.0,
+       "nodata_ramp": "",
+       "method": "linear",
+       "points": "cross",
+       "point_ramp": "mark"
+      },
+      "input": {
+       "path": "data/franke-halton-256.csv",
+       "format": "csv",
+       "sha256": "a53cc4c65640ba4753e3285c114c3f3efdcdc21fd553fc49ae36351a84210932"
+      },
+      "blend": "over"
+     },
+     {
+      "generator": "draw.annotate",
+      "seed": "fig-franke",
+      "params": {
+       "shapes": [
+        {
+         "type": "text",
+         "points": [
+          [
+           6,
+           6
+          ]
+         ],
+         "text": "N = 256 SAMPLES",
+         "r": 1,
+         "ramp": "ink"
+        },
+        {
+         "type": "text",
+         "points": [
+          [
+           6,
+           14
+          ]
+         ],
+         "text": "RMS 0.0084",
+         "r": 1,
+         "ramp": "ink"
+        }
+       ]
+      },
+      "blend": "over"
+     }
+    ],
+    "palette": "sci",
+    "size": [
+     256,
+     256
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "d46aae7a7d7f4e95765143f4ec1aea9cd8cc56478f39e892c9cadbb0c14d45ec",
+   "output": {
+    "file_sha256": "2e04229bef7841e943846fd6cd4aa3b20c0a2b889d817b75ca4219b1887687bf",
+    "content_sha256": "a3c245bfd1ded7aaa130088b3bac8f42914bdd981b4738c9ccd6fcc2ac55a2f3",
+    "bytes": 5493,
+    "width": 256,
+    "height": 256
+   },
+   "budget": {
+    "recipe_bytes": 968,
+    "pixels": 65536,
+    "input_bytes": 12471
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/franke-halton-256.csv",
+     "format": "csv",
+     "sha256": "a53cc4c65640ba4753e3285c114c3f3efdcdc21fd553fc49ae36351a84210932",
+     "bytes": 12471,
+     "points": 256,
+     "min": 0.020594746633634947,
+     "max": 1.2153002867192224,
+     "x": [
+      0.001953125,
+      0.99609375
+     ],
+     "y": [
+      0.0013717421124828531,
+      0.9958847736625513
+     ]
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "d46aae7a7d7f4e95765143f4ec1aea9cd8cc56478f39e892c9cadbb0c14d45ec",
+     "content_sha256": "956d0a5a5a6b5ef5e7d35f2b99dfd3c4ea9d28531df88af41e75ca9192106a57",
+     "generator": {
+      "name": "compose",
+      "version": "1+data.scatter@1+draw.annotate@1"
+     }
+    }
+   ]
+  },
+  "figure-plate.png": {
+   "kind": "image",
+   "generator": {
+    "name": "compose",
+    "version": "1+data.field@1+draw.annotate@1",
+    "code_sha256": "10b7b35d125cdb9e2a45b15f4d0af0cbf9941ef75fcb6558d79ba422629acbdb"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "compose",
+    "seed": "fig-plate",
+    "params": {},
+    "layers": [
+     {
+      "generator": "data.field",
+      "seed": "fig-plate",
+      "params": {
+       "mode": "value",
+       "ramp": "seq",
+       "dither": "none",
+       "range": null,
+       "contours": 0,
+       "interval": 0.1,
+       "contour_ramp": "ink",
+       "azimuth": 315.0,
+       "altitude": 45.0,
+       "exaggeration": 1.0,
+       "cell": 1.0,
+       "relief": 2.0,
+       "nodata_ramp": "",
+       "resample": "bilinear"
+      },
+      "input": {
+       "path": "data/plate-129.npy",
+       "format": "npy",
+       "sha256": "30adbfd312d99e806c18e3d9c6cf78e77b389e8bb07d137cb217dea5169cc855"
+      },
+      "blend": "over"
+     },
+     {
+      "generator": "draw.annotate",
+      "seed": "fig-plate",
+      "params": {
+       "shapes": [
+        {
+         "type": "text",
+         "points": [
+          [
+           6,
+           6
+          ]
+         ],
+         "text": "U = 1 ON TOP",
+         "r": 2,
+         "ramp": "ink"
+        },
+        {
+         "type": "arrow",
+         "points": [
+          [
+           128,
+           200
+          ],
+          [
+           128,
+           120
+          ]
+         ],
+         "r": 6,
+         "ramp": "paper"
+        },
+        {
+         "type": "text",
+         "points": [
+          [
+           136,
+           196
+          ]
+         ],
+         "text": "HEAT FLOWS DOWN",
+         "r": 1,
+         "ramp": "paper"
+        },
+        {
+         "type": "text",
+         "points": [
+          [
+           6,
+           238
+          ]
+         ],
+         "text": "U = 0 ON THREE SIDES",
+         "r": 2,
+         "ramp": "paper"
+        },
+        {
+         "type": "rect",
+         "points": [
+          [
+           0,
+           0
+          ],
+          [
+           255,
+           255
+          ]
+         ],
+         "ramp": "ink"
+        }
+       ]
+      },
+      "blend": "over"
+     }
+    ],
+    "palette": "sci",
+    "size": [
+     256,
+     256
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "dabc2ba097d28fa473eb830d17b2dacedaf6e5f662f32545df4c2028aac3732c",
+   "output": {
+    "file_sha256": "e35481cee6676f3cbe87049e6e809c44e425435d51e498ea9c8e6d532f9d5470",
+    "content_sha256": "b2e094be08aae360d2ce703ab47490fa248c7ff61ab73d51a97422e1df266393",
+    "bytes": 3350,
+    "width": 256,
+    "height": 256
+   },
+   "budget": {
+    "recipe_bytes": 983,
+    "pixels": 65536,
+    "input_bytes": 133256
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/plate-129.npy",
+     "format": "npy",
+     "sha256": "30adbfd312d99e806c18e3d9c6cf78e77b389e8bb07d137cb217dea5169cc855",
+     "bytes": 133256,
+     "shape": [
+      129,
+      129
+     ],
+     "missing": 0,
+     "min": 0.0,
+     "max": 1.0
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "dabc2ba097d28fa473eb830d17b2dacedaf6e5f662f32545df4c2028aac3732c",
+     "content_sha256": "bfc132824c6754366b2afe7ed13621c2d29068af68af663033b49d8bf6c6b265",
+     "generator": {
+      "name": "compose",
+      "version": "1+data.field@1+draw.annotate@1"
+     }
+    }
+   ]
+  },
+  "fourier-sawtooth.png": {
+   "kind": "image",
+   "generator": {
+    "name": "math.fourier",
+    "version": "1",
+    "code_sha256": "b16616627432e5ac3f172fc91bd08de74e1e71fd84e103beaa14f458e8252305"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "math.fourier",
+    "seed": "f",
+    "params": {
+     "wave": "sawtooth",
+     "orders": "2,5,20",
+     "ramp": "seq",
+     "axis_ramp": "grey",
+     "background": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     480,
+     300
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "008b6c565f91dc409eb53b900892539bae4775b42ecd7ac3dc710815bdbf69b3",
+   "output": {
+    "file_sha256": "57d70d684716e8bcd2e48746e2cf346898cd9d2603cae64b6193402111bc8641",
+    "content_sha256": "a8fed9d678f9dc1c36a654ec7219be198921551cf546e07ba8e1e98f2e39fda6",
+    "bytes": 2982,
+    "width": 480,
+    "height": 300
+   },
+   "budget": {
+    "recipe_bytes": 180,
+    "pixels": 144000
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "008b6c565f91dc409eb53b900892539bae4775b42ecd7ac3dc710815bdbf69b3",
+     "content_sha256": "1e25a70c738a602dc20e4a06512239985a3b6ed79e27a87bb8988c8ee4876541",
+     "generator": {
+      "name": "math.fourier",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "fourier-square.png": {
+   "kind": "image",
+   "generator": {
+    "name": "math.fourier",
+    "version": "1",
+    "code_sha256": "b16616627432e5ac3f172fc91bd08de74e1e71fd84e103beaa14f458e8252305"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "math.fourier",
+    "seed": "f",
+    "params": {
+     "wave": "square",
+     "orders": "1,3,9,27",
+     "ramp": "seq",
+     "axis_ramp": "grey",
+     "background": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     480,
+     300
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "34974eb9128bec84fa64655613810a22e4f9d26402a94b5a4c6e3779267b1b1a",
+   "output": {
+    "file_sha256": "cbac5434737944d653505bdde17fff8aa3fa2ef8fbb4a96f120067f0a5a2d70c",
+    "content_sha256": "23e8251a82cabd34c514dae117509ebfb88d709201f696944adb7397d43b2dda",
+    "bytes": 3393,
+    "width": 480,
+    "height": 300
+   },
+   "budget": {
+    "recipe_bytes": 180,
+    "pixels": 144000
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "34974eb9128bec84fa64655613810a22e4f9d26402a94b5a4c6e3779267b1b1a",
+     "content_sha256": "c156266224856d5ab8d77658e3c7900b552807fc72ac675642a2d39830b90fbc",
+     "generator": {
+      "name": "math.fourier",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "franke-linear.png": {
+   "kind": "image",
+   "generator": {
+    "name": "data.scatter",
+    "version": "1",
+    "code_sha256": "c37fa4341d5a9b37fe7e90974262590e3f598a69baa8609acb76c24428ee9bea"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "data.scatter",
+    "seed": "franke",
+    "params": {
+     "mode": "value",
+     "ramp": "seq",
+     "dither": "none",
+     "range": null,
+     "contours": 9,
+     "interval": 0.0,
+     "contour_ramp": "ink",
+     "azimuth": 315.0,
+     "altitude": 45.0,
+     "exaggeration": 1.0,
+     "cell": 1.0,
+     "relief": 2.0,
+     "nodata_ramp": "",
+     "method": "linear",
+     "points": "dot",
+     "point_ramp": "mark"
+    },
+    "input": {
+     "path": "data/franke-halton-256.csv",
+     "format": "csv",
+     "sha256": "a53cc4c65640ba4753e3285c114c3f3efdcdc21fd553fc49ae36351a84210932"
+    },
+    "palette": "sci",
+    "size": [
+     256,
+     256
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "811bcf1b84c6364012472e35c128d951edb8351b9f8d6fd267c5c03eba49c173",
+   "output": {
+    "file_sha256": "c30af9614639e1d9c976d591d60cc72c9cf07c6bc8a80cf5fc9b9ae1ebf0efe3",
+    "content_sha256": "d89a3bc176e4128db314aa0820af166782f54e8e1a87c53a6c45dc40c63cc1e3",
+    "bytes": 4438,
+    "width": 256,
+    "height": 256
+   },
+   "budget": {
+    "recipe_bytes": 486,
+    "pixels": 65536,
+    "input_bytes": 12471
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/franke-halton-256.csv",
+     "format": "csv",
+     "sha256": "a53cc4c65640ba4753e3285c114c3f3efdcdc21fd553fc49ae36351a84210932",
+     "bytes": 12471,
+     "points": 256,
+     "min": 0.020594746633634947,
+     "max": 1.2153002867192224,
+     "x": [
+      0.001953125,
+      0.99609375
+     ],
+     "y": [
+      0.0013717421124828531,
+      0.9958847736625513
+     ]
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "811bcf1b84c6364012472e35c128d951edb8351b9f8d6fd267c5c03eba49c173",
+     "content_sha256": "41e1227466b4a7ba46355279c2d721a1d0f1311e2dd28ceac38c9e972334735f",
+     "generator": {
+      "name": "data.scatter",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "franke-nearest.png": {
+   "kind": "image",
+   "generator": {
+    "name": "data.scatter",
+    "version": "1",
+    "code_sha256": "c37fa4341d5a9b37fe7e90974262590e3f598a69baa8609acb76c24428ee9bea"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "data.scatter",
+    "seed": "franke",
+    "params": {
+     "mode": "value",
+     "ramp": "seq",
+     "dither": "none",
+     "range": null,
+     "contours": 0,
+     "interval": 0.0,
+     "contour_ramp": "ink",
+     "azimuth": 315.0,
+     "altitude": 45.0,
+     "exaggeration": 1.0,
+     "cell": 1.0,
+     "relief": 2.0,
+     "nodata_ramp": "",
+     "method": "nearest",
+     "points": "dot",
+     "point_ramp": "mark"
+    },
+    "input": {
+     "path": "data/franke-halton-256.csv",
+     "format": "csv",
+     "sha256": "a53cc4c65640ba4753e3285c114c3f3efdcdc21fd553fc49ae36351a84210932"
+    },
+    "palette": "sci",
+    "size": [
+     256,
+     256
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "61f20763f8c83caf8309ab4db9e1c7d2047b6726af8eadd37ee33c76009f0666",
+   "output": {
+    "file_sha256": "b26308a03ae3693458d273d9bc325ff23ba5a982e3db8937dcc631104ca8d548",
+    "content_sha256": "d2f59d0dbef59c9a837c62bc209e4c7dc538f905a21d15a41f9385c1e456876b",
+    "bytes": 3683,
+    "width": 256,
+    "height": 256
+   },
+   "budget": {
+    "recipe_bytes": 487,
+    "pixels": 65536,
+    "input_bytes": 12471
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/franke-halton-256.csv",
+     "format": "csv",
+     "sha256": "a53cc4c65640ba4753e3285c114c3f3efdcdc21fd553fc49ae36351a84210932",
+     "bytes": 12471,
+     "points": 256,
+     "min": 0.020594746633634947,
+     "max": 1.2153002867192224,
+     "x": [
+      0.001953125,
+      0.99609375
+     ],
+     "y": [
+      0.0013717421124828531,
+      0.9958847736625513
+     ]
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "61f20763f8c83caf8309ab4db9e1c7d2047b6726af8eadd37ee33c76009f0666",
+     "content_sha256": "89484ef7c9869a61a11c88fb9da7d006cc001893b7f08fc3bcd03486ac5dcd4c",
+     "generator": {
+      "name": "data.scatter",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "gem-drop.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.icon.gem",
+    "version": "1",
+    "code_sha256": "5e04ca3f1a50775bcd822dde95ff8623ab64ac12491787d8e1d6d0ed7c7ee0ed"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.icon.gem",
+    "seed": "g3",
+    "params": {
+     "shape": "drop",
+     "facets": 10,
+     "table": 0.45,
+     "light_deg": 225.0,
+     "ramp": "dusk"
+    },
+    "palette": "mf32",
+    "size": [
+     16,
+     16
+    ],
+    "scale": 6
+   },
+   "recipe_sha256": "ea47adb243ac142941387faf8bf666e59fdfac51a71b6d1ec9c1fa0d67a4aca9",
+   "output": {
+    "file_sha256": "1f9ef816bf1838e45f1fdba6e6d1fe2e77e5f5d01a920c233bb5bd2c755c3ca0",
+    "content_sha256": "e8ce00ff31c6eba13651bcb3294a42e57242a2170d7538fdc52788802690bef0",
+    "bytes": 363,
+    "width": 96,
+    "height": 96
+   },
+   "budget": {
+    "recipe_bytes": 167,
+    "pixels": 256
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "ea47adb243ac142941387faf8bf666e59fdfac51a71b6d1ec9c1fa0d67a4aca9",
+     "content_sha256": "16e02fa9c6878b65f6573ea84b8d4e52f5f0052492bee29df4331c610deaaa35",
+     "generator": {
+      "name": "forge.icon.gem",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "gem-hex.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.icon.gem",
+    "version": "1",
+    "code_sha256": "5e04ca3f1a50775bcd822dde95ff8623ab64ac12491787d8e1d6d0ed7c7ee0ed"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.icon.gem",
+    "seed": "g2",
+    "params": {
+     "shape": "hex",
+     "facets": 6,
+     "table": 0.45,
+     "light_deg": 225.0,
+     "ramp": "ember"
+    },
+    "palette": "mf32",
+    "size": [
+     16,
+     16
+    ],
+    "scale": 6
+   },
+   "recipe_sha256": "3464825cf79d45384cb5a854b5ef1ad36fdb01a5983b663c3cad4de4c3cd154a",
+   "output": {
+    "file_sha256": "b1a5a0f993c9d7395a40ca7505067cfa45221ae6753e4fb08691f399273662b6",
+    "content_sha256": "4a2b0fea5d2bccc95bea3c7db4833d8882e163df3c1e4a6460c35e025aa9e74a",
+    "bytes": 352,
+    "width": 96,
+    "height": 96
+   },
+   "budget": {
+    "recipe_bytes": 166,
+    "pixels": 256
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "3464825cf79d45384cb5a854b5ef1ad36fdb01a5983b663c3cad4de4c3cd154a",
+     "content_sha256": "df00a557e5da27734acd391a7e78c1ae0f957b59215aa11555637c2c7c5ebac5",
+     "generator": {
+      "name": "forge.icon.gem",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "gem-round.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.icon.gem",
+    "version": "1",
+    "code_sha256": "5e04ca3f1a50775bcd822dde95ff8623ab64ac12491787d8e1d6d0ed7c7ee0ed"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.icon.gem",
+    "seed": "g1",
+    "params": {
+     "shape": "round",
+     "facets": 8,
+     "table": 0.45,
+     "light_deg": 225.0,
+     "ramp": "sea"
+    },
+    "palette": "mf32",
+    "size": [
+     16,
+     16
+    ],
+    "scale": 6
+   },
+   "recipe_sha256": "b7553abd28e8b50118592c3de85e477377a6dbbe4aeef6781635837815ddd234",
+   "output": {
+    "file_sha256": "2e921b21a3e469f2c638bb75ae81eef21c041c073d82303b10815848454c3249",
+    "content_sha256": "c29d65aec6fb0dab3877cc7c09789f94f6ec7f4450f0e5171ac852fd855a13da",
+    "bytes": 363,
+    "width": 96,
+    "height": 96
+   },
+   "budget": {
+    "recipe_bytes": 166,
+    "pixels": 256
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "b7553abd28e8b50118592c3de85e477377a6dbbe4aeef6781635837815ddd234",
+     "content_sha256": "9fb9a5ce63e0cef9fe004bb03eb948c02d7941486806df637936de3d6746d48c",
+     "generator": {
+      "name": "forge.icon.gem",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "julia.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.fractal.julia",
+    "version": "1",
+    "code_sha256": "b3c6b6f214a705e32e2b1441f226b06d37301057d4795fa638baf74b35ffe414"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.fractal.julia",
+    "seed": "c0",
+    "params": {
+     "preset": 1,
+     "c": null,
+     "zoom": 1.0,
+     "max_iter": 48,
+     "ramp": "sea"
+    },
+    "palette": "mf32",
+    "size": [
+     64,
+     48
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "29c38bea0b781539f2e15ea3b697b012cdbb13c5ea7158e9a47cff2881ff7e01",
+   "output": {
+    "file_sha256": "e7638e6c4a2d5b111d195907b5b9d236839be48d9d62e3925f39bcaf915c65f8",
+    "content_sha256": "af0392638d5179c1d40afe889536db1cf56ffb560b8662743a92f3f4e08db233",
+    "bytes": 786,
+    "width": 128,
+    "height": 96
+   },
+   "budget": {
+    "recipe_bytes": 158,
+    "pixels": 3072
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "29c38bea0b781539f2e15ea3b697b012cdbb13c5ea7158e9a47cff2881ff7e01",
+     "content_sha256": "bf3f1405fe2a5a10d9b8b6f98e97f53fcdc1725aec3973de2a306159bb184b67",
+     "generator": {
+      "name": "forge.fractal.julia",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "lean-glider.gif": {
+   "kind": "animation",
+   "generator": {
+    "name": "anim.frames",
+    "version": "1",
+    "code_sha256": "442fa31533a33e4351f0fb14b17c3426e40a3f2b64cdc4f785c6c58362c142ba"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "anim.frames",
+    "seed": "lean",
+    "params": {
+     "ramp": "seq",
+     "range": null,
+     "delay": 150
+    },
+    "input": {
+     "path": "data/lean-glider.json",
+     "format": "json",
+     "sha256": "918d3ea84d2fe35b82e4a44487c7d4428b3287b643624cee1d6981765b49999d"
+    },
+    "palette": "sci",
+    "size": [
+     96,
+     96
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "8768a27a375df6085036dc44e1fabd60ee217455820a107f2ab5ab003594d122",
+   "output": {
+    "file_sha256": "1ce2b93438406da2d56b340ff50b144cfb8c308df463ce43fc3d40c8246ab4fb",
+    "content_sha256": "e5805d1203639678e2057688c411ce2a523376e133ac46e2e2383869575b7b19",
+    "bytes": 16408,
+    "width": 192,
+    "height": 192,
+    "frames": 33,
+    "duration_ms": 4950
+   },
+   "budget": {
+    "recipe_bytes": 264,
+    "pixels": 304128,
+    "input_bytes": 4954
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/lean-glider.json",
+     "format": "json",
+     "sha256": "918d3ea84d2fe35b82e4a44487c7d4428b3287b643624cee1d6981765b49999d",
+     "bytes": 4954,
+     "frames": 33,
+     "shape": [
+      8,
+      8
+     ],
+     "min": 0.0,
+     "max": 1.0
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "8768a27a375df6085036dc44e1fabd60ee217455820a107f2ab5ab003594d122",
+     "content_sha256": "11f097c11a60d3f9eafa0aebe7370445f33266d2e529a5d49e4076c59f71c4e8",
+     "generator": {
+      "name": "anim.frames",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "life-b37s2378.gif": {
+   "kind": "animation",
+   "generator": {
+    "name": "anim.life",
+    "version": "1",
+    "code_sha256": "442fa31533a33e4351f0fb14b17c3426e40a3f2b64cdc4f785c6c58362c142ba"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "anim.life",
+    "seed": "soup-1",
+    "params": {
+     "rule": "B37/S2378",
+     "pattern": "random",
+     "fill": 0.35,
+     "box": 0.5,
+     "wrap": true,
+     "frames": 150,
+     "every": 1,
+     "delay": 80,
+     "ramp": "seq",
+     "age_step": 3,
+     "background": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     96,
+     64
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "5f06d2885962779cbec3e745a506f631f266b31f3176ca615cac3b050d1146a2",
+   "output": {
+    "file_sha256": "24fe1174c682ff22eb6c74cbc09a274dc7687677288b77b81676e63b2c5be5a0",
+    "content_sha256": "6fcd5ba27dd27c02b1bcb7bba9fa015b95d60a73613f4efd9a3a8804ed8ff331",
+    "bytes": 286428,
+    "width": 288,
+    "height": 192,
+    "frames": 150,
+    "duration_ms": 12000
+   },
+   "budget": {
+    "recipe_bytes": 244,
+    "pixels": 921600
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "5f06d2885962779cbec3e745a506f631f266b31f3176ca615cac3b050d1146a2",
+     "content_sha256": "9f42371914377cee28d453a63a0e60c285e3e1d7ab5930f5eaaa743b17cd152c",
+     "generator": {
+      "name": "anim.life",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "life-conway.gif": {
+   "kind": "animation",
+   "generator": {
+    "name": "anim.life",
+    "version": "1",
+    "code_sha256": "442fa31533a33e4351f0fb14b17c3426e40a3f2b64cdc4f785c6c58362c142ba"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "anim.life",
+    "seed": "soup-1",
+    "params": {
+     "rule": "B3/S23",
+     "pattern": "random",
+     "fill": 0.35,
+     "box": 0.5,
+     "wrap": true,
+     "frames": 150,
+     "every": 1,
+     "delay": 80,
+     "ramp": "seq",
+     "age_step": 3,
+     "background": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     96,
+     64
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "70ca930ba6afc849f153df0c1083cef230008d959d9307c147d27f35d7a4c830",
+   "output": {
+    "file_sha256": "8d388c1c1af5bedad09636c201cd0b5706a96b4cfc4cc818e3f120629de34eef",
+    "content_sha256": "e7e93d6cc88ca9e2ba33fa561c7e401b133b5fe2fd103558e53a11a560a904ea",
+    "bytes": 237973,
+    "width": 288,
+    "height": 192,
+    "frames": 150,
+    "duration_ms": 12000
+   },
+   "budget": {
+    "recipe_bytes": 241,
+    "pixels": 921600
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "70ca930ba6afc849f153df0c1083cef230008d959d9307c147d27f35d7a4c830",
+     "content_sha256": "d7c6c998014cd8094a061817e765d034a537175ac269cd05deb23a9d3063290e",
+     "generator": {
+      "name": "anim.life",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "logistic.png": {
+   "kind": "image",
+   "generator": {
+    "name": "math.logistic",
+    "version": "1",
+    "code_sha256": "bbe14758fdc6e0e95e65e912e0b494072831f07bfcba15565071543caf23b768"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "math.logistic",
+    "seed": "l",
+    "params": {
+     "r": [
+      2.8,
+      4.0
+     ],
+     "x": [
+      0.0,
+      1.0
+     ],
+     "x0": 0.5,
+     "warmup": 800,
+     "samples": 600,
+     "ramp": "seq",
+     "background": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     480,
+     300
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "a1859d1e66da3fae18928c2184334aead5c6705637b0a616f26b6616caa26d8e",
+   "output": {
+    "file_sha256": "3d103bb5ba37e358c3662675b8499e56fab55c40961e0b6ca5042be84ba21996",
+    "content_sha256": "a8b65dfb0fcd584ec9219a576488bddabfca784b80b1fc809f298fec4211455a",
+    "bytes": 14850,
+    "width": 480,
+    "height": 300
+   },
+   "budget": {
+    "recipe_bytes": 190,
+    "pixels": 144000
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "a1859d1e66da3fae18928c2184334aead5c6705637b0a616f26b6616caa26d8e",
+     "content_sha256": "2c28a8402767e0d7e7cef8a3154c5c6fa6768ac19d5375f25c013ad6a99a0679",
+     "generator": {
+      "name": "math.logistic",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "lorenz.gif": {
+   "kind": "animation",
+   "generator": {
+    "name": "anim.lorenz",
+    "version": "1",
+    "code_sha256": "442fa31533a33e4351f0fb14b17c3426e40a3f2b64cdc4f785c6c58362c142ba"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "anim.lorenz",
+    "seed": "lorenz",
+    "params": {
+     "sigma": 10.0,
+     "rho": 28.0,
+     "beta": 2.6666666666666665,
+     "start": [
+      1.0,
+      1.0
+     ],
+     "start_z": 1.0,
+     "dt": 0.005,
+     "warmup": 2600,
+     "steps_per_frame": 20,
+     "trail": 2500,
+     "view": "xz",
+     "frames": 150,
+     "delay": 40,
+     "ramp": "seq",
+     "head_ramp": "mark",
+     "background": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     128,
+     128
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "f6110e5c914dc779e0963f6f648bd43b52f152e7cffc8103a82a87334818a36d",
+   "output": {
+    "file_sha256": "bde2440d26a083cd240dbd87f064885a470822684250e81b4e21074ee2190c6e",
+    "content_sha256": "820a4a18042c5815e5945127c104c2df9e4fef1c940c4d70e928b14a1c7fcc25",
+    "bytes": 418730,
+    "width": 256,
+    "height": 256,
+    "frames": 150,
+    "duration_ms": 6000
+   },
+   "budget": {
+    "recipe_bytes": 325,
+    "pixels": 2457600
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "f6110e5c914dc779e0963f6f648bd43b52f152e7cffc8103a82a87334818a36d",
+     "content_sha256": "02028cbf0ebbaa278a618ef50ab42fcdd79c832d2949fd5ac7b4fb2ac4ee12ed",
+     "generator": {
+      "name": "anim.lorenz",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "modmult-cardioid.png": {
+   "kind": "image",
+   "generator": {
+    "name": "math.modmult",
+    "version": "1",
+    "code_sha256": "b16616627432e5ac3f172fc91bd08de74e1e71fd84e103beaa14f458e8252305"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "math.modmult",
+    "seed": "m",
+    "params": {
+     "n": 200,
+     "k": 2.0,
+     "ramp": "seq",
+     "background": "ink",
+     "circle_ramp": "grey"
+    },
+    "palette": "sci",
+    "size": [
+     256,
+     256
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "8a71879f0042aa2ae2bc56c796db0cee026e78167fd760eec3a00beb6782f64d",
+   "output": {
+    "file_sha256": "933d626007a752dbfde9e3a1486450999eb1a45535ce5d2a50253fbc85e517c1",
+    "content_sha256": "7d4241fd4107892b71207110077df401e6199d5440688bfee7f23f1790f53815",
+    "bytes": 9572,
+    "width": 256,
+    "height": 256
+   },
+   "budget": {
+    "recipe_bytes": 162,
+    "pixels": 65536
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "8a71879f0042aa2ae2bc56c796db0cee026e78167fd760eec3a00beb6782f64d",
+     "content_sha256": "4ae2a5605d4cb2954205ae260333ed180aab103b089448c2119f4dbedc8da178",
+     "generator": {
+      "name": "math.modmult",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "modmult-k34.png": {
+   "kind": "image",
+   "generator": {
+    "name": "math.modmult",
+    "version": "1",
+    "code_sha256": "b16616627432e5ac3f172fc91bd08de74e1e71fd84e103beaa14f458e8252305"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "math.modmult",
+    "seed": "m",
+    "params": {
+     "n": 300,
+     "k": 34.0,
+     "ramp": "seq",
+     "background": "ink",
+     "circle_ramp": "grey"
+    },
+    "palette": "sci",
+    "size": [
+     256,
+     256
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "9526abb71f8daec19275d53429e9d27b42f3b6b39d9c667f4c2481d089664825",
+   "output": {
+    "file_sha256": "c1618d558a0de12413823cca94562d2910135d9c6cb1ccd0b5e9c94a318206b4",
+    "content_sha256": "859e1e8e114385f84c56e2591009f077b496d354e15ca30e52d5f814b4706a07",
+    "bytes": 20945,
+    "width": 256,
+    "height": 256
+   },
+   "budget": {
+    "recipe_bytes": 163,
+    "pixels": 65536
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "9526abb71f8daec19275d53429e9d27b42f3b6b39d9c667f4c2481d089664825",
+     "content_sha256": "f8ee62e9fd68d22105425f2b3798b8045e25640feee54e845a75d54d3a2462f2",
+     "generator": {
+      "name": "math.modmult",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "music-life-night.mid": {
+   "kind": "midi",
+   "generator": {
+    "name": "music.piece",
+    "version": "1",
+    "code_sha256": "0083470f4aa176e79640cf53778469f66f96b7f54ad0de3a3c5aa87b03805337"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "music.piece",
+    "seed": "glider-demo",
+    "params": {
+     "title": "Glider (Night)",
+     "text": "Conway glider, B3/S23",
+     "copyright": "",
+     "source": "conway_glider",
+     "args": {},
+     "mode": "aeolian",
+     "tonic": 57,
+     "bpm": 80,
+     "meter": "4/4",
+     "bars": 16,
+     "ensemble": "mist",
+     "density": "flow",
+     "lush": true,
+     "perc": "",
+     "kind": "night"
+    }
+   },
+   "recipe_sha256": "a2dd1f74356609d7fe291241131fde22d53b50d4b6fee86d2b04d9149dc420b2",
+   "output": {
+    "file_sha256": "8b2187c382da20137b2d1443b8268f52bc578f231c242a451b8eb1d01a3e87dc",
+    "content_sha256": "8b2187c382da20137b2d1443b8268f52bc578f231c242a451b8eb1d01a3e87dc",
+    "bytes": 2507
+   },
+   "budget": {
+    "recipe_bytes": 298
+   }
+  },
+  "music-lsystem.mid": {
+   "kind": "midi",
+   "generator": {
+    "name": "music.piece",
+    "version": "1",
+    "code_sha256": "0083470f4aa176e79640cf53778469f66f96b7f54ad0de3a3c5aa87b03805337"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "music.piece",
+    "seed": "lsystem-demo",
+    "params": {
+     "title": "Lindenmayer",
+     "text": "L-system growth as melody",
+     "copyright": "",
+     "source": "lsystem",
+     "args": {},
+     "mode": "mixolydian",
+     "tonic": 60,
+     "bpm": 104,
+     "meter": "4/4",
+     "bars": 16,
+     "ensemble": "meadow",
+     "density": "flow",
+     "lush": true,
+     "perc": "hand",
+     "kind": "day"
+    }
+   },
+   "recipe_sha256": "ccb36768b1f9fec9783ecd374905d2b978fb5a742f1788a490c08510dd823667",
+   "output": {
+    "file_sha256": "2a04b4319b113e487d5ce89ac1f7b4f5a9df034c5ba1c4807ee7ccb091a634c4",
+    "content_sha256": "2a04b4319b113e487d5ce89ac1f7b4f5a9df034c5ba1c4807ee7ccb091a634c4",
+    "bytes": 3899
+   },
+   "budget": {
+    "recipe_bytes": 302
+   }
+  },
+  "music-packard.mid": {
+   "kind": "midi",
+   "generator": {
+    "name": "music.piece",
+    "version": "1",
+    "code_sha256": "0083470f4aa176e79640cf53778469f66f96b7f54ad0de3a3c5aa87b03805337"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "music.piece",
+    "seed": "packard-demo",
+    "params": {
+     "title": "Packard Snowflake",
+     "text": "Hexagonal automaton: freeze with exactly one frozen neighbour",
+     "copyright": "",
+     "source": "packard",
+     "args": {},
+     "mode": "lydian",
+     "tonic": 64,
+     "bpm": 84,
+     "meter": "3/4",
+     "bars": 16,
+     "ensemble": "snow",
+     "density": "flow",
+     "lush": true,
+     "perc": "",
+     "kind": "day"
+    }
+   },
+   "recipe_sha256": "9c736ab1402b37e4b97ebc916f39557093b841c015fedd7365885789d48b48f9",
+   "output": {
+    "file_sha256": "937489a9011981c079b374a5d0d433b3a045f189cc42c2f636377b558578052c",
+    "content_sha256": "937489a9011981c079b374a5d0d433b3a045f189cc42c2f636377b558578052c",
+    "bytes": 2288
+   },
+   "budget": {
+    "recipe_bytes": 333
+   }
+  },
+  "music-pisano.mid": {
+   "kind": "midi",
+   "generator": {
+    "name": "music.piece",
+    "version": "1",
+    "code_sha256": "0083470f4aa176e79640cf53778469f66f96b7f54ad0de3a3c5aa87b03805337"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "music.piece",
+    "seed": "pisano-demo",
+    "params": {
+     "title": "Pisano Period",
+     "text": "Fibonacci mod 7: period 16",
+     "copyright": "",
+     "source": "pisano",
+     "args": {},
+     "mode": "dorian",
+     "tonic": 62,
+     "bpm": 96,
+     "meter": "4/4",
+     "bars": 16,
+     "ensemble": "forest",
+     "density": "flow",
+     "lush": true,
+     "perc": "",
+     "kind": "day"
+    }
+   },
+   "recipe_sha256": "a22120588a5eb2ad196d1c2276a2cdb8321d055941dfe312fb419148f2afd0ab",
+   "output": {
+    "file_sha256": "22a48b29da0ac6d61fb8783505d6de7206db0411383468937387daf14d22b04e",
+    "content_sha256": "22a48b29da0ac6d61fb8783505d6de7206db0411383468937387daf14d22b04e",
+    "bytes": 3039
+   },
+   "budget": {
+    "recipe_bytes": 294
+   }
+  },
+  "plate-temperature.png": {
+   "kind": "image",
+   "generator": {
+    "name": "data.field",
+    "version": "1",
+    "code_sha256": "c37fa4341d5a9b37fe7e90974262590e3f598a69baa8609acb76c24428ee9bea"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "data.field",
+    "seed": "plate",
+    "params": {
+     "mode": "value",
+     "ramp": "seq",
+     "dither": "none",
+     "range": null,
+     "contours": 0,
+     "interval": 0.1,
+     "contour_ramp": "ink",
+     "azimuth": 315.0,
+     "altitude": 45.0,
+     "exaggeration": 1.0,
+     "cell": 1.0,
+     "relief": 2.0,
+     "nodata_ramp": "",
+     "resample": "bilinear"
+    },
+    "input": {
+     "path": "data/plate-129.npy",
+     "format": "npy",
+     "sha256": "30adbfd312d99e806c18e3d9c6cf78e77b389e8bb07d137cb217dea5169cc855"
+    },
+    "palette": "sci",
+    "size": [
+     256,
+     256
+    ],
+    "scale": 1
+   },
+   "recipe_sha256": "81af4c661d301e836bf7aaead246a2ca40298af41fa627c0c62855f14123c543",
+   "output": {
+    "file_sha256": "394f1555f61a9ec34f2747048947b9c75b6aea40d187bff034fe1cd90ac07091",
+    "content_sha256": "c81914df3888b57f73cac3b6224ce9875cd18b3653ff815e1265e5646261d39c",
+    "bytes": 2858,
+    "width": 256,
+    "height": 256
+   },
+   "budget": {
+    "recipe_bytes": 444,
+    "pixels": 65536,
+    "input_bytes": 133256
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "inputs": [
+    {
+     "path": "data/plate-129.npy",
+     "format": "npy",
+     "sha256": "30adbfd312d99e806c18e3d9c6cf78e77b389e8bb07d137cb217dea5169cc855",
+     "bytes": 133256,
+     "shape": [
+      129,
+      129
+     ],
+     "missing": 0,
+     "min": 0.0,
+     "max": 1.0
+    }
+   ],
+   "history": [
+    {
+     "recipe_sha256": "81af4c661d301e836bf7aaead246a2ca40298af41fa627c0c62855f14123c543",
+     "content_sha256": "1f395a8235049f8b9c8cbf3b9b5a81c86a679b46748989c57973427f879b9ee5",
+     "generator": {
+      "name": "data.field",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "sky-dusk.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.sky.gradient",
+    "version": "1",
+    "code_sha256": "b3c6b6f214a705e32e2b1441f226b06d37301057d4795fa638baf74b35ffe414"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.sky.gradient",
+    "seed": "evening",
+    "params": {
+     "ramps": [
+      "dusk",
+      "ember"
+     ],
+     "reverse": false,
+     "gamma": 1.0,
+     "dither": "floyd",
+     "star_gap": 6.0,
+     "star_band": 0.45
+    },
+    "palette": "mf32",
+    "size": [
+     96,
+     48
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "fa188f371c92e194801ca6362e0b7ac3185563a9cdfa41faa2ce0421f3557181",
+   "output": {
+    "file_sha256": "95ce6eacc89dc5addcb42ccf53515cea80b1dfc35ce76328aa5db40d3380f021",
+    "content_sha256": "a85a0b29ef593e97fcac934ec77a7bf8e71c6775ac9c33dd6eda5c675336ede0",
+    "bytes": 683,
+    "width": 192,
+    "height": 96
+   },
+   "budget": {
+    "recipe_bytes": 206,
+    "pixels": 4608
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "fa188f371c92e194801ca6362e0b7ac3185563a9cdfa41faa2ce0421f3557181",
+     "content_sha256": "48eda60336bd57fecd49cd3634c81cd6815a4cfdbf0246fb41e833fab1b908c4",
+     "generator": {
+      "name": "forge.sky.gradient",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "sky-mono.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.sky.gradient",
+    "version": "1",
+    "code_sha256": "b3c6b6f214a705e32e2b1441f226b06d37301057d4795fa638baf74b35ffe414"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.sky.gradient",
+    "seed": "pocket",
+    "params": {
+     "ramps": [
+      "all"
+     ],
+     "reverse": false,
+     "gamma": 1.0,
+     "dither": "bayer",
+     "star_gap": 0.0,
+     "star_band": 0.45
+    },
+    "palette": "mono4",
+    "size": [
+     96,
+     48
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "e4f9dcf3a68caf4a06e0d39f691e8887feae5eb2e6e5bb51cba13cf0630a1e14",
+   "output": {
+    "file_sha256": "1984a1d07b4b6b36795266612456d25316fbfb5e8a29f30648edca28cce365ef",
+    "content_sha256": "62e97ecb697b5c51babce52e1c61251a80c3216c38130a241832148a79b6c2ff",
+    "bytes": 343,
+    "width": 192,
+    "height": 96
+   },
+   "budget": {
+    "recipe_bytes": 197,
+    "pixels": 4608
+   },
+   "palette": [
+    "#1a260d",
+    "#4d5b37",
+    "#88956e",
+    "#cad3b2"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "e4f9dcf3a68caf4a06e0d39f691e8887feae5eb2e6e5bb51cba13cf0630a1e14",
+     "content_sha256": "06776aea68720eed56397d217fea9963d73a01f45675b2a2666c3053ae17eb07",
+     "generator": {
+      "name": "forge.sky.gradient",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "stone-grid.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.tile.stone",
+    "version": "1",
+    "code_sha256": "a8668e6b64c2525c60185dc6db70e10b25bc07dec5b53a08ee4fe0723db72fb2"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.tile.stone",
+    "seed": "grid-01",
+    "params": {
+     "cells": 4,
+     "jitter": 0.0,
+     "mortar": 0.08,
+     "cracks": 0.4,
+     "ramp": "sun",
+     "joint_ramp": "ink"
+    },
+    "palette": "mf32",
+    "size": [
+     32,
+     32
+    ],
+    "scale": 4
+   },
+   "recipe_sha256": "0abd06512dae78c3f8f0432e3de8cb65d0b6888086e7211ea6383c31cceedf3d",
+   "output": {
+    "file_sha256": "25090c64561c3b62846c43c32c1070f25997ac51952abb757fa2813c9569a0fb",
+    "content_sha256": "36416029fddabe4c930ae89e706d3cbccad298ac2f33c5494a12d25835a47b1f",
+    "bytes": 786,
+    "width": 128,
+    "height": 128
+   },
+   "budget": {
+    "recipe_bytes": 184,
+    "pixels": 1024
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "0abd06512dae78c3f8f0432e3de8cb65d0b6888086e7211ea6383c31cceedf3d",
+     "content_sha256": "b5508df7a44dc932122588e2c844f1f16d78782490252bf24d4264f33801fe2c",
+     "generator": {
+      "name": "forge.tile.stone",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "stone-slabs.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.tile.stone",
+    "version": "1",
+    "code_sha256": "a8668e6b64c2525c60185dc6db70e10b25bc07dec5b53a08ee4fe0723db72fb2"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.tile.stone",
+    "seed": "slabs-01",
+    "params": {
+     "cells": 4,
+     "jitter": 0.9,
+     "mortar": 0.1,
+     "cracks": 0.4,
+     "ramp": "stone",
+     "joint_ramp": "ink"
+    },
+    "palette": "mf32",
+    "size": [
+     32,
+     32
+    ],
+    "scale": 4
+   },
+   "recipe_sha256": "3af4f2c966657304c61b62800c558ee6b53bdd136c0e89b5c2251d864e4c8e95",
+   "output": {
+    "file_sha256": "7f009b2da52a7337b453947ffd46de3192030b2ec222702c5fa2b46e7f3234d3",
+    "content_sha256": "707aceed4ca64c4920960ff6cdb1aa9d474b9ef20387bd77f7a6b795750d8181",
+    "bytes": 845,
+    "width": 128,
+    "height": 128
+   },
+   "budget": {
+    "recipe_bytes": 186,
+    "pixels": 1024
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "3af4f2c966657304c61b62800c558ee6b53bdd136c0e89b5c2251d864e4c8e95",
+     "content_sha256": "660a679a2540e7061651a237641ead7b481a7f1c967f21679b0159e021301ef8",
+     "generator": {
+      "name": "forge.tile.stone",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "terrain-0-0.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.tile.terrain",
+    "version": "1",
+    "code_sha256": "a8668e6b64c2525c60185dc6db70e10b25bc07dec5b53a08ee4fe0723db72fb2"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.tile.terrain",
+    "seed": "isle",
+    "params": {
+     "world_x": 0,
+     "world_y": 0,
+     "scale": 24.0,
+     "water": 0.4,
+     "sand": 0.04,
+     "forest": 0.62,
+     "rock": 0.78
+    },
+    "palette": "mf32",
+    "size": [
+     64,
+     64
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "4bad1830c8df8f290ebfeab9425f7b23e5b1370b06017d6cc13da942d5a9396c",
+   "output": {
+    "file_sha256": "baa63bd6f1b3eada7a069e91c93b6ffbfe9f8f4dac0283a575ef6c50ac0c003b",
+    "content_sha256": "d933e7714dfa2cfea462340e5b4c1631dd085691a45c8d4d2bcce5a0202d3ae7",
+    "bytes": 1570,
+    "width": 128,
+    "height": 128
+   },
+   "budget": {
+    "recipe_bytes": 188,
+    "pixels": 4096
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "4bad1830c8df8f290ebfeab9425f7b23e5b1370b06017d6cc13da942d5a9396c",
+     "content_sha256": "807717551cd0562a147094bd3bcf6d7e9a5155a606dfbbedb6d62d56ccd6886e",
+     "generator": {
+      "name": "forge.tile.terrain",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "terrain-1-0.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.tile.terrain",
+    "version": "1",
+    "code_sha256": "a8668e6b64c2525c60185dc6db70e10b25bc07dec5b53a08ee4fe0723db72fb2"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.tile.terrain",
+    "seed": "isle",
+    "params": {
+     "world_x": 1,
+     "world_y": 0,
+     "scale": 24.0,
+     "water": 0.4,
+     "sand": 0.04,
+     "forest": 0.62,
+     "rock": 0.78
+    },
+    "palette": "mf32",
+    "size": [
+     64,
+     64
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "2e457eb8a45b9ecf1b5a4026ff799744bf97518315b6687322d5d9079fe760bc",
+   "output": {
+    "file_sha256": "30571689a0f01cb99bb78f4aa44db5b6eca81874e1ce120da445d75b63bb1ac3",
+    "content_sha256": "2ca6ce541718676d96aa582741efa283a425816cf9bad24e945eaeb2922b18d4",
+    "bytes": 1579,
+    "width": 128,
+    "height": 128
+   },
+   "budget": {
+    "recipe_bytes": 188,
+    "pixels": 4096
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "2e457eb8a45b9ecf1b5a4026ff799744bf97518315b6687322d5d9079fe760bc",
+     "content_sha256": "8e71b4cfa234be0750bbfd8bb87a831e366797c86631deded20e0d591f30c4fe",
+     "generator": {
+      "name": "forge.tile.terrain",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "tree-bush.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.flora.tree",
+    "version": "1",
+    "code_sha256": "d2d7f0cba5b686bf68adb9f37a832fba05c068490fb5834192587b765907d9bb"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.flora.tree",
+    "seed": "oak-3",
+    "params": {
+     "preset": "bush",
+     "iterations": 5,
+     "angle": 22.0,
+     "sway": 8.0,
+     "leaf_size": 4.0,
+     "foliage": 0.8,
+     "wood_ramp": "stone",
+     "leaf_ramp": "moss"
+    },
+    "palette": "mf32",
+    "size": [
+     48,
+     48
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "74635d45fb8e37790aa21f99dc50bf6c2255fc0e83a8a228163cc919a406fedf",
+   "output": {
+    "file_sha256": "906d00f5741d2dab8b124d9679d168137e420d29580d326da698726935888ecd",
+    "content_sha256": "db5daae69b9012c6cf30a8141160f90e51241d59908e3da546e7d92c671d90b7",
+    "bytes": 664,
+    "width": 144,
+    "height": 144
+   },
+   "budget": {
+    "recipe_bytes": 224,
+    "pixels": 2304
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "74635d45fb8e37790aa21f99dc50bf6c2255fc0e83a8a228163cc919a406fedf",
+     "content_sha256": "00ed2a7724dcaa1644fc7b3b78f08caaf574df2bb86b552076954fa6bab6daaa",
+     "generator": {
+      "name": "forge.flora.tree",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "tree-fern.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.flora.tree",
+    "version": "1",
+    "code_sha256": "d2d7f0cba5b686bf68adb9f37a832fba05c068490fb5834192587b765907d9bb"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.flora.tree",
+    "seed": "fern-1",
+    "params": {
+     "preset": "fern",
+     "iterations": 4,
+     "angle": 25.0,
+     "sway": 8.0,
+     "leaf_size": 1.5,
+     "foliage": 0.8,
+     "wood_ramp": "stone",
+     "leaf_ramp": "moss"
+    },
+    "palette": "mf32",
+    "size": [
+     48,
+     48
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "e1ad4a6bc7bf1a7a8b5c41f4a1716b2beb07037e3e76315423d705839277338a",
+   "output": {
+    "file_sha256": "df3c54db520b1d46f090deff7367a148ce3fc8a8369acfb3aebd9dcff2f5a332",
+    "content_sha256": "5f8c21815e90f2637340bfa7f390262e57a728f35299de7fc02d32aa13dfc87c",
+    "bytes": 744,
+    "width": 144,
+    "height": 144
+   },
+   "budget": {
+    "recipe_bytes": 225,
+    "pixels": 2304
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "e1ad4a6bc7bf1a7a8b5c41f4a1716b2beb07037e3e76315423d705839277338a",
+     "content_sha256": "35490653fac9401fd66d076cf89e279b2dde71b51f014e25025bcbe7d72ce138",
+     "generator": {
+      "name": "forge.flora.tree",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "tree-weeping.png": {
+   "kind": "image",
+   "generator": {
+    "name": "forge.flora.tree",
+    "version": "1",
+    "code_sha256": "d2d7f0cba5b686bf68adb9f37a832fba05c068490fb5834192587b765907d9bb"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "forge.flora.tree",
+    "seed": "willow-4",
+    "params": {
+     "preset": "weeping",
+     "iterations": 4,
+     "angle": 24.0,
+     "sway": 8.0,
+     "leaf_size": 3.5,
+     "foliage": 0.8,
+     "wood_ramp": "stone",
+     "leaf_ramp": "moss"
+    },
+    "palette": "mf32",
+    "size": [
+     48,
+     48
+    ],
+    "scale": 3
+   },
+   "recipe_sha256": "e1754baa975ba763d4bc6535514628deb74a7827aaf64aaa0843d73b87d00ecf",
+   "output": {
+    "file_sha256": "debbf3724d8001ab3fb44e34ca38aa0cacd50ce3807047ef7f6d8ff69b229b1e",
+    "content_sha256": "6cb1f5a3537222066ece2571aa913b52fa11f7fc524911a25ee2ed948b475aef",
+    "bytes": 802,
+    "width": 144,
+    "height": 144
+   },
+   "budget": {
+    "recipe_bytes": 230,
+    "pixels": 2304
+   },
+   "palette": [
+    "#120f1d",
+    "#362b26",
+    "#605249",
+    "#8c7d72",
+    "#b8ab9f",
+    "#e6dcd1",
+    "#023914",
+    "#30632b",
+    "#638f49",
+    "#9bbb73",
+    "#d5e7a9",
+    "#062f52",
+    "#195a84",
+    "#3a89b3",
+    "#69badd",
+    "#a6eaff",
+    "#5a0613",
+    "#932c25",
+    "#c9593d",
+    "#f78e64",
+    "#ffc89b",
+    "#3b2d00",
+    "#6d5100",
+    "#a37800",
+    "#d8a44c",
+    "#ffd395",
+    "#2f2550",
+    "#5c4982",
+    "#8e70b0",
+    "#c29dd9",
+    "#f4cffe",
+    "#f7f1e7"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "e1754baa975ba763d4bc6535514628deb74a7827aaf64aaa0843d73b87d00ecf",
+     "content_sha256": "dce09093ecc2da61058462a4b1b8f694e53bfccf87ecc239b7423ebc0511d1aa",
+     "generator": {
+      "name": "forge.flora.tree",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "ulam-primes.png": {
+   "kind": "image",
+   "generator": {
+    "name": "math.ulam",
+    "version": "1",
+    "code_sha256": "b16616627432e5ac3f172fc91bd08de74e1e71fd84e103beaa14f458e8252305"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "math.ulam",
+    "seed": "u",
+    "params": {
+     "mode": "primes",
+     "modulus": 6,
+     "ramp": "seq",
+     "background": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     201,
+     201
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "10b5cd707a3f4ca5bd4c51db1109577d25a961ae951894739ace231a63339cb7",
+   "output": {
+    "file_sha256": "30cf1d7ffa636a18fda5eee6d950c2b424724bb07ec30f04997000e166a72031",
+    "content_sha256": "f58c53de6a0c67516088f0832e970fa212ec024f99767efe8926be820c63d55b",
+    "bytes": 4684,
+    "width": 402,
+    "height": 402
+   },
+   "budget": {
+    "recipe_bytes": 150,
+    "pixels": 40401
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "10b5cd707a3f4ca5bd4c51db1109577d25a961ae951894739ace231a63339cb7",
+     "content_sha256": "aca214fd9b5319231f96f95e7404f7a16703751c6b292e282bf788b391c94fe6",
+     "generator": {
+      "name": "math.ulam",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "wave-double-slit.gif": {
+   "kind": "animation",
+   "generator": {
+    "name": "anim.wave",
+    "version": "1",
+    "code_sha256": "442fa31533a33e4351f0fb14b17c3426e40a3f2b64cdc4f785c6c58362c142ba"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "anim.wave",
+    "seed": "slit",
+    "params": {
+     "scene": "double-slit",
+     "speed": 0.5,
+     "period": 10.0,
+     "separation": 18.0,
+     "opening": 4.0,
+     "sponge": 10,
+     "contrast": 1.5,
+     "frames": 80,
+     "every": 4,
+     "delay": 60,
+     "ramp": "div",
+     "wall_ramp": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     160,
+     96
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "8d6ecf761d318e3d0f62d5c4c7943bf174a23b29e9d892a0aeeffde0c09df2f6",
+   "output": {
+    "file_sha256": "86c16aa1de7553c54def9fc7b343de6a7121197836e9618058402c7d58da77e5",
+    "content_sha256": "ad20df872623fead78721f2280964fca58c5ddb927361cd6fd75747eaa2fe930",
+    "bytes": 468022,
+    "width": 320,
+    "height": 192,
+    "frames": 80,
+    "duration_ms": 4800
+   },
+   "budget": {
+    "recipe_bytes": 263,
+    "pixels": 1228800
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "8d6ecf761d318e3d0f62d5c4c7943bf174a23b29e9d892a0aeeffde0c09df2f6",
+     "content_sha256": "bb5676eea129f2ab6729267f43a23622ac0366c3813da4bc2429ef9e25508896",
+     "generator": {
+      "name": "anim.wave",
+      "version": "1"
+     }
+    }
+   ]
+  },
+  "wave-two-sources.gif": {
+   "kind": "animation",
+   "generator": {
+    "name": "anim.wave",
+    "version": "1",
+    "code_sha256": "442fa31533a33e4351f0fb14b17c3426e40a3f2b64cdc4f785c6c58362c142ba"
+   },
+   "tool": {
+    "name": "exactfig",
+    "version": "0.2.0"
+   },
+   "recipe": {
+    "generator": "anim.wave",
+    "seed": "two",
+    "params": {
+     "scene": "two-sources",
+     "speed": 0.5,
+     "period": 9.0,
+     "separation": 20.0,
+     "opening": 4.0,
+     "sponge": 10,
+     "contrast": 4.0,
+     "frames": 60,
+     "every": 4,
+     "delay": 60,
+     "ramp": "div",
+     "wall_ramp": "ink"
+    },
+    "palette": "sci",
+    "size": [
+     128,
+     96
+    ],
+    "scale": 2
+   },
+   "recipe_sha256": "2d4645ec6b04ca69163cb49062d33fff481cf12f50c29aed18e12c114563c59b",
+   "output": {
+    "file_sha256": "5365958b64eda90909176644355ac9d678e1e672898a5dab8701f85386249590",
+    "content_sha256": "8b90b7154c970eaecb81a4280528f6ac1ba98585d29162597fcef8a876ac800e",
+    "bytes": 431431,
+    "width": 256,
+    "height": 192,
+    "frames": 60,
+    "duration_ms": 3600
+   },
+   "budget": {
+    "recipe_bytes": 261,
+    "pixels": 737280
+   },
+   "palette": [
+    "#1a084a",
+    "#14225f",
+    "#0a3b69",
+    "#13526f",
+    "#1a677a",
+    "#217e83",
+    "#279589",
+    "#44ab88",
+    "#74bd85",
+    "#a1ce84",
+    "#cedc87",
+    "#f9ea92",
+    "#124c8e",
+    "#3d6ba4",
+    "#678ab6",
+    "#91a9c7",
+    "#bcc8d8",
+    "#e8e8e8",
+    "#d7c1bd",
+    "#c59b93",
+    "#b2756b",
+    "#9c5045",
+    "#832b20",
+    "#0b0b0b",
+    "#262626",
+    "#434343",
+    "#636363",
+    "#868686",
+    "#a9a9a9",
+    "#cecece",
+    "#f5f5f5",
+    "#060606",
+    "#fdfdfd",
+    "#d84497",
+    "#d88aa2",
+    "#dc8c7f",
+    "#d39562",
+    "#bda257",
+    "#9cae65",
+    "#75b683",
+    "#52b9a7",
+    "#4ab6c7",
+    "#67addd",
+    "#8ca2e4",
+    "#ae96da",
+    "#c88ec3"
+   ],
+   "history": [
+    {
+     "recipe_sha256": "2d4645ec6b04ca69163cb49062d33fff481cf12f50c29aed18e12c114563c59b",
+     "content_sha256": "e3cfb469ebc10370dadcd69614ea0afbd06313a13f5a96e5df1cc4c3b47eeb61",
+     "generator": {
+      "name": "anim.wave",
+      "version": "1"
+     }
+    }
+   ]
+  }
+ },
+ "manifest_sha256": "f7ebbd9e20cd5982a56d5d1ee97af96e6c69dafcc2ffcfc4cb5560c508f6713c"
+}

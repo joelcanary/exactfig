@@ -1,0 +1,95 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "exactfig provenance manifest, format 1",
+ "description": "Every asset, the exact recipe that produced it, the generator and the hashes needed to re-run and compare it. See docs/MANIFEST.md.",
+ "type": "object",
+ "required": ["format", "assets", "manifest_sha256"],
+ "additionalProperties": false,
+ "properties": {
+  "format": {"const": "exactfig.manifest/1"},
+  "manifest_sha256": {"$ref": "#/$defs/sha256", "description": "SHA-256 of the canonical JSON of `assets`"},
+  "assets": {
+   "type": "object",
+   "description": "Keyed by the asset path, relative to the manifest folder, with forward slashes.",
+   "propertyNames": {"pattern": "^(?!/)(?!.*\\.\\./)[^\\\\]+$"},
+   "additionalProperties": {"$ref": "#/$defs/asset"}
+  }
+ },
+ "$defs": {
+  "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+  "hex": {"type": "string", "pattern": "^#[0-9a-f]{6}$"},
+  "asset": {
+   "type": "object",
+   "required": ["kind", "generator", "tool", "recipe", "recipe_sha256", "output", "budget"],
+   "additionalProperties": false,
+   "properties": {
+    "kind": {"enum": ["image", "animation", "midi"]},
+    "generator": {
+     "type": "object",
+     "required": ["name", "version", "code_sha256"],
+     "additionalProperties": false,
+     "properties": {
+      "name": {"type": "string"},
+      "version": {"type": "string"},
+      "code_sha256": {"$ref": "#/$defs/sha256", "description": "SHA-256 of the generator's source files (LF line endings)"}
+     }
+    },
+    "tool": {
+     "type": "object",
+     "required": ["name", "version"],
+     "properties": {"name": {"const": "exactfig"}, "version": {"type": "string"}}
+    },
+    "recipe": {
+     "type": "object",
+     "description": "The recipe in normal form: every parameter present, defaults filled in.",
+     "required": ["generator", "seed", "params"],
+     "additionalProperties": false,
+     "properties": {
+      "generator": {"type": "string"},
+      "seed": {"type": ["string", "integer"]},
+      "params": {"type": "object"},
+      "palette": {"oneOf": [{"type": "string"}, {"type": "object", "required": ["colors"],
+                  "properties": {"name": {"type": "string"}, "colors": {"type": "array", "items": {"$ref": "#/$defs/hex"}, "minItems": 1, "maxItems": 256},
+                                 "ramps": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "integer", "minimum": 0}}}}}]},
+      "size": {"type": "array", "items": {"type": "integer", "minimum": 1}, "minItems": 2, "maxItems": 2},
+      "scale": {"type": "integer", "minimum": 1, "maximum": 16},
+      "layers": {"type": "array", "minItems": 1, "maxItems": 16, "description": "compose: the layer recipes, bottom first",
+                 "items": {"type": "object", "required": ["generator", "seed", "params", "blend"],
+                           "properties": {"generator": {"type": "string"}, "blend": {"enum": ["over", "under", "mask"]}}}},
+      "input": {"type": "object", "description": "Data file read by the generator, pinned by its SHA-256.",
+                "required": ["path", "format", "sha256"], "additionalProperties": false,
+                "properties": {"path": {"type": "string"}, "format": {"enum": ["csv", "pgm", "npy", "json", "png", "ppm"]},
+                               "sha256": {"$ref": "#/$defs/sha256"}}}
+     }
+    },
+    "recipe_sha256": {"$ref": "#/$defs/sha256", "description": "SHA-256 of the canonical JSON of `recipe`"},
+    "output": {
+     "type": "object",
+     "required": ["file_sha256", "content_sha256", "bytes"],
+     "additionalProperties": false,
+     "properties": {
+      "file_sha256": {"$ref": "#/$defs/sha256", "description": "SHA-256 of the file bytes (informative for PNG)"},
+      "content_sha256": {"$ref": "#/$defs/sha256", "description": "PNG: canonical RGBA hash; MIDI: same as file_sha256"},
+      "bytes": {"type": "integer", "minimum": 0},
+      "width": {"type": "integer", "minimum": 1},
+      "height": {"type": "integer", "minimum": 1},
+      "frames": {"type": "integer", "minimum": 1, "description": "animations"},
+      "duration_ms": {"type": "integer", "minimum": 0, "description": "animations: sum of the frame delays"}
+     }
+    },
+    "palette": {"type": "array", "items": {"$ref": "#/$defs/hex"}, "description": "Resolved palette of an image"},
+    "history": {"type": "array", "maxItems": 20, "description": "Informative: what the file was before each edit, newest first.",
+                "items": {"type": "object", "properties": {"recipe_sha256": {"$ref": "#/$defs/sha256"},
+                                                         "content_sha256": {"$ref": "#/$defs/sha256"}}}},
+    "inputs": {"type": "array", "description": "Informative: each input file, its size and what was read from it.",
+               "items": {"type": "object", "required": ["path", "format", "sha256", "bytes"],
+                         "properties": {"path": {"type": "string"}, "sha256": {"$ref": "#/$defs/sha256"}, "bytes": {"type": "integer"}}}},
+    "budget": {
+     "type": "object",
+     "description": "Informative: how much recipe produced how much output.",
+     "properties": {"recipe_bytes": {"type": "integer"}, "pixels": {"type": "integer"}, "input_bytes": {"type": "integer"}}
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,1 @@
+{"generator": "math.modmult", "seed": "m", "palette": "sci", "size": [256, 256], "params": {"n": 300, "k": 34.0, "circle_ramp": "grey"}, "output": "modmult-k34.png"}

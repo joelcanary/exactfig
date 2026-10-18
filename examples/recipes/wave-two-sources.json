@@ -1,0 +1,1 @@
+{"generator": "anim.wave", "seed": "two", "palette": "sci", "size": [128, 96], "scale": 2, "params": {"scene": "two-sources", "separation": 20.0, "period": 9.0, "frames": 60, "every": 4, "contrast": 4.0}, "output": "wave-two-sources.gif"}

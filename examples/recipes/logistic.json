@@ -1,0 +1,1 @@
+{"generator": "math.logistic", "seed": "l", "palette": "sci", "size": [480, 300], "params": {"r": [2.8, 4.0], "warmup": 800, "samples": 600}, "output": "logistic.png"}

@@ -1,0 +1,1 @@
+{"generator": "anim.wave", "seed": "slit", "palette": "sci", "size": [160, 96], "scale": 2, "params": {"scene": "double-slit", "separation": 18.0, "opening": 4.0, "period": 10.0, "frames": 80, "every": 4}, "output": "wave-double-slit.gif"}

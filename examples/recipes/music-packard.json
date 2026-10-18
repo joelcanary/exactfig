@@ -1,0 +1,1 @@
+{"generator": "music.piece", "seed": "packard-demo", "params": {"title": "Packard Snowflake", "text": "Hexagonal automaton: freeze with exactly one frozen neighbour", "source": "packard", "mode": "lydian", "tonic": 64, "bpm": 84, "meter": "3/4", "bars": 16, "ensemble": "snow"}, "output": "music-packard.mid"}

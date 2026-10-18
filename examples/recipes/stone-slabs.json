@@ -1,0 +1,1 @@
+{"generator": "forge.tile.stone", "seed": "slabs-01", "palette": "mf32", "size": [32, 32], "scale": 4, "params": {"cells": 4, "jitter": 0.9}, "output": "stone-slabs.png"}

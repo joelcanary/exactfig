@@ -1,0 +1,1 @@
+{"generator": "anim.life", "seed": "soup-1", "palette": "sci", "size": [96, 64], "scale": 3, "params": {"rule": "B37/S2378", "frames": 150, "age_step": 3}, "output": "life-b37s2378.gif"}

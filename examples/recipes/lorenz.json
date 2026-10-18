@@ -1,0 +1,1 @@
+{"generator": "anim.lorenz", "seed": "lorenz", "palette": "sci", "size": [128, 128], "scale": 2, "params": {"frames": 150}, "output": "lorenz.gif"}

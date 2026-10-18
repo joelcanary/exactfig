@@ -1,0 +1,1 @@
+{"generator": "math.modmult", "seed": "m", "palette": "sci", "size": [256, 256], "params": {"n": 200, "k": 2.0, "circle_ramp": "grey"}, "output": "modmult-cardioid.png"}

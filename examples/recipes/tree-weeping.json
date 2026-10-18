@@ -1,0 +1,1 @@
+{"generator": "forge.flora.tree", "seed": "willow-4", "palette": "mf32", "size": [48, 48], "scale": 3, "params": {"preset": "weeping", "iterations": 4, "leaf_size": 3.5, "leaf_ramp": "moss"}, "output": "tree-weeping.png"}

@@ -1,0 +1,1 @@
+{"generator": "math.fourier", "seed": "f", "palette": "sci", "size": [480, 300], "params": {"wave": "sawtooth", "orders": "2,5,20"}, "output": "fourier-sawtooth.png"}

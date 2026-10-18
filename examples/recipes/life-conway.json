@@ -1,0 +1,1 @@
+{"generator": "anim.life", "seed": "soup-1", "palette": "sci", "size": [96, 64], "scale": 3, "params": {"rule": "B3/S23", "frames": 150, "age_step": 3}, "output": "life-conway.gif"}

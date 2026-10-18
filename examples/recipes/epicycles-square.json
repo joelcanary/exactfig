@@ -1,0 +1,1 @@
+{"generator": "anim.epicycles", "seed": "e", "palette": "sci", "size": [192, 192], "scale": 2, "params": {"curve": "square", "terms": 40, "frames": 120}, "output": "epicycles-square.gif"}

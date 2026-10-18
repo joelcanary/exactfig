@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exactfig"
+version = "0.2.0"
+description = "Reproducible figures, animations and sonifications from data and published mathematics, verifiable bit for bit."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+keywords = ["reproducibility", "provenance", "scientific-visualization", "data-visualization", "delaunay", "interpolation",
+            "hillshade", "cellular-automata", "numerical-simulation", "animation", "gif", "apng", "sonification", "dithering"]
+authors = [{ name = "Joel Cruz Cabrera" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Multimedia :: Sound/Audio :: MIDI",
+]
+
+[project.urls]
+Homepage = "https://github.com/joelcanary/exactfig"
+Documentation = "https://github.com/joelcanary/exactfig#readme"
+Changelog = "https://github.com/joelcanary/exactfig/blob/master/CHANGELOG.md"
+
+[project.scripts]
+exactfig = "exactfig.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["exactfig*"]
+
+[tool.setuptools.package-data]
+"exactfig.provenance" = ["manifest.schema.json"]

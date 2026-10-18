@@ -1,0 +1,1 @@
+{"generator": "math.domain", "seed": "d", "palette": "sci", "size": [256, 256], "params": {"function": "z^3-1", "span": 3.0}, "output": "domain-roots.png"}

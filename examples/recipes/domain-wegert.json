@@ -1,0 +1,1 @@
+{"generator": "math.domain", "seed": "d", "palette": "sci", "size": [256, 256], "params": {"function": "(z^2-1)(z-2-i)^2/(z^2+2+2i)", "centre": [0.0, 0.0], "span": 6.0}, "output": "domain-wegert.png"}

@@ -1,0 +1,1 @@
+{"generator": "math.fourier", "seed": "f", "palette": "sci", "size": [480, 300], "params": {"wave": "square", "orders": "1,3,9,27"}, "output": "fourier-square.png"}
