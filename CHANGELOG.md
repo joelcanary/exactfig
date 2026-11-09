@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Licensed under the Apache License 2.0 (`LICENSE`), declared in `pyproject.toml` and `CITATION.cff`.
+- Continuous integration: the test suite and `exactfig selftest` on Linux, macOS and Windows, and the gallery verified
+  bit for bit on Linux.
+
 ## 0.2.0 (2026-10-18)
 
 First complete release under the name **exactfig**.

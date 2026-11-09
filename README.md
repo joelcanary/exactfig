@@ -455,4 +455,4 @@ Changes by version: [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing, security, licence
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Licence: to be decided by the owner before publishing.
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Licence: [Apache License 2.0](LICENSE).

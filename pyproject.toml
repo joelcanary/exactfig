@@ -8,6 +8,7 @@ version = "0.2.0"
 description = "Reproducible figures, animations and sonifications from data and published mathematics, verifiable bit for bit."
 readme = "README.md"
 requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
 dependencies = []
 keywords = ["reproducibility", "provenance", "scientific-visualization", "data-visualization", "delaunay", "interpolation",
             "hillshade", "cellular-automata", "numerical-simulation", "animation", "gif", "apng", "sonification", "dithering"]
@@ -16,6 +17,7 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Education",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",

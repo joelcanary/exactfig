@@ -444,4 +444,4 @@ versión: [CHANGELOG.md](CHANGELOG.md).
 
 ## Contribuir, seguridad, licencia
 
-Ver [CONTRIBUTING.md](CONTRIBUTING.md) y [SECURITY.md](SECURITY.md). Licencia: la decide el dueño antes de publicar.
+Ver [CONTRIBUTING.md](CONTRIBUTING.md) y [SECURITY.md](SECURITY.md). Licencia: [Apache License 2.0](LICENSE).
