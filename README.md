@@ -444,6 +444,20 @@ enforces it. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the layers, th
   Monthly 71, 1964.
 - G. Marsaglia, *Xorshift RNGs*, J. Stat. Softw. 8(14), 2003.
 - L. de Moura, S. Ullrich, *The Lean 4 theorem prover and programming language*, CADE 28, 2021.
+- J. E. Bresenham, *Algorithm for computer control of a digital plotter*, IBM Syst. J. 4(1), 1965. doi:10.1147/sj.41.0025.
+- A. J. Viterbi, *Error bounds for convolutional codes and an asymptotically optimum decoding algorithm*, IEEE Trans.
+  Inf. Theory 13(2), 1967. doi:10.1109/TIT.1967.1054010.
+- P. Heckbert, *Color image quantization for frame buffer display*, Comput. Graph. 16(3) (SIGGRAPH), 1982.
+  doi:10.1145/965145.801294.
+- S. P. Lloyd, *Least squares quantization in PCM*, IEEE Trans. Inf. Theory 28(2), 1982. doi:10.1109/TIT.1982.1056489.
+- P. Bak, C. Tang, K. Wiesenfeld, *Self-organized criticality: an explanation of the 1/f noise*, Phys. Rev. Lett. 59,
+  1987. doi:10.1103/PhysRevLett.59.381.
+- A. Chenciner, R. Montgomery, *A remarkable periodic solution of the three-body problem in the case of equal masses*,
+  Ann. of Math. 152, 2000. doi:10.2307/2661357. C. Simó, *Dynamical properties of the figure eight solution of the
+  three-body problem*, Contemp. Math. 292, 2002. doi:10.1090/conm/292/04926.
+- A. Klebanoff, *π in the Mandelbrot set*, Fractals 9(4), 2001. doi:10.1142/S0218348X01000828 — the published account
+  of D. Boll's 1991 observation, which Boll himself never published formally.
+- D. Tymoczko, *The geometry of musical chords*, Science 313, 2006. doi:10.1126/science.1126287.
 - Sun Microsystems, *fdlibm*, 1993. CompuServe, *Graphics Interchange Format 89a*, 1990. *APNG specification*, Mozilla.
   *Netpbm PGM format*. *NumPy NEP 1: a simple file format for NumPy arrays*.
 
