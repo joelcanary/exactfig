@@ -5,6 +5,9 @@
 - Licensed under the Apache License 2.0 (`LICENSE`), declared in `pyproject.toml` and `CITATION.cff`.
 - Continuous integration: the test suite and `exactfig selftest` on Linux, macOS and Windows, and the gallery verified
   bit for bit on Linux.
+- Tests: `cbrt` is checked against the exact cube root (within 1 ulp) instead of the platform's `math.cbrt`, which is
+  itself a few ulp off in glibc; the example PNG is compared by pixels, as `verify` does, since zlib builds compress
+  differently (Python 3.14 on Windows).
 
 ## 0.2.0 (2026-10-18)
 

@@ -4,6 +4,7 @@ import ast
 import math
 import os
 import unittest
+from fractions import Fraction
 
 from exactfig import fmath as F
 from exactfig.rng import Rng
@@ -74,9 +75,17 @@ class Accuracy(unittest.TestCase):
         self.sample("log", F.log, math.log, lambda r: (r.uniform(1.0, 10.0) * 10.0 ** r.randint(-300, 300),), 1.0)
         self.sample("log2", F.log2, math.log2, lambda r: (r.uniform(1.0, 10.0) * 10.0 ** r.randint(-300, 300),), 1.0)
 
-    @unittest.skipUnless(hasattr(math, "cbrt"), "math.cbrt needs Python 3.11")
-    def test_cbrt_within_two_ulps(self):
-        self.sample("cbrt", F.cbrt, math.cbrt, lambda r: (r.uniform(-1.0, 1.0) * 10.0 ** r.randint(-200, 200),), 2.0)
+    def test_cbrt_within_one_ulp_of_exact(self):
+        # Against the exact cube root, not math.cbrt: glibc's cbrt is itself a few ulp off, so comparing with it failed
+        # on Linux although fmath was right. Floats are dyadic rationals, so (y - u)^3 < x < (y + u)^3 is checked exactly.
+        r = Rng("fmath-cbrt")
+        for _ in range(self.N):
+            x = r.uniform(-1.0, 1.0) * 10.0 ** r.randint(-200, 200)
+            y = F.cbrt(abs(x))
+            u = Fraction(math.ulp(y))
+            self.assertLess((Fraction(y) - u) ** 3, Fraction(abs(x)), x)
+            self.assertLess(Fraction(abs(x)), (Fraction(y) + u) ** 3, x)
+            self.assertEqual(F.cbrt(-x), -F.cbrt(x))
 
     def test_pow_relative_error(self):
         r = Rng("fmath-pow")

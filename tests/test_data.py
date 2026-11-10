@@ -14,7 +14,7 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 sys.path.insert(0, ROOT)
 from exactfig import fmath as fm, provenance  # noqa: E402
 from exactfig.data import field as F, io, scatter as S  # noqa: E402
-from exactfig.pixel import palette as P  # noqa: E402
+from exactfig.pixel import palette as P, png  # noqa: E402
 from exactfig.render import normalize, render  # noqa: E402
 from exactfig.rng import Rng  # noqa: E402
 
@@ -267,7 +267,12 @@ class DataProvenance(Tmp):
         import make_data
         for p in make_data.make(self.dir):
             with open(p, "rb") as a, open(os.path.join(GALLERY, "data", os.path.basename(p)), "rb") as b:
-                self.assertEqual(a.read(), b.read(), os.path.basename(p))
+                new, old = a.read(), b.read()
+            if p.endswith(".png"):
+                # Pixels, as `verify` does: zlib builds compress differently (Python 3.14 on Windows ships zlib-ng).
+                self.assertEqual(png.decode(new), png.decode(old), os.path.basename(p))
+            else:
+                self.assertEqual(new, old, os.path.basename(p))
 
     def test_a_changed_input_byte_is_caught(self):
         shutil.copytree(os.path.join(GALLERY, "data"), os.path.join(self.dir, "data"))
