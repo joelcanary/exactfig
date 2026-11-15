@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 (2026-11-15)
 
 - **Mistakes end in a clear message, never a traceback.** One line `exactfig: what and why`, and exit codes 0 / 1 (verify
   found a difference) / 2 (input or environment refused) / 3 (internal error; `EXACTFIG_DEBUG=1` shows the traceback) /
