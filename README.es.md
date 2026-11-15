@@ -29,6 +29,7 @@ publicar un solo valor (`manifest_sha256`) fija el conjunto entero.
 - [Usarlo para investigar](#usarlo-para-investigar)
 - [Recetas: semillas, paletas, parámetros, edición](#recetas-semillas-paletas-parámetros-edición)
 - [Tus propios datos](#tus-propios-datos)
+- [Catálogos de patrones](#catálogos-de-patrones)
 - [Animaciones y vídeo](#animaciones-y-vídeo)
 - [Capas y edición](#capas-y-edición)
 - [Lean](#lean)
@@ -230,6 +231,31 @@ dispersas por interpolación lineal sobre Delaunay (`linear`) o por la muestra m
 casco convexo no tienen valor y quedan transparentes salvo que se dé `nodata_ramp`. Listas completas de parámetros:
 `python -m exactfig list`.
 
+## Catálogos de patrones
+
+`data.catalog` lee un catálogo de patrones de células (lo que lista un programa de búsqueda: todas las vidas quietas,
+osciladores u otros objetos de un autómata celular) y lo dibuja como mosaico **solo después de comprobarlo** contra lo
+que dice la receta:
+
+| Parámetro | La figura se rechaza salvo que |
+|---|---|
+| `check: "still"` + `rule` | todo patrón quede igual tras una generación de la regla (simulada en el plano infinito) |
+| `strict: true` | ningún patrón se parta en grupos de sus islas que sean quietos por separado (vidas quietas estrictas, no pseudo) |
+| `check: "oscillator"` + `period` | todo patrón vuelva a sí mismo tras exactamente `period` generaciones, y no antes |
+| `population` | todo patrón tenga exactamente ese número de células vivas |
+| `count` | el catálogo tenga exactamente ese número de patrones: el término de la secuencia que ilustra la figura |
+| `distinct` (activado por defecto) | no haya dos patrones iguales salvo giro o reflexión |
+
+El formato es un patrón por línea, con las filas separadas por espacios, `O` o `*` viva y `.` muerta, y opcionalmente
+`WxH:` delante (entonces se comprueba); `#` y `!` empiezan líneas de comentario. En la receta va `"format": "catalog"`
+dentro de `input`. Las reglas con B0 se rechazan para estas comprobaciones: con ellas cambia hasta el fondo vacío. El
+rechazo nombra el primer patrón que falla y por qué, así que un catálogo, una regla o un término equivocados nunca
+llegan a ser imagen.
+
+Ejemplo en la galería: [las 49 vidas quietas estrictas de 14 células de Move](gallery/still-lifes-a175001.png) (regla
+B368/S245), el término A175001(14) = 49 de la OEIS, con su receta en
+[`examples/recipes/still-lifes-a175001.json`](examples/recipes/still-lifes-a175001.json).
+
 ## Animaciones y vídeo
 
 | Generador | Qué calcula |
@@ -312,7 +338,7 @@ una. Cada entrada es un generador o una receta de la galería.
 | Ecuaciones en derivadas parciales | Laplace (solución exacta de la placa), ecuación de ondas por leapfrog (`anim.wave`), ecuación del calor sobre datos (`anim.diffuse`) | [placa](gallery/plate-temperature.png), [doble rendija](gallery/wave-double-slit.gif), [difusión](gallery/dem-diffusion.gif) |
 | Análisis numérico | libm portable (`fmath`, ≤ 1 ulp), predicados de Delaunay exactos, interpolación O(h²), RK4 de orden 4, estabilidad CFL impuesta | [Franke](gallery/franke-linear.png) |
 | Geometría computacional | triangulación de Delaunay (giros de Lawson), celdas de Voronoi, campos de distancia con signo, curvas de Bézier, Bresenham | [Voronoi](gallery/stone-slabs.png), [vecino](gallery/franke-nearest.png) |
-| Combinatoria y matemática discreta | autómatas celulares tipo Vida con cualquier regla B/S (`anim.life`), sistemas L; pilas de arena como sonido | [Vida](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [helecho](gallery/tree-fern.png) |
+| Combinatoria y matemática discreta | autómatas celulares tipo Vida con cualquier regla B/S (`anim.life`); catálogos de vidas quietas y osciladores comprobados antes de dibujarlos (`data.catalog`); sistemas L; pilas de arena como sonido | [Vida](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [vidas quietas](gallery/still-lifes-a175001.png), [helecho](gallery/tree-fern.png) |
 | Probabilidad y procesos estocásticos | muestras cuasialeatorias de Halton, muestreo de disco de Poisson, sopas aleatorias con semilla, superficies brownianas fraccionarias (fBm) | [terreno](gallery/terrain-0-0.png) |
 | Análisis de Fourier | sumas parciales y fenómeno de Gibbs (`math.fourier`); la transformada discreta de una curva cerrada dibujada como epiciclos (`anim.epicycles`) | [Gibbs](gallery/fourier-square.png), [epiciclos](gallery/epicycles-heart.gif) |
 | Señales e información | tramado ordenado (Bayer) y por difusión de error, cuantización a paleta, LZW (GIF), sonificación | [cielo](gallery/sky-dusk.png), [mono](gallery/sky-mono.png) |

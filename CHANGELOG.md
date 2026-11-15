@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **`data.catalog`**: a catalogue of cell patterns (one per line, `WxH: rows`) drawn as a mosaic only after it is checked
+  against the recipe: still lifes or oscillators of an exact period under a Life-like rule (simulated on the infinite
+  plane), strict rather than pseudo still lifes, the population of every pattern, the number of patterns (the sequence
+  term) and no repeats up to symmetry. A refusal names the first pattern that fails. New input format `catalog`.
+  Gallery: the 49 strict still lifes of 14 cells under Move (OEIS A175001(14) = 49). Tested against the classical still
+  lifes and oscillators of Conway's Life and the counts of OEIS A019473 for n ≤ 7.
 - Licensed under the Apache License 2.0 (`LICENSE`), declared in `pyproject.toml` and `CITATION.cff`.
 - Continuous integration: the test suite and `exactfig selftest` on Linux, macOS and Windows, and the gallery verified
   bit for bit on Linux.

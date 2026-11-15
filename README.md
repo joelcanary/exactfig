@@ -29,6 +29,7 @@ dynamical system. The figure, its data and the code that drew it are tied togeth
 - [Using it for research](#using-it-for-research)
 - [Recipes: seeds, palettes, parameters, editing](#recipes-seeds-palettes-parameters-editing)
 - [Your own data](#your-own-data)
+- [Catalogues of patterns](#catalogues-of-patterns)
 - [Animations and video](#animations-and-video)
 - [Layers and editing](#layers-and-editing)
 - [Lean](#lean)
@@ -90,6 +91,12 @@ Every file below comes from a recipe in [`examples/recipes`](examples/recipes) a
 |---|---|---|
 | ![Conway](gallery/life-conway.gif) | ![B37/S2378](gallery/life-b37s2378.gif) | ![two sources](gallery/wave-two-sources.gif) |
 | Conway's Life (B3/S23) from a seeded random soup, cells coloured by age | The rule B37/S2378 from the **same** soup (same seed): a controlled comparison of two rules | Two coherent point sources: interference and nodal lines |
+
+### A catalogue checked before it is drawn
+
+| | |
+|---|---|
+| ![still lifes](gallery/still-lifes-a175001.png) | `data.catalog`: the 49 strict still lifes of 14 cells under the Move rule B368/S245, the term A175001(14) = 49 of the OEIS. Before drawing, exactfig simulates every pattern and refuses the figure if one is not a still life, is a pseudo still life, does not have 14 cells, repeats another up to symmetry, or if there are not exactly 49. The picture cannot show more than the data proves. |
 
 ### Layers and Lean
 
@@ -226,6 +233,25 @@ range from the data or from `range`, and optional dithering between palette step
 samples by Delaunay piecewise-linear interpolation (`linear`) or nearest sample (`nearest`); pixels outside the convex hull
 have no value and stay transparent unless `nodata_ramp` is set. Full parameter lists: `python -m exactfig list`.
 
+## Catalogues of patterns
+
+`data.catalog` reads a catalogue of cell patterns (what a search program lists: every still life, oscillator or other
+object of a cellular automaton) and draws it as a mosaic **only after checking it** against what the recipe states:
+
+| Parameter | The figure is refused unless |
+|---|---|
+| `check: "still"` + `rule` | every pattern is unchanged by one generation of the rule (simulated on the infinite plane) |
+| `strict: true` | no pattern splits into groups of its islands that are each still on their own (strict, not pseudo, still lifes) |
+| `check: "oscillator"` + `period` | every pattern returns to itself after exactly `period` generations, and not before |
+| `population` | every pattern has exactly that many live cells |
+| `count` | the catalogue has exactly that many patterns: the term of the sequence the figure illustrates |
+| `distinct` (default on) | no two patterns are the same up to rotation and reflection |
+
+The format is one pattern per line, rows separated by spaces, `O` or `*` alive and `.` dead, optionally preceded by
+`WxH:` (then checked); `#` and `!` start comment lines. Give `"format": "catalog"` in the recipe's `input`. Rules with B0 are
+refused for the checks: under them the empty background itself changes. A refusal names the first pattern that fails
+and why, so a wrong catalogue, a wrong rule or a wrong term never becomes a picture.
+
 ## Animations and video
 
 | Generator | What it computes |
@@ -305,7 +331,7 @@ in each. Every entry is a generator or a recipe in the gallery.
 | Partial differential equations | Laplace (exact plate solution), wave equation by leapfrog (`anim.wave`), heat equation on data (`anim.diffuse`) | [plate](gallery/plate-temperature.png), [double slit](gallery/wave-double-slit.gif), [diffusion](gallery/dem-diffusion.gif) |
 | Numerical analysis | portable libm (`fmath`, ≤ 1 ulp), exact Delaunay predicates, O(h²) interpolation, RK4 of order 4, CFL stability enforced | [Franke](gallery/franke-linear.png) |
 | Computational geometry | Delaunay triangulation (Lawson flips), Voronoi cells, signed distance fields, Bézier curves, Bresenham | [Voronoi](gallery/stone-slabs.png), [nearest](gallery/franke-nearest.png) |
-| Combinatorics and discrete mathematics | Life-like cellular automata with any B/S rule (`anim.life`), L-systems; sandpiles as sound | [Life](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [fern](gallery/tree-fern.png) |
+| Combinatorics and discrete mathematics | Life-like cellular automata with any B/S rule (`anim.life`); catalogues of still lifes and oscillators checked before they are drawn (`data.catalog`); L-systems; sandpiles as sound | [Life](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [still lifes](gallery/still-lifes-a175001.png), [fern](gallery/tree-fern.png) |
 | Probability and stochastic processes | quasi-random Halton samples, Poisson-disc sampling, seeded random soups, fractional Brownian surfaces (fBm) | [terrain](gallery/terrain-0-0.png) |
 | Fourier analysis | partial sums and the Gibbs phenomenon (`math.fourier`); the discrete Fourier transform of a closed curve drawn as epicycles (`anim.epicycles`) | [Gibbs](gallery/fourier-square.png), [epicycles](gallery/epicycles-heart.gif) |
 | Signal processing and information | ordered (Bayer) and error-diffusion dithering, palette quantisation, LZW (GIF), sonification | [sky](gallery/sky-dusk.png), [mono](gallery/sky-mono.png) |

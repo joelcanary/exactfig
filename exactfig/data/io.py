@@ -18,6 +18,10 @@ Two shapes of data, each from several standard formats, all read with the standa
             .ppm                 Netpbm pixmap, ASCII (P3) or binary (P6), 8 bits
   frames  a sequence of grids of the same shape (a simulation computed elsewhere, e.g. by a Lean program)
             .json                {"frames": [[[…], …], …]}; any other keys (a "source", a "theorem") are kept as metadata
+  patterns a catalogue of cell patterns (e.g. every still life of n cells of a Life-like rule, listed by a search program)
+            catalog (any extension, `format` must say so)   one pattern per line, its rows separated by spaces, `O` or `*`
+                                 alive and `.` dead, optionally preceded by `WxH:`, which is then checked; `#` or `!`
+                                 starts a comment line
 
 The reader is chosen by `format` or else by the file extension. A file is data, never code: nothing is evaluated, object
 arrays are refused, and sizes are capped (`MAX_CELLS`, `MAX_POINTS`, `MAX_BYTES`).
@@ -44,7 +48,11 @@ GRID_FORMATS = ("csv", "pgm", "npy", "json")
 POINT_FORMATS = ("csv", "json")
 FRAME_FORMATS = ("json",)
 IMAGE_FORMATS = ("png", "ppm")
-FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMATS, "image": IMAGE_FORMATS}
+PATTERN_FORMATS = ("catalog",)
+FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMATS, "image": IMAGE_FORMATS,
+           "patterns": PATTERN_FORMATS}
+MAX_PATTERNS = 100_000
+MAX_PATTERN_SIDE = 256
 MAX_IMAGE_PIXELS = 4096 * 4096
 MAX_FRAMES = 1000
 _EXT = {".csv": "csv", ".tsv": "csv", ".txt": "csv", ".pgm": "pgm", ".npy": "npy", ".json": "json", ".png": "png",
@@ -475,8 +483,63 @@ def read_ppm(path: str) -> Image:
 
 # ------------------------------------------------------------------------------------------------ entry point
 
+@dataclass
+class Catalog:
+    """Cell patterns in file order, each a sorted tuple of live (x, y) cells, its box moved to start at (0, 0)."""
+    patterns: list
+
+    def __len__(self):
+        return len(self.patterns)
+
+    def describe(self) -> dict:
+        pops = [len(c) for c in self.patterns]
+        side = max(max(max(x for x, _ in c), max(y for _, y in c)) + 1 for c in self.patterns)
+        return {"patterns": len(pops), "population": [min(pops), max(pops)], "largest_side": side}
+
+
+_SIZE = re.compile(r"^([0-9]+)x([0-9]+)$")
+
+
+def read_catalog(path: str) -> Catalog:
+    """One pattern per line: `[WxH:] row row …`, `O`/`*` alive, `.` dead. A declared WxH must match the rows."""
+    try:
+        text = _read(path).decode("utf-8")
+    except UnicodeDecodeError:
+        raise DataError(f"{path}: not UTF-8 text") from None
+    out = []
+    for k, raw in enumerate(text.splitlines(), 1):
+        line = raw.strip()
+        if not line or line[0] in "#!":
+            continue
+        where = f"{path}, line {k}"
+        head = None
+        if ":" in line:
+            head, line = (t.strip() for t in line.split(":", 1))
+            m = _SIZE.match(head)
+            if not m:
+                raise DataError(f"{where}: {head!r} before ':' must be WxH")
+            head = (int(m.group(1)), int(m.group(2)))
+        rows = line.split()
+        if not rows or any(set(r) - set("O*.") for r in rows):
+            raise DataError(f"{where}: rows must be made of 'O', '*' and '.' only")
+        if len(rows) > MAX_PATTERN_SIDE or any(len(r) > MAX_PATTERN_SIDE for r in rows):
+            raise DataError(f"{where}: a pattern side is longer than {MAX_PATTERN_SIDE}")
+        if head and (len(rows) != head[1] or any(len(r) != head[0] for r in rows)):
+            raise DataError(f"{where}: the rows do not form the declared {head[0]}x{head[1]} box")
+        cells = [(x, y) for y, r in enumerate(rows) for x, ch in enumerate(r) if ch != "."]
+        if not cells:
+            raise DataError(f"{where}: a pattern with no live cell")
+        x0, y0 = min(x for x, _ in cells), min(y for _, y in cells)
+        out.append(tuple(sorted((x - x0, y - y0) for x, y in cells)))
+        if len(out) > MAX_PATTERNS:
+            raise DataError(f"{path}: more than {MAX_PATTERNS} patterns")
+    if not out:
+        raise DataError(f"{path}: no pattern")
+    return Catalog(out)
+
+
 def load(path: str, shape: str, fmt: str | None = None):
-    """Read `path` as a `grid`, `points`, `frames` or an `image`."""
+    """Read `path` as a `grid`, `points`, `frames`, an `image` or `patterns`."""
     f = format_of(path, fmt)
     if shape == "grid":
         readers = {"csv": read_grid_csv, "pgm": read_pgm, "npy": read_npy, "json": read_grid_json}
@@ -486,6 +549,8 @@ def load(path: str, shape: str, fmt: str | None = None):
         readers = {"json": read_frames_json}
     elif shape == "image":
         readers = {"png": read_png, "ppm": read_ppm}
+    elif shape == "patterns":
+        readers = {"catalog": read_catalog}
     else:
         raise AssertionError(shape)
     if f not in readers:

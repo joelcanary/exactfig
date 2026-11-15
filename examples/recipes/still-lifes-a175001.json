@@ -1,0 +1,1 @@
+{"generator": "data.catalog", "seed": "a175001", "palette": "sci", "size": [448, 448], "input": {"path": "data/A175001-n14.txt", "format": "catalog"}, "params": {"rule": "B368/S245", "check": "still", "strict": true, "population": 14, "count": 49, "columns": 7, "padding": 4, "ramp": "seq", "tone": 0.75}, "output": "still-lifes-a175001.png"}

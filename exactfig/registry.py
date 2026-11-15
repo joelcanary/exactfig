@@ -166,7 +166,7 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import annotate, datavis, flora, icons, mathviz, motion, skies, sprites, tiles
+    from .forge import annotate, catalog, datavis, flora, icons, mathviz, motion, skies, sprites, tiles
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
     from .music.theory import MODES
@@ -319,6 +319,23 @@ def _gens() -> dict[str, Generator]:
             "edge_ramp": P("str", "ink", choices=DATA_RAMPS),
         }, pix + ("data", "forge/datavis.py"), "a true-colour picture (PNG, PPM) resampled and quantised to the palette",
             (128, 128), 2048, data="image"),
+        Generator("data.catalog", "1", "image", catalog.catalog, {
+            "rule": P("text", "B3/S23", maxlen=24, doc="Life-like rule the patterns are checked under, e.g. B368/S245"),
+            "check": P("str", "still", choices=("still", "oscillator", "none"),
+                       doc="refuse to draw unless every pattern is a still life, or an oscillator of `period`"),
+            "period": P("int", 2, 1, 1000, doc="oscillator: exact period"),
+            "strict": P("bool", False, doc="still lifes: refuse pseudo still lifes (islands that split into still groups)"),
+            "population": P("int", 0, 0, 100000, doc="every pattern has exactly this many live cells; 0 = any"),
+            "count": P("int", 0, 0, 100000, doc="the catalogue has exactly this many patterns (a sequence term); 0 = any"),
+            "distinct": P("bool", True, doc="refuse two patterns that are equal up to rotation and reflection"),
+            "columns": P("int", 0, 0, 1000, doc="0 = chosen from the number of patterns and the aspect ratio"),
+            "padding": P("int", 1, 0, 64, doc="pixels around each pattern inside its tile"),
+            "cell_gap": P("int", 1, 0, 16, doc="pixels between neighbouring cells (at most a third of a cell)"),
+            "ramp": P("str", "seq", choices=DATA_RAMPS), "tone": P("float", 0.75, 0.0, 1.0, doc="position on the ramp"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/catalog.py", "forge/motion.py"),
+            "a catalogue of cell patterns as a mosaic, checked first (still life / oscillator, population, count)",
+            (256, 256), 2048, data="patterns"),
         Generator("math.fourier", "1", "image", mathviz.fourier, {
             "wave": P("str", "square", choices=("square", "sawtooth", "triangle")),
             "orders": P("text", "1,3,9,27", maxlen=64, doc="comma-separated numbers of terms, one curve each (1..2000)"),
