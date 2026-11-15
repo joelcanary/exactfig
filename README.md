@@ -1,25 +1,41 @@
 # exactfig
 
-**Reproducible figures, animations and sonifications from data and published mathematics, verifiable bit for bit.**
+**Scientific figures that check their data before they draw it, and that anyone can re-run bit for bit.**
+
+[![tests](https://github.com/joelcanary/exactfig/actions/workflows/tests.yml/badge.svg)](https://github.com/joelcanary/exactfig/actions/workflows/tests.yml)
+[![release](https://img.shields.io/github/v/release/joelcanary/exactfig)](https://github.com/joelcanary/exactfig/releases)
+[![python](https://img.shields.io/badge/python-3.10%20%7C%203.12%20%7C%203.14-blue)](#quickstart)
+[![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](#architecture)
+[![licence](https://img.shields.io/badge/licence-Apache--2.0-blue)](LICENSE)
 
 [Leer en español](README.es.md)
 
-exactfig turns a small JSON *recipe* (a generator, its parameters, a seed and, for data, a pinned input file) into an image,
-an animation or a MIDI file, and records everything needed to reproduce it in a *manifest*. `exactfig verify` runs every
-recipe again and compares the result with the file on disk, **pixel for pixel, frame by frame, byte for byte**, on any
-machine. It is pure Python with no dependencies.
+A figure in a paper makes a claim. exactfig makes the figure **prove the part of the claim that can be checked**, and
+**refuses to draw** when the data does not support it:
 
-It is meant for engineers and researchers who need a figure that anyone can regenerate and check: a reconstruction from
-scattered measurements, a shaded elevation model, the evolution of a cellular automaton, a wave-optics experiment, a
-dynamical system. The figure, its data and the code that drew it are tied together by hashes; publishing one value
-(`manifest_sha256`) pins the whole set.
+- a catalogue of still lifes is drawn only if every pattern is still under its rule, strict, of the stated size, and
+  there are exactly as many as the sequence term says;
+- a SAT solver's colouring is drawn only if no colour holds a forbidden progression or sum, and the figure records the
+  hash of the proof of the other half of the theorem;
+- an instance segmentation is drawn only if no mask is empty, no two instances overlap, the matching is one to one, and
+  the stated PQ, TP, FP and FN equal the exact values; its caption must agree with the data's metadata.
+
+Every figure comes from a small JSON *recipe* (a generator, its parameters, a seed and, for data, a pinned input file) and
+is recorded in a *manifest*. `exactfig verify` runs every recipe again and compares the result with the file on disk,
+**pixel for pixel, frame by frame, byte for byte**, on any machine; publishing one value (`manifest_sha256`) pins the
+figure, its data and the code that drew it. Pure Python, no dependencies, Linux, macOS and Windows.
 
 | | | |
 |---|---|---|
-| ![Life](gallery/life-conway.gif) | ![double slit](gallery/wave-double-slit.gif) | ![Lorenz](gallery/lorenz.gif) |
-| Conway's Life from a seeded soup, cells coloured by age | The wave equation through a double slit (leapfrog, absorbing border) | The Lorenz attractor, Runge–Kutta 4 |
-| ![layered figure](gallery/figure-plate.png) | ![reconstruction](gallery/franke-linear.png) | ![phase portrait](gallery/domain-wegert.png) |
-| A layered figure: exact Laplace solution, iso-lines, annotations | Franke's function from 256 scattered samples (exact Delaunay) | Phase portrait of a complex function with modulus lines |
+| ![still lifes](gallery/still-lifes-a175001.png) | ![segmentation](gallery/instances-compare.png) | ![Life](gallery/life-conway.gif) |
+| The 49 strict still lifes of 14 cells under the rule B368/S245, the term A175001(14) = 49 of the OEIS, each one simulated before it is drawn | Ground truth against prediction, matched one to one and scored exactly: PQ = 21153891139/45297262530 ≈ 0.4670, as the recipe states | Conway's Life from a seeded soup, cells coloured by age |
+| ![double slit](gallery/wave-double-slit.gif) | ![reconstruction](gallery/franke-linear.png) | ![phase portrait](gallery/domain-wegert.png) |
+| The wave equation through a double slit (leapfrog, absorbing border) | Franke's function from 256 scattered samples (exact Delaunay) | Phase portrait of a complex function with modulus lines |
+
+![van der Waerden witness](gallery/vdw-2-3-3-3.png)
+
+A SAT solver's colouring of 1..39 with no forbidden progression, so w(4; 2,3,3,3) > 39; the recipe names the DRAT proof,
+checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
 
 ## Contents
 
@@ -56,6 +72,8 @@ dynamical system. The figure, its data and the code that drew it are tied togeth
 | The same bits on every platform | transcendental functions come from `exactfig.fmath` (basic IEEE 754 arithmetic only); checked on x86-64 and ARM64 |
 | The whole set is pinned | `manifest_sha256` covers every entry; sign or publish that one value |
 | Recipes cannot smuggle a picture | closed parameter schemas: typed, ranged values, no pixel arrays; data enters only as a named, hashed file |
+| The figure shows only what the data proves | `data.catalog`, `data.coloring` and `data.instances` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions) and refuse to draw otherwise |
+| Mistakes end in a clear message | one line saying what and why, never a traceback; more than 90 real mistakes are tested, one process each |
 
 What it does not prove: who wrote the code or chose the recipe (sign the manifest digest for that), or that a model or a
 dataset is right. It proves that *this output is what this code computes from these inputs*.
@@ -497,7 +515,7 @@ machine in seconds. Paths with spaces and accents work; the Windows console is s
 exactfig never touches the network.
 
 **How this is tested.** [`tests/misuse_bench.py`](tests/misuse_bench.py) runs the command line, one process per case, on
-more than 80 mistakes a user can actually make (wrong encodings, truncated and corrupted files, absurd sizes, paths that
+more than 90 mistakes a user can actually make (wrong encodings, truncated and corrupted files, absurd sizes, paths that
 try to leave their folder, broken manifests, a missing FFmpeg, …) and fails if any case ends in a traceback, a hang, a
 silent success, or a refusal without a message. It runs with the test suite.
 

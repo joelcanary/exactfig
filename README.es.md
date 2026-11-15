@@ -1,25 +1,43 @@
 # exactfig
 
-**Figuras, animaciones y sonificaciones reproducibles a partir de datos y de matemática publicada, verificables bit a bit.**
+**Figuras científicas que comprueban sus datos antes de dibujarlos, y que cualquiera puede volver a ejecutar bit a bit.**
+
+[![tests](https://github.com/joelcanary/exactfig/actions/workflows/tests.yml/badge.svg)](https://github.com/joelcanary/exactfig/actions/workflows/tests.yml)
+[![release](https://img.shields.io/github/v/release/joelcanary/exactfig)](https://github.com/joelcanary/exactfig/releases)
+[![python](https://img.shields.io/badge/python-3.10%20%7C%203.12%20%7C%203.14-blue)](#quickstart)
+[![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](#architecture)
+[![licence](https://img.shields.io/badge/licence-Apache--2.0-blue)](LICENSE)
 
 [Read in English](README.md)
 
-exactfig convierte una pequeña *receta* JSON (un generador, sus parámetros, una semilla y, para datos, un fichero de entrada
-fijado por su huella) en una imagen, una animación o un fichero MIDI, y apunta en un *manifiesto* todo lo necesario para
-reproducirlo. `exactfig verify` vuelve a ejecutar cada receta y compara el resultado con el fichero en disco, **píxel a píxel,
-fotograma a fotograma, byte a byte**, en cualquier máquina. Es Python puro, sin dependencias.
+Una figura de un artículo afirma algo. exactfig hace que la figura **demuestre la parte de la afirmación que se puede
+comprobar**, y **se niega a dibujar** cuando los datos no la sostienen:
 
-Está pensado para ingenieros e investigadores que necesitan una figura que cualquiera pueda regenerar y comprobar: una
-reconstrucción a partir de medidas dispersas, un modelo de elevación sombreado, la evolución de un autómata celular, un
-experimento de óptica de ondas, un sistema dinámico. La figura, sus datos y el código que la dibujó quedan atados por hashes;
-publicar un solo valor (`manifest_sha256`) fija el conjunto entero.
+- un catálogo de vidas quietas solo se dibuja si cada patrón es quieto con su regla, estricto, del tamaño declarado, y
+  hay exactamente tantos como dice el término de la secuencia;
+- una coloración de un resolvedor SAT solo se dibuja si ningún color tiene una progresión o una suma prohibida, y la
+  figura guarda el hash de la prueba de la otra mitad del teorema;
+- una segmentación por instancias solo se dibuja si no hay máscaras vacías ni instancias que se solapen, el
+  emparejamiento es uno a uno y el PQ, TP, FP y FN declarados son los exactos; su pie tiene que cuadrar con los
+  metadatos de los datos.
+
+Cada figura sale de una pequeña *receta* JSON (un generador, sus parámetros, una semilla y, para datos, un fichero de
+entrada fijado por su huella) y queda apuntada en un *manifiesto*. `exactfig verify` vuelve a ejecutar cada receta y
+compara el resultado con el fichero en disco, **píxel a píxel, fotograma a fotograma, byte a byte**, en cualquier
+máquina; publicar un solo valor (`manifest_sha256`) fija la figura, sus datos y el código que la dibujó. Python puro, sin
+dependencias, en Linux, macOS y Windows.
 
 | | | |
 |---|---|---|
-| ![Vida](gallery/life-conway.gif) | ![doble rendija](gallery/wave-double-slit.gif) | ![Lorenz](gallery/lorenz.gif) |
-| La Vida de Conway desde una sopa con semilla, células coloreadas por edad | La ecuación de ondas a través de una doble rendija (leapfrog, borde absorbente) | El atractor de Lorenz, Runge–Kutta 4 |
-| ![figura por capas](gallery/figure-plate.png) | ![reconstrucción](gallery/franke-linear.png) | ![retrato de fase](gallery/domain-wegert.png) |
-| Una figura por capas: solución exacta de Laplace, curvas de nivel y anotaciones | La función de Franke a partir de 256 muestras dispersas (Delaunay exacto) | Retrato de fase de una función compleja con líneas de módulo |
+| ![vidas quietas](gallery/still-lifes-a175001.png) | ![segmentación](gallery/instances-compare.png) | ![Vida](gallery/life-conway.gif) |
+| Las 49 vidas quietas estrictas de 14 células con la regla B368/S245, el término A175001(14) = 49 de la OEIS, cada una simulada antes de dibujarla | Verdad frente a predicción, emparejadas uno a uno y puntuadas con exactitud: PQ = 21153891139/45297262530 ≈ 0,4670, como dice la receta | La Vida de Conway desde una sopa con semilla, células coloreadas por edad |
+| ![doble rendija](gallery/wave-double-slit.gif) | ![reconstrucción](gallery/franke-linear.png) | ![retrato de fase](gallery/domain-wegert.png) |
+| La ecuación de ondas a través de una doble rendija (leapfrog, borde absorbente) | La función de Franke a partir de 256 muestras dispersas (Delaunay exacto) | Retrato de fase de una función compleja con líneas de módulo |
+
+![testigo de van der Waerden](gallery/vdw-2-3-3-3.png)
+
+Una coloración de 1..39 hallada por un resolvedor SAT sin ninguna progresión prohibida, así que w(4; 2,3,3,3) > 39; la
+receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 no tiene ninguna: w(4; 2,3,3,3) = 40.
 
 ## Contenido
 
@@ -56,6 +74,8 @@ publicar un solo valor (`manifest_sha256`) fija el conjunto entero.
 | Los mismos bits en cualquier plataforma | las funciones trascendentes salen de `exactfig.fmath` (solo aritmética básica IEEE 754); comprobado en x86-64 y ARM64 |
 | El conjunto entero queda fijado | `manifest_sha256` cubre todas las entradas: basta con firmar o publicar ese valor |
 | Una receta no puede colar una imagen | esquemas de parámetros cerrados (valores con tipo y rango, nada de matrices de píxeles); los datos solo entran como un fichero con nombre y hash |
+| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring` y `data.instances` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies) y si no, no dibujan |
+| Los errores acaban en un mensaje claro | una línea que dice qué y por qué, nunca un traceback; se prueban más de 90 errores reales, un proceso cada uno |
 
 Lo que no prueba: quién escribió el código o eligió la receta (para eso, firma el resumen del manifiesto), ni que un modelo o
 unos datos sean correctos. Prueba que *esta salida es lo que este código calcula a partir de estas entradas*.
@@ -512,7 +532,7 @@ una máquina en segundos. Las rutas con espacios y tildes funcionan; la consola 
 mensajes. exactfig nunca usa la red.
 
 **Cómo se prueba.** [`tests/misuse_bench.py`](tests/misuse_bench.py) lanza la línea de comandos, un proceso por caso, con
-más de 80 errores que un usuario puede cometer de verdad (codificaciones equivocadas, ficheros truncados y corruptos,
+más de 90 errores que un usuario puede cometer de verdad (codificaciones equivocadas, ficheros truncados y corruptos,
 tamaños absurdos, rutas que intentan salir de su carpeta, manifiestos rotos, FFmpeg ausente…) y falla si algún caso acaba
 en traceback, se cuelga, sale bien cuando no debía o se rechaza sin mensaje. Corre con la batería de tests.
 

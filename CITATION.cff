@@ -11,6 +11,10 @@ license: Apache-2.0
 date-released: "2026-11-15"
 repository-code: "https://github.com/joelcanary/exactfig"
 keywords:
+  - figures checked before they are drawn
+  - SAT witnesses
+  - instance segmentation
+  - panoptic quality
   - reproducibility
   - provenance
   - scientific visualization
