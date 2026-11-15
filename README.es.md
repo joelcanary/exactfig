@@ -30,6 +30,7 @@ publicar un solo valor (`manifest_sha256`) fija el conjunto entero.
 - [Recetas: semillas, paletas, parámetros, edición](#recetas-semillas-paletas-parámetros-edición)
 - [Tus propios datos](#tus-propios-datos)
 - [Catálogos de patrones](#catálogos-de-patrones)
+- [Coloraciones y testigos SAT](#coloraciones-y-testigos-sat)
 - [Animaciones y vídeo](#animaciones-y-vídeo)
 - [Capas y edición](#capas-y-edición)
 - [Lean](#lean)
@@ -257,6 +258,32 @@ Ejemplo en la galería: [las 49 vidas quietas estrictas de 14 células de Move](
 B368/S245), el término A175001(14) = 49 de la OEIS, con su receta en
 [`examples/recipes/still-lifes-a175001.json`](examples/recipes/still-lifes-a175001.json).
 
+## Coloraciones y testigos SAT
+
+Un resolvedor SAT contesta preguntas como *¿se puede colorear 1..n sin que ningún color tenga una progresión aritmética de
+su longitud?* (números de van der Waerden) o *¿se puede partir 1..n en k conjuntos sin sumas?* (números de Schur). El
+"sí" viene con un **testigo**, una coloración que cualquiera comprueba en un momento; el "no" viene con una **prueba**
+(DRAT, LRAT) que necesita un comprobador. Un teorema como w(4; 2,3,3,3) = 40 es las dos cosas: un testigo para 39 y una
+prueba para 40.
+
+`data.coloring` dibuja testigos y antes los comprueba:
+
+| Parámetro | La figura se rechaza salvo que |
+|---|---|
+| `check: "ap"` + `lengths` | ningún color tenga una progresión aritmética de su longitud (`"3"` para todos, o `"2,3,3,3"`, una por color) |
+| `check: "schur"` (+ `distinct`) | ningún color tenga x, y y x + y (con `distinct`, solo x < y: números de Schur débiles) |
+| `colors`, `length`, `count` | los colores estén por debajo de `colors`, cada coloración cubra exactamente 1..`length` y el fichero tenga `count` coloraciones |
+| `proof_sha256` | (no es una comprobación) el SHA-256 de la prueba de que 1..`length`+1 no se puede colorear, que queda en el manifiesto para que la figura nombre la otra mitad del teorema; la prueba en sí se comprueba con drat-trim o cake_lpr |
+
+El formato es una coloración por línea, o un dígito por número (`0112…`, colores 0–9) o números separados por espacios
+o comas; `#` y `!` empiezan comentarios; en la receta va `"format": "coloring"`. El rechazo nombra la coloración, el
+color y la progresión o la suma que rompe la regla. Las comprobaciones se prueban contra W(2;3) = 9, S(2) = 4 y el número
+de Schur débil WS(2) = 8, cada uno decidido por fuerza bruta sobre todas las coloraciones.
+
+Ejemplos en la galería: [el testigo SAT de w(4; 2,3,3,3) = 40](gallery/vdw-2-3-3-3.png), con el SHA-256 de la prueba DRAT
+que comprobaron drat-trim y cake_lpr (OEIS A217008), y [una partición de 1..13 en tres conjuntos sin sumas](gallery/schur-3.png)
+(S(3) ≥ 13).
+
 ## Animaciones y vídeo
 
 | Generador | Qué calcula |
@@ -339,7 +366,7 @@ una. Cada entrada es un generador o una receta de la galería.
 | Ecuaciones en derivadas parciales | Laplace (solución exacta de la placa), ecuación de ondas por leapfrog (`anim.wave`), ecuación del calor sobre datos (`anim.diffuse`) | [placa](gallery/plate-temperature.png), [doble rendija](gallery/wave-double-slit.gif), [difusión](gallery/dem-diffusion.gif) |
 | Análisis numérico | libm portable (`fmath`, ≤ 1 ulp), predicados de Delaunay exactos, interpolación O(h²), RK4 de orden 4, estabilidad CFL impuesta | [Franke](gallery/franke-linear.png) |
 | Geometría computacional | triangulación de Delaunay (giros de Lawson), celdas de Voronoi, campos de distancia con signo, curvas de Bézier, Bresenham | [Voronoi](gallery/stone-slabs.png), [vecino](gallery/franke-nearest.png) |
-| Combinatoria y matemática discreta | autómatas celulares tipo Vida con cualquier regla B/S (`anim.life`); catálogos de vidas quietas y osciladores comprobados antes de dibujarlos (`data.catalog`); sistemas L; pilas de arena como sonido | [Vida](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [vidas quietas](gallery/still-lifes-a175001.png), [helecho](gallery/tree-fern.png) |
+| Combinatoria y matemática discreta | autómatas celulares tipo Vida con cualquier regla B/S (`anim.life`); catálogos de vidas quietas y osciladores comprobados antes de dibujarlos (`data.catalog`); coloraciones de van der Waerden y Schur, testigos SAT comprobados antes de dibujarlos (`data.coloring`); sistemas L; pilas de arena como sonido | [Vida](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [vidas quietas](gallery/still-lifes-a175001.png), [helecho](gallery/tree-fern.png) |
 | Probabilidad y procesos estocásticos | muestras cuasialeatorias de Halton, muestreo de disco de Poisson, sopas aleatorias con semilla, superficies brownianas fraccionarias (fBm) | [terreno](gallery/terrain-0-0.png) |
 | Análisis de Fourier | sumas parciales y fenómeno de Gibbs (`math.fourier`); la transformada discreta de una curva cerrada dibujada como epiciclos (`anim.epicycles`) | [Gibbs](gallery/fourier-square.png), [epiciclos](gallery/epicycles-heart.gif) |
 | Señales e información | tramado ordenado (Bayer) y por difusión de error, cuantización a paleta, LZW (GIF), sonificación | [cielo](gallery/sky-dusk.png), [mono](gallery/sky-mono.png) |

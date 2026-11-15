@@ -48,13 +48,15 @@ SMALL = {
     "data.image": {"palette": "sci", "size": [24, 16], "input": {"path": "data/testcard-480x320.png"}},
     "data.catalog": {"palette": "sci", "size": [70, 70], "input": {"path": "data/A175001-n14.txt", "format": "catalog"},
                      "params": {"rule": "B368/S245", "count": 49, "population": 14, "columns": 7, "padding": 1}},
+    "data.coloring": {"palette": "sci", "size": [39, 4], "input": {"path": "data/vdw-2-3-3-3.txt", "format": "coloring"},
+                      "params": {"lengths": "2,3,3,3", "colors": 4, "length": 39}},
     "math.fourier": {"palette": "sci", "size": [40, 24], "params": {"orders": "1,5"}},
     "anim.epicycles": {"palette": "sci", "size": [24, 24], "params": {"samples": 16, "terms": 4, "frames": 3}},
 }
 DATA = os.path.join(os.path.abspath(ROOT), "gallery")   # input paths of the data recipes are relative to the gallery folder
 SEEDLESS = ("forge.icon.gem", "forge.fractal.julia", "data.field", "data.scatter", "anim.wave", "anim.lorenz", "anim.diffuse",
             "anim.frames", "compose", "draw.annotate", "math.domain", "math.logistic", "math.ulam", "math.modmult",
-            "data.image", "math.fourier", "anim.epicycles", "data.catalog")   # the output does not depend on the seed
+            "data.image", "math.fourier", "anim.epicycles", "data.catalog", "data.coloring")   # the output does not depend on the seed
 
 
 def rb(path):

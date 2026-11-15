@@ -110,6 +110,12 @@ def cases():
     yield "catalog bad rule", {"r.json": j(dict(cat, params={"rule": "life"})), "c.txt": "2x2: OO OO\n"}, ["render", "r.json"]
     yield "catalog wrong term", {"r.json": j(dict(cat, params={"count": 2})), "c.txt": "2x2: OO OO\n"}, ["render", "r.json"]
     yield "catalog many islands strict", {"r.json": j(dict(cat, size=[256, 64], params={"strict": True})), "c.txt": "39x2: " + " ".join(["OO." * 13] * 2) + "\n"}, ["render", "r.json"]
+    colr = {"generator": "data.coloring", "seed": "x", "palette": "sci", "size": [64, 8], "input": {"path": "c.txt", "format": "coloring"}, "params": {"lengths": "3"}, "output": "k.png"}
+    yield "coloring with a letter", {"r.json": j(colr), "c.txt": "01x10\n"}, ["render", "r.json"]
+    yield "coloring that is not a witness", {"r.json": j(colr), "c.txt": "000\n"}, ["render", "r.json"]
+    yield "coloring lengths not numbers", {"r.json": j(dict(colr, params={"lengths": "three"})), "c.txt": "0110\n"}, ["render", "r.json"]
+    yield "coloring proof hash malformed", {"r.json": j(dict(colr, params={"proof_sha256": "abc"})), "c.txt": "0110\n"}, ["render", "r.json"]
+    yield "coloring of 5000 numbers on one row", {"r.json": j(colr), "c.txt": "01" * 2500 + "\n"}, ["render", "r.json"]
     yield "animation too many pixels", {"r.json": j({"generator": "anim.life", "seed": "x", "palette": "sci", "size": [1024, 1024], "params": {"frames": 1000}, "output": "l.gif"})}, ["render", "r.json"]
     yield "animation odd delay", {"r.json": j({"generator": "anim.life", "seed": "x", "palette": "sci", "size": [16, 16], "params": {"delay": 33, "frames": 2}, "output": "l.gif"})}, ["render", "r.json"]
     yield "verify manifest missing", {}, ["verify", "--manifest", "nope.json"]

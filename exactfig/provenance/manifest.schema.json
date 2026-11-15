@@ -58,7 +58,7 @@
                            "properties": {"generator": {"type": "string"}, "blend": {"enum": ["over", "under", "mask"]}}}},
       "input": {"type": "object", "description": "Data file read by the generator, pinned by its SHA-256.",
                 "required": ["path", "format", "sha256"], "additionalProperties": false,
-                "properties": {"path": {"type": "string"}, "format": {"enum": ["csv", "pgm", "npy", "json", "png", "ppm", "catalog"]},
+                "properties": {"path": {"type": "string"}, "format": {"enum": ["csv", "pgm", "npy", "json", "png", "ppm", "catalog", "coloring"]},
                                "sha256": {"$ref": "#/$defs/sha256"}}}
      }
     },

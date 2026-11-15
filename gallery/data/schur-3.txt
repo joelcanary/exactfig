@@ -1,0 +1,3 @@
+# A partition of 1..13 into 3 sum-free sets ({1,4,10,13}, {2,3,11,12}, {5,...,9}): no set holds x, y and x + y.
+# So the Schur number S(3), the largest n that can be split so, is at least 13; it is exactly 13, a classical result.
+0110222220110

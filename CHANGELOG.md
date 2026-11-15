@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- **`data.coloring`**: colourings of 1..n — the witnesses a SAT solver returns — drawn only after they are checked: no
+  colour holds an arithmetic progression of its length (van der Waerden numbers, one length per colour allowed) or a sum
+  x + y (Schur numbers; weak Schur with `distinct`). `proof_sha256` records the SHA-256 of the proof of the other half of
+  the theorem. New input format `coloring`. Gallery: a SAT witness for w(4; 2,3,3,3) = 40 (OEIS A217008) naming its
+  DRAT proof, and a partition showing S(3) ≥ 13. Tested against W(2;3) = 9, S(2) = 4 and WS(2) = 8 by brute force.
+
 ## 0.3.0 (2026-11-15)
 
 - **Mistakes end in a clear message, never a traceback.** One line `exactfig: what and why`, and exit codes 0 / 1 (verify

@@ -30,6 +30,7 @@ dynamical system. The figure, its data and the code that drew it are tied togeth
 - [Recipes: seeds, palettes, parameters, editing](#recipes-seeds-palettes-parameters-editing)
 - [Your own data](#your-own-data)
 - [Catalogues of patterns](#catalogues-of-patterns)
+- [Colourings and SAT witnesses](#colourings-and-sat-witnesses)
 - [Animations and video](#animations-and-video)
 - [Layers and editing](#layers-and-editing)
 - [Lean](#lean)
@@ -93,11 +94,13 @@ Every file below comes from a recipe in [`examples/recipes`](examples/recipes) a
 | ![Conway](gallery/life-conway.gif) | ![B37/S2378](gallery/life-b37s2378.gif) | ![two sources](gallery/wave-two-sources.gif) |
 | Conway's Life (B3/S23) from a seeded random soup, cells coloured by age | The rule B37/S2378 from the **same** soup (same seed): a controlled comparison of two rules | Two coherent point sources: interference and nodal lines |
 
-### A catalogue checked before it is drawn
+### Checked before they are drawn
 
 | | |
 |---|---|
 | ![still lifes](gallery/still-lifes-a175001.png) | `data.catalog`: the 49 strict still lifes of 14 cells under the Move rule B368/S245, the term A175001(14) = 49 of the OEIS. Before drawing, exactfig simulates every pattern and refuses the figure if one is not a still life, is a pseudo still life, does not have 14 cells, repeats another up to symmetry, or if there are not exactly 49. The picture cannot show more than the data proves. |
+| ![van der Waerden](gallery/vdw-2-3-3-3.png) | `data.coloring`: a SAT solver's colouring of 1..39 with 4 colours, the first never used twice and the other three without a monochromatic 3-term arithmetic progression, so w(4; 2,3,3,3) > 39. exactfig checks it before drawing; the recipe also records the SHA-256 of the DRAT proof, checked by drat-trim and cake_lpr, that 1..40 has no such colouring: w(4; 2,3,3,3) = 40 (OEIS A217008). |
+| ![Schur](gallery/schur-3.png) | `data.coloring` with `check: "schur"`: 1..13 split into three sum-free sets (no set holds x, y and x + y), so the Schur number S(3) is at least 13. |
 
 ### Layers and Lean
 
@@ -253,6 +256,27 @@ The format is one pattern per line, rows separated by spaces, `O` or `*` alive a
 refused for the checks: under them the empty background itself changes. A refusal names the first pattern that fails
 and why, so a wrong catalogue, a wrong rule or a wrong term never becomes a picture.
 
+## Colourings and SAT witnesses
+
+A SAT solver answers questions such as *can 1..n be coloured so that no colour holds an arithmetic progression of its
+length?* (van der Waerden numbers) or *can 1..n be split into k sum-free sets?* (Schur numbers). The answer "yes" comes
+with a **witness**, a colouring anyone can check in a moment; the answer "no" comes with a **proof** (DRAT, LRAT) that
+needs a proof checker. A theorem such as w(4; 2,3,3,3) = 40 is both: a witness for 39 and a proof for 40.
+
+`data.coloring` draws witnesses and checks them first:
+
+| Parameter | The figure is refused unless |
+|---|---|
+| `check: "ap"` + `lengths` | no colour holds an arithmetic progression of its length (`"3"` for every colour, or `"2,3,3,3"`, one per colour) |
+| `check: "schur"` (+ `distinct`) | no colour holds x, y and x + y (with `distinct`, only x < y: weak Schur numbers) |
+| `colors`, `length`, `count` | the colours are below `colors`, every colouring colours exactly 1..`length`, the file has `count` colourings |
+| `proof_sha256` | (not a check) the SHA-256 of the proof that 1..`length`+1 cannot be coloured, recorded in the manifest so the figure names the other half of the theorem; check the proof itself with drat-trim or cake_lpr |
+
+The format is one colouring per line, either one digit per number (`0112…`, colours 0–9) or numbers separated by spaces
+or commas; `#` and `!` start comment lines; give `"format": "coloring"`. A refusal names the colouring, the colour and
+the progression or the sum that breaks the rule. The checks are tested against W(2;3) = 9, S(2) = 4 and the weak Schur
+number WS(2) = 8, each decided by brute force over every colouring.
+
 ## Animations and video
 
 | Generator | What it computes |
@@ -332,7 +356,7 @@ in each. Every entry is a generator or a recipe in the gallery.
 | Partial differential equations | Laplace (exact plate solution), wave equation by leapfrog (`anim.wave`), heat equation on data (`anim.diffuse`) | [plate](gallery/plate-temperature.png), [double slit](gallery/wave-double-slit.gif), [diffusion](gallery/dem-diffusion.gif) |
 | Numerical analysis | portable libm (`fmath`, ≤ 1 ulp), exact Delaunay predicates, O(h²) interpolation, RK4 of order 4, CFL stability enforced | [Franke](gallery/franke-linear.png) |
 | Computational geometry | Delaunay triangulation (Lawson flips), Voronoi cells, signed distance fields, Bézier curves, Bresenham | [Voronoi](gallery/stone-slabs.png), [nearest](gallery/franke-nearest.png) |
-| Combinatorics and discrete mathematics | Life-like cellular automata with any B/S rule (`anim.life`); catalogues of still lifes and oscillators checked before they are drawn (`data.catalog`); L-systems; sandpiles as sound | [Life](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [still lifes](gallery/still-lifes-a175001.png), [fern](gallery/tree-fern.png) |
+| Combinatorics and discrete mathematics | Life-like cellular automata with any B/S rule (`anim.life`); catalogues of still lifes and oscillators checked before they are drawn (`data.catalog`); van der Waerden and Schur colourings, SAT witnesses checked before they are drawn (`data.coloring`); L-systems; sandpiles as sound | [Life](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [still lifes](gallery/still-lifes-a175001.png), [fern](gallery/tree-fern.png) |
 | Probability and stochastic processes | quasi-random Halton samples, Poisson-disc sampling, seeded random soups, fractional Brownian surfaces (fBm) | [terrain](gallery/terrain-0-0.png) |
 | Fourier analysis | partial sums and the Gibbs phenomenon (`math.fourier`); the discrete Fourier transform of a closed curve drawn as epicycles (`anim.epicycles`) | [Gibbs](gallery/fourier-square.png), [epicycles](gallery/epicycles-heart.gif) |
 | Signal processing and information | ordered (Bayer) and error-diffusion dithering, palette quantisation, LZW (GIF), sonification | [sky](gallery/sky-dusk.png), [mono](gallery/sky-mono.png) |

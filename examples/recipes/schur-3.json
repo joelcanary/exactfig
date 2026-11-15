@@ -1,0 +1,1 @@
+{"generator": "data.coloring", "seed": "schur", "palette": "sci", "size": [416, 32], "input": {"path": "data/schur-3.txt", "format": "coloring"}, "params": {"check": "schur", "colors": 3, "length": 13, "count": 1}, "output": "schur-3.png"}

@@ -22,6 +22,11 @@ Two shapes of data, each from several standard formats, all read with the standa
             catalog (any extension, `format` must say so)   one pattern per line, its rows separated by spaces, `O` or `*`
                                  alive and `.` dead, optionally preceded by `WxH:`, which is then checked; `#` or `!`
                                  starts a comment line
+  colorings colourings of 1..n (e.g. a SAT solver's witness that 1..n can be coloured without a monochromatic
+            arithmetic progression, or split into sum-free sets)
+            coloring (any extension, `format` must say so)  one colouring per line: either one digit per number
+                                 (`0112…`, colours 0-9) or numbers separated by spaces or commas; `#` or `!` starts a
+                                 comment line
 
 The reader is chosen by `format` or else by the file extension. A file is data, never code: nothing is evaluated, object
 arrays are refused, and sizes are capped (`MAX_CELLS`, `MAX_POINTS`, `MAX_BYTES`).
@@ -49,8 +54,11 @@ POINT_FORMATS = ("csv", "json")
 FRAME_FORMATS = ("json",)
 IMAGE_FORMATS = ("png", "ppm")
 PATTERN_FORMATS = ("catalog",)
+COLORING_FORMATS = ("coloring",)
 FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMATS, "image": IMAGE_FORMATS,
-           "patterns": PATTERN_FORMATS}
+           "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS}
+MAX_COLORING = 5000
+MAX_COLORS = 64
 MAX_PATTERNS = 100_000
 MAX_PATTERN_SIDE = 256
 MAX_IMAGE_PIXELS = 4096 * 4096
@@ -563,6 +571,46 @@ def read_catalog(path: str) -> Catalog:
     return Catalog(out)
 
 
+@dataclass
+class Colorings:
+    """Colourings of 1..n in file order, each a tuple of colours (the colour of 1, of 2, …)."""
+    colorings: list
+
+    def __len__(self):
+        return len(self.colorings)
+
+    def describe(self) -> dict:
+        return {"colorings": len(self.colorings), "n": sorted({len(c) for c in self.colorings}),
+                "colors": max(max(c) for c in self.colorings) + 1}
+
+
+def read_coloring(path: str) -> Colorings:
+    """One colouring per line: digits (`0112…`) or numbers separated by spaces or commas."""
+    text = read_text(path)
+    out = []
+    for k, raw in enumerate(text.splitlines(), 1):
+        line = raw.strip()
+        if not line or line[0] in "#!":
+            continue
+        where = f"{path}, line {k}"
+        toks = line.replace(",", " ").split()
+        if len(toks) == 1:
+            toks = list(toks[0])
+        if not all(t.isdigit() and t.isascii() for t in toks):
+            raise DataError(f"{where}: a colouring is digits, or numbers separated by spaces or commas")
+        cols = tuple(int(t) for t in toks)
+        if len(cols) > MAX_COLORING:
+            raise DataError(f"{where}: {len(cols)} numbers, more than {MAX_COLORING}")
+        if max(cols) >= MAX_COLORS:
+            raise DataError(f"{where}: colour {max(cols)}; at most {MAX_COLORS} colours (0..{MAX_COLORS - 1})")
+        out.append(cols)
+        if len(out) > MAX_PATTERNS:
+            raise DataError(f"{path}: more than {MAX_PATTERNS} colourings")
+    if not out:
+        raise DataError(f"{path}: no colouring")
+    return Colorings(out)
+
+
 def load(path: str, shape: str, fmt: str | None = None):
     """Read `path` as a `grid`, `points`, `frames`, an `image` or `patterns`."""
     f = format_of(path, fmt)
@@ -576,6 +624,8 @@ def load(path: str, shape: str, fmt: str | None = None):
         readers = {"png": read_png, "ppm": read_ppm}
     elif shape == "patterns":
         readers = {"catalog": read_catalog}
+    elif shape == "colorings":
+        readers = {"coloring": read_coloring}
     else:
         raise AssertionError(shape)
     if f not in readers:

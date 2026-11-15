@@ -166,7 +166,7 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import annotate, catalog, datavis, flora, icons, mathviz, motion, skies, sprites, tiles
+    from .forge import annotate, catalog, coloring, datavis, flora, icons, mathviz, motion, skies, sprites, tiles
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
     from .music.theory import MODES
@@ -336,6 +336,25 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/catalog.py", "forge/motion.py"),
             "a catalogue of cell patterns as a mosaic, checked first (still life / oscillator, population, count)",
             (256, 256), 2048, data="patterns"),
+        Generator("data.coloring", "1", "image", coloring.coloring, {
+            "check": P("str", "ap", choices=("ap", "schur", "none"),
+                       doc="refuse to draw unless no colour holds an arithmetic progression of its length (van der "
+                           "Waerden), or no colour holds x, y, x + y (Schur)"),
+            "lengths": P("text", "3", maxlen=200, doc="ap: one progression length for every colour, or one per colour"),
+            "distinct": P("bool", False, doc="schur: only x < y (weak Schur numbers)"),
+            "colors": P("int", 0, 0, 64, doc="number of colours; 0 = from lengths, or any"),
+            "length": P("int", 0, 0, 5000, doc="every colouring colours exactly 1..length; 0 = any"),
+            "count": P("int", 0, 0, 100000, doc="number of colourings in the file; 0 = any"),
+            "proof_sha256": P("text", "", maxlen=64, doc="SHA-256 of the proof that 1..length+1 cannot be coloured "
+                              "(recorded in the manifest, not checked here)"),
+            "columns": P("int", 0, 0, 5000, doc="numbers per row; 0 = all on one row"),
+            "separate": P("bool", True, doc="an empty row between colourings"),
+            "cell_gap": P("int", 1, 0, 16, doc="pixels between neighbouring squares (at most a third of a square)"),
+            "ramp": P("str", "cyc", choices=DATA_RAMPS, doc="colour c is taken evenly round the ramp"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/coloring.py"),
+            "colourings of 1..n (SAT witnesses), checked first: no monochromatic progression (van der Waerden) or sum (Schur)",
+            (256, 64), 2048, data="colorings"),
         Generator("math.fourier", "1", "image", mathviz.fourier, {
             "wave": P("str", "square", choices=("square", "sawtooth", "triangle")),
             "orders": P("text", "1,3,9,27", maxlen=64, doc="comma-separated numbers of terms, one curve each (1..2000)"),

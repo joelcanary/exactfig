@@ -1,0 +1,6 @@
+# A colouring of 1..39 with 4 colours: colour 0 holds no 2-term arithmetic progression (it is used at most once), and
+# colours 1, 2 and 3 hold no 3-term progression. So the van der Waerden number w(4; 2,3,3,3) is greater than 39.
+# Found by a SAT solver (CaDiCaL). That 1..40 has no such colouring, so w(4; 2,3,3,3) = 40 (OEIS A217008, T. Ahmed),
+# was proved by a DRAT proof (SHA-256 40138d4cb6956fbb6bd2b9c1ea0b4c593bb2680e38ab185371b4c77f3314ecae, 6523302 bytes)
+# checked by drat-trim and, as LRAT, by the verified checker cake_lpr. One digit per number, 1 first.
+212232311331132322101223231133113232212
