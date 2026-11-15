@@ -22,6 +22,10 @@ Two shapes of data, each from several standard formats, all read with the standa
             catalog (any extension, `format` must say so)   one pattern per line, its rows separated by spaces, `O` or `*`
                                  alive and `.` dead, optionally preceded by `WxH:`, which is then checked; `#` or `!`
                                  starts a comment line
+  instances instance masks of one image (segmentation): the ground truth and, optionally, a prediction
+            instances (a .json file, `format` must say so)  {"width": W, "height": H, "truth": [mask, …],
+                                 "prediction": [mask, …], "meta": {"date": "…", …}}; a mask is COCO run-length encoding
+                                 {"size": [H, W], "counts": [ …] or "compressed string"} or {"cells": [[x, y], …]}
   colorings colourings of 1..n (e.g. a SAT solver's witness that 1..n can be coloured without a monochromatic
             arithmetic progression, or split into sum-free sets)
             coloring (any extension, `format` must say so)  one colouring per line: either one digit per number
@@ -55,8 +59,11 @@ FRAME_FORMATS = ("json",)
 IMAGE_FORMATS = ("png", "ppm")
 PATTERN_FORMATS = ("catalog",)
 COLORING_FORMATS = ("coloring",)
+INSTANCE_FORMATS = ("instances",)
 FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMATS, "image": IMAGE_FORMATS,
-           "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS}
+           "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS, "instances": INSTANCE_FORMATS}
+MAX_INSTANCE_PIXELS = 2048 * 2048
+MAX_INSTANCES = 10_000
 MAX_COLORING = 5000
 MAX_COLORS = 64
 MAX_PATTERNS = 100_000
@@ -611,6 +618,124 @@ def read_coloring(path: str) -> Colorings:
     return Colorings(out)
 
 
+def rle_counts_from_string(s: str) -> list[int]:
+    """The run lengths of a compressed COCO RLE string (the encoding of pycocotools' rleToString: 5 bits per character
+    plus a continuation bit, signed, and from the third count on a difference from the count two places before)."""
+    counts, p = [], 0
+    while p < len(s):
+        x, k, more = 0, 0, True
+        while more:
+            if p >= len(s):
+                raise ValueError("a compressed RLE string ends in the middle of a number")
+            c = ord(s[p]) - 48
+            if not 0 <= c < 64:
+                raise ValueError(f"character {s[p]!r} cannot appear in a compressed RLE string")
+            x |= (c & 0x1F) << (5 * k)
+            more = bool(c & 0x20)
+            p += 1
+            k += 1
+            if not more and c & 0x10:
+                x |= -1 << (5 * k)
+        if len(counts) > 2:
+            x += counts[-2]
+        counts.append(x)
+    return counts
+
+
+def rle_string_from_counts(counts: list[int]) -> str:
+    """The inverse of rle_counts_from_string (pycocotools' rleToString), for writing COCO data."""
+    out = []
+    for i, c in enumerate(counts):
+        x = c - counts[i - 2] if i > 2 else c
+        more = True
+        while more:
+            ch = x & 0x1F
+            x >>= 5
+            more = not ((ch & 0x10 and x == -1) or (not ch & 0x10 and x == 0))
+            if more:
+                ch |= 0x20
+            out.append(chr(ch + 48))
+    return "".join(out)
+
+
+def _mask_pixels(m, w: int, h: int, where: str) -> list[int]:
+    """Row-major pixel indices (y·W + x) of one mask: COCO RLE (column-major, runs starting with background) or cells."""
+    if not isinstance(m, dict):
+        raise DataError(f"{where}: a mask is {{\"size\": [H, W], \"counts\": …}} or {{\"cells\": [[x, y], …]}}")
+    if "cells" in m:
+        cells = m["cells"]
+        if not isinstance(cells, list) or any(not isinstance(c, list) or len(c) != 2 or
+                                              any(isinstance(v, bool) or not isinstance(v, int) for v in c) for c in cells):
+            raise DataError(f"{where}: cells must be [[x, y], …] with integer coordinates")
+        out = set()
+        for x, y in cells:
+            if not (0 <= x < w and 0 <= y < h):
+                raise DataError(f"{where}: cell ({x}, {y}) outside the {w}x{h} image")
+            out.add(y * w + x)
+        return sorted(out)
+    size, counts = m.get("size"), m.get("counts")
+    if size != [h, w]:
+        raise DataError(f"{where}: RLE size {size} is not the image's [H, W] = [{h}, {w}]")
+    if isinstance(counts, str):
+        try:
+            counts = rle_counts_from_string(counts)
+        except ValueError as ex:
+            raise DataError(f"{where}: {ex}") from None
+    if not isinstance(counts, list) or any(isinstance(c, bool) or not isinstance(c, int) or c < 0 for c in counts):
+        raise DataError(f"{where}: RLE counts must be non-negative integers")
+    if sum(counts) != w * h:
+        raise DataError(f"{where}: RLE counts add up to {sum(counts)}, the image has {w * h} pixels")
+    out, i = [], 0
+    for k, run in enumerate(counts):
+        if k % 2:                                     # odd runs are the mask (COCO starts with background)
+            for j in range(i, i + run):
+                out.append((j % h) * w + j // h)      # COCO runs go down the columns
+        i += run
+    out.sort()
+    return out
+
+
+@dataclass
+class Instances:
+    """Instance masks of one image: `truth` and `prediction` are lists of sorted row-major pixel indices."""
+    width: int
+    height: int
+    truth: list
+    prediction: list | None
+    meta: dict
+
+    def describe(self) -> dict:
+        d = {"size": [self.width, self.height], "truth": len(self.truth)}
+        if self.prediction is not None:
+            d["prediction"] = len(self.prediction)
+        return d
+
+
+def read_instances(path: str) -> Instances:
+    """{"width", "height", "truth": [mask…], "prediction": [mask…] (optional), "meta": {str: str|number} (optional)}."""
+    obj = _json(path)
+    if not isinstance(obj, dict) or set(obj) - {"width", "height", "truth", "prediction", "meta"}:
+        raise DataError(f"{path}: expected {{\"width\", \"height\", \"truth\", \"prediction\", \"meta\"}}")
+    w, h = obj.get("width"), obj.get("height")
+    if any(isinstance(v, bool) or not isinstance(v, int) or v < 1 for v in (w, h)) or w * h > MAX_INSTANCE_PIXELS:
+        raise DataError(f"{path}: width and height must be positive integers, at most {MAX_INSTANCE_PIXELS} pixels in all")
+    meta = obj.get("meta", {})
+    if not isinstance(meta, dict) or any(not isinstance(v, (str, int, float)) or isinstance(v, bool) for v in meta.values()):
+        raise DataError(f"{path}: meta must map names to strings or numbers")
+    sets = {}
+    for role in ("truth", "prediction"):
+        masks = obj.get(role)
+        if masks is None:
+            if role == "truth":
+                raise DataError(f"{path}: no \"truth\" list")
+            sets[role] = None
+            continue
+        if not isinstance(masks, list) or len(masks) > MAX_INSTANCES:
+            raise DataError(f"{path}: \"{role}\" must be a list of at most {MAX_INSTANCES} masks")
+        sets[role] = [_mask_pixels(m, w, h, f"{path}, {role} {k + 1}") for k, m in enumerate(masks)]
+    return Instances(w, h, sets["truth"], sets["prediction"], meta)
+
+
 def load(path: str, shape: str, fmt: str | None = None):
     """Read `path` as a `grid`, `points`, `frames`, an `image` or `patterns`."""
     f = format_of(path, fmt)
@@ -626,6 +751,8 @@ def load(path: str, shape: str, fmt: str | None = None):
         readers = {"catalog": read_catalog}
     elif shape == "colorings":
         readers = {"coloring": read_coloring}
+    elif shape == "instances":
+        readers = {"instances": read_instances}
     else:
         raise AssertionError(shape)
     if f not in readers:

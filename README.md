@@ -31,6 +31,7 @@ dynamical system. The figure, its data and the code that drew it are tied togeth
 - [Your own data](#your-own-data)
 - [Catalogues of patterns](#catalogues-of-patterns)
 - [Colourings and SAT witnesses](#colourings-and-sat-witnesses)
+- [Instance masks and segmentation](#instance-masks-and-segmentation)
 - [Animations and video](#animations-and-video)
 - [Layers and editing](#layers-and-editing)
 - [Lean](#lean)
@@ -101,6 +102,8 @@ Every file below comes from a recipe in [`examples/recipes`](examples/recipes) a
 | ![still lifes](gallery/still-lifes-a175001.png) | `data.catalog`: the 49 strict still lifes of 14 cells under the Move rule B368/S245, the term A175001(14) = 49 of the OEIS. Before drawing, exactfig simulates every pattern and refuses the figure if one is not a still life, is a pseudo still life, does not have 14 cells, repeats another up to symmetry, or if there are not exactly 49. The picture cannot show more than the data proves. |
 | ![van der Waerden](gallery/vdw-2-3-3-3.png) | `data.coloring`: a SAT solver's colouring of 1..39 with 4 colours, the first never used twice and the other three without a monochromatic 3-term arithmetic progression, so w(4; 2,3,3,3) > 39. exactfig checks it before drawing; the recipe also records the SHA-256 of the DRAT proof, checked by drat-trim and cake_lpr, that 1..40 has no such colouring: w(4; 2,3,3,3) = 40 (OEIS A217008). |
 | ![Schur](gallery/schur-3.png) | `data.coloring` with `check: "schur"`: 1..13 split into three sum-free sets (no set holds x, y and x + y), so the Schur number S(3) is at least 13. |
+| ![instances](gallery/instances-truth.png) | `data.instances`, `mode: "instances"`: a synthetic segmentation scene, six filament-like instances in compressed COCO RLE, each in its own hue. Refused if a mask is empty or two instances share a pixel. |
+| ![compare](gallery/instances-compare.png) | `mode: "compare"`: the same ground truth against seven predictions, matched one to one by IoU > 1/2 and scored exactly: the agreed pixels, the pixels only one side has (grey), false positives (warm) and false negatives (cool). The recipe states TP 4, FP 2, FN 2 and PQ 0.4670; the exact PQ is 21153891139/45297262530, and a recipe that said anything else would not render. |
 
 ### Layers and Lean
 
@@ -277,6 +280,25 @@ or commas; `#` and `!` start comment lines; give `"format": "coloring"`. A refus
 the progression or the sum that breaks the rule. The checks are tested against W(2;3) = 9, S(2) = 4 and the weak Schur
 number WS(2) = 8, each decided by brute force over every colouring.
 
+## Instance masks and segmentation
+
+`data.instances` draws instance masks (one image of a segmentation: the ground truth and, optionally, a prediction) and
+checks them first. Each check comes from a mistake that real evaluations punish or, worse, reward:
+
+| Check | Why |
+|---|---|
+| no empty mask | an empty mask is not an instance; scorers that accept them can be gamed |
+| no two instances of one image share a pixel (`partition`, on by default) | a panoptic evaluator rejects such a submission; and with overlaps, a duplicate of a prediction whose IoU exceeds the current PQ *raises* a naive score |
+| matching by IoU > 1/2, exact integers | between two partitions it is one-to-one by construction: each prediction matches at most one annotation and each annotation at most one prediction |
+| `tp`, `fp`, `fn`, `pq` as stated | PQ = Σ IoU / (TP + FP/2 + FN/2) computed as an exact fraction; a decimal must equal it rounded to its digits, a fraction must equal it |
+| `expect: "date=…;panel=…"` | the caption must match the data's `meta`: a figure cannot say 2020 for an image of 2019 |
+
+The input (`"format": "instances"`) is `{"width": W, "height": H, "truth": [mask, …], "prediction": [mask, …],
+"meta": {…}}`; a mask is COCO run-length encoding, `{"size": [H, W], "counts": […] or "compressed string"}` as
+pycocotools writes it (checked against pycocotools in the tests), or `{"cells": [[x, y], …]}`. `mode: "instances"` draws
+one set, each instance in its own hue (`partition: false` allows overlapping raw detections there); `mode: "compare"`
+draws truth and prediction on one panel. `exactfig.data.io.rle_string_from_counts` writes compressed RLE.
+
 ## Animations and video
 
 | Generator | What it computes |
@@ -360,7 +382,7 @@ in each. Every entry is a generator or a recipe in the gallery.
 | Probability and stochastic processes | quasi-random Halton samples, Poisson-disc sampling, seeded random soups, fractional Brownian surfaces (fBm) | [terrain](gallery/terrain-0-0.png) |
 | Fourier analysis | partial sums and the Gibbs phenomenon (`math.fourier`); the discrete Fourier transform of a closed curve drawn as epicycles (`anim.epicycles`) | [Gibbs](gallery/fourier-square.png), [epicycles](gallery/epicycles-heart.gif) |
 | Signal processing and information | ordered (Bayer) and error-diffusion dithering, palette quantisation, LZW (GIF), sonification | [sky](gallery/sky-dusk.png), [mono](gallery/sky-mono.png) |
-| Image processing | area resampling in linear light, median-cut and k-means palettes, Sobel edges (`data.image`) | [conversion](gallery/convert-kmeans16-edges.png) |
+| Image processing | area resampling in linear light, median-cut and k-means palettes, Sobel edges (`data.image`); instance segmentation checked and scored exactly (`data.instances`) | [conversion](gallery/convert-kmeans16-edges.png) |
 | Fractals | Julia sets by escape time | [Julia](gallery/julia.png) |
 | Geography and surfaces | hill-shading (Horn), hypsometric tint, iso-lines (marching squares) | [relief](gallery/dem-relief.png), [hillshade](gallery/dem-hillshade.png) |
 | Colour science | OKLab palettes: sequential ramp of increasing lightness, diverging ramp symmetric in lightness, cyclic ramp at equal lightness | every figure |

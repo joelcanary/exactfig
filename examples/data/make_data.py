@@ -8,6 +8,10 @@ Make the example datasets in gallery/data, deterministically, from published for
                           129 × 129 grid (row 0 is y = 1), float64
   dem-192.pgm             a synthetic elevation model: four Gaussian massifs and fractal (fBm) detail on a
                           192 × 192 grid of 60 m cells, as a 16-bit greymap: elevation in metres = value × 2000 / 65535
+  instances-demo.json     a synthetic segmentation scene of 160 × 120 pixels: six thick curves (filament-like) as the
+                          ground truth and seven predicted instances (four close matches, one too short to reach
+                          IoU > 1/2, one with nothing under it, one curve missed), every mask in compressed COCO RLE;
+                          integer geometry only, so every platform writes the same bytes
   testcard-480x320.png    a true-colour test card for image conversion: an OKLCh colour wheel (hue = angle, lightness
                           = radius), grey, red, green and blue ramps, and two shapes with anti-aliased edges (RGBA, 8 bits)
 
@@ -16,6 +20,7 @@ The test suite regenerates them and checks every byte.
 """
 from __future__ import annotations
 
+import json
 import os
 import sys
 
@@ -23,7 +28,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", ".."))
 
 from exactfig import fmath as fm  # noqa: E402
-from exactfig.data.io import write_npy, write_pgm  # noqa: E402
+from exactfig.data.io import rle_string_from_counts, write_npy, write_pgm  # noqa: E402
 from exactfig.pixel import palette as PAL, png  # noqa: E402
 from exactfig.pixel import pxmath as M  # noqa: E402
 
@@ -88,6 +93,56 @@ def testcard(w: int = 480, h: int = 320) -> bytes:
     return bytes(out)
 
 
+def _curve(w, h, x0, y0, x1, y1, bend, r, t0=0, t1=64):
+    """Pixels within distance r of the quadratic curve from (x0, y0) to (x1, y1) bulging by `bend` pixels sideways,
+    sampled at t = t0..t1 of 64 steps; integer arithmetic only."""
+    out = set()
+    dx, dy = x1 - x0, y1 - y0
+    L = max(1, abs(dx), abs(dy))
+    for t in range(t0, t1 + 1):
+        b = bend * 4 * t * (64 - t)                     # 4 t (1 − t) in 64ths², times bend: peak `bend` at t = 1/2
+        cx = x0 + (dx * t) // 64 - (dy * b) // (4096 * L)
+        cy = y0 + (dy * t) // 64 + (dx * b) // (4096 * L)
+        for yy in range(cy - r, cy + r + 1):
+            for xx in range(cx - r, cx + r + 1):
+                if 0 <= xx < w and 0 <= yy < h and (xx - cx) * (xx - cx) + (yy - cy) * (yy - cy) <= r * r:
+                    out.add((xx, yy))
+    return out
+
+
+def _rle(cells, w, h):
+    """Compressed COCO RLE of a set of (x, y): runs down the columns, starting with background."""
+    counts, run, cur = [], 0, 0
+    for x in range(w):
+        for y in range(h):
+            v = 1 if (x, y) in cells else 0
+            if v != cur:
+                counts.append(run)
+                run, cur = 0, v
+            run += 1
+    counts.append(run)
+    return {"size": [h, w], "counts": rle_string_from_counts(counts)}
+
+
+def instances_demo() -> str:
+    w, h = 160, 120
+    truth = [_curve(w, h, 10, 15, 70, 25, 8, 3), _curve(w, h, 95, 10, 150, 40, -10, 2),
+             _curve(w, h, 15, 55, 40, 100, 6, 3), _curve(w, h, 60, 60, 120, 75, 12, 2),
+             _curve(w, h, 130, 65, 145, 110, 5, 3), _curve(w, h, 60, 100, 110, 112, -4, 2)]
+    pred = [_curve(w, h, 11, 16, 71, 26, 8, 3), _curve(w, h, 96, 11, 150, 41, -10, 2),
+            _curve(w, h, 16, 56, 41, 100, 6, 2), _curve(w, h, 60, 61, 120, 76, 12, 2),
+            _curve(w, h, 130, 65, 145, 110, 5, 3, 0, 24),          # only the first third: IoU below 1/2
+            _curve(w, h, 75, 38, 85, 48, 0, 3)]                      # nothing under it: a false positive
+    taken = set()                                                    # predictions must not overlap: earlier ones win
+    for k, m in enumerate(pred):
+        pred[k] = m - taken
+        taken |= m
+    obj = {"width": w, "height": h,
+           "truth": [_rle(m, w, h) for m in truth], "prediction": [_rle(m, w, h) for m in pred],
+           "meta": {"date": "synthetic", "panel": "single", "source": "examples/data/make_data.py"}}
+    return json.dumps(obj, separators=(",", ":")) + "\n"
+
+
 def make(out_dir: str) -> list[str]:
     os.makedirs(out_dir, exist_ok=True)
     paths = []
@@ -112,6 +167,10 @@ def make(out_dir: str) -> list[str]:
     hi = max(max(r) for r in z)
     p = os.path.join(out_dir, "dem-192.pgm")
     write_pgm(p, [[int(fm.floor((v - lo) / (hi - lo) * 65535 + 0.5)) for v in r] for r in z], 65535)
+    paths.append(p)
+    p = os.path.join(out_dir, "instances-demo.json")
+    with open(p, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(instances_demo())
     paths.append(p)
     p = os.path.join(out_dir, "testcard-480x320.png")
     with open(p, "wb") as fh:

@@ -166,7 +166,7 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import annotate, catalog, coloring, datavis, flora, icons, mathviz, motion, skies, sprites, tiles
+    from .forge import annotate, catalog, coloring, datavis, flora, icons, instances, mathviz, motion, skies, sprites, tiles
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
     from .music.theory import MODES
@@ -355,6 +355,21 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/coloring.py"),
             "colourings of 1..n (SAT witnesses), checked first: no monochromatic progression (van der Waerden) or sum (Schur)",
             (256, 64), 2048, data="colorings"),
+        Generator("data.instances", "1", "image", instances.instances, {
+            "mode": P("str", "compare", choices=("compare", "instances"),
+                      doc="compare truth and prediction on one panel, or draw one set of instances"),
+            "show": P("str", "truth", choices=("truth", "prediction"), doc="instances mode: which set"),
+            "partition": P("bool", True, doc="refuse instances that share a pixel (off only to draw raw detections)"),
+            "tp": P("int", -1, -1, 1000000, doc="stated true positives (-1 = not stated)"),
+            "fp": P("int", -1, -1, 1000000, doc="stated false positives (-1 = not stated)"),
+            "fn": P("int", -1, -1, 1000000, doc="stated false negatives (-1 = not stated)"),
+            "pq": P("text", "", maxlen=40, doc="stated panoptic quality: a decimal (checked to its digits) or a fraction"),
+            "expect": P("text", "", maxlen=400, doc="key=value;… that must match the data's meta (captions)"),
+            "ramp": P("str", "cyc", choices=DATA_RAMPS, doc="instances mode: hues of the instances"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/instances.py"),
+            "instance masks (COCO RLE) checked first: no empty mask, no overlap, one-to-one IoU > 1/2, exact PQ, captions",
+            (256, 256), 2048, data="instances"),
         Generator("math.fourier", "1", "image", mathviz.fourier, {
             "wave": P("str", "square", choices=("square", "sawtooth", "triangle")),
             "orders": P("text", "1,3,9,27", maxlen=64, doc="comma-separated numbers of terms, one curve each (1..2000)"),

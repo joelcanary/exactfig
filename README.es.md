@@ -31,6 +31,7 @@ publicar un solo valor (`manifest_sha256`) fija el conjunto entero.
 - [Tus propios datos](#tus-propios-datos)
 - [Catálogos de patrones](#catálogos-de-patrones)
 - [Coloraciones y testigos SAT](#coloraciones-y-testigos-sat)
+- [Máscaras de instancias y segmentación](#máscaras-de-instancias-y-segmentación)
 - [Animaciones y vídeo](#animaciones-y-vídeo)
 - [Capas y edición](#capas-y-edición)
 - [Lean](#lean)
@@ -284,6 +285,29 @@ Ejemplos en la galería: [el testigo SAT de w(4; 2,3,3,3) = 40](gallery/vdw-2-3-
 que comprobaron drat-trim y cake_lpr (OEIS A217008), y [una partición de 1..13 en tres conjuntos sin sumas](gallery/schur-3.png)
 (S(3) ≥ 13).
 
+## Máscaras de instancias y segmentación
+
+`data.instances` dibuja máscaras de instancias (una imagen de una segmentación: la verdad y, si se quiere, una predicción)
+y antes las comprueba. Cada comprobación viene de un error que las evaluaciones reales castigan o, peor, premian:
+
+| Comprobación | Por qué |
+|---|---|
+| ninguna máscara vacía | una máscara vacía no es una instancia; los evaluadores que las aceptan se pueden engañar |
+| ninguna pareja de instancias de una imagen comparte un píxel (`partition`, activado por defecto) | un evaluador panóptico rechaza ese envío; y con solapes, duplicar una predicción cuyo IoU supera el PQ actual *sube* una nota ingenua |
+| emparejamiento por IoU > 1/2, con enteros exactos | entre dos particiones es uno a uno por construcción: cada predicción empareja con como mucho una anotación y al revés |
+| `tp`, `fp`, `fn`, `pq` declarados | PQ = Σ IoU / (TP + FP/2 + FN/2) como fracción exacta; un decimal tiene que coincidir redondeado a sus cifras, una fracción tiene que ser igual |
+| `expect: "date=…;panel=…"` | el pie tiene que cuadrar con el `meta` de los datos: una figura no puede decir 2020 de una imagen de 2019 |
+
+La entrada (`"format": "instances"`) es `{"width": W, "height": H, "truth": [máscara, …], "prediction": [máscara, …],
+"meta": {…}}`; una máscara es codificación por longitudes de COCO, `{"size": [H, W], "counts": […] o "cadena comprimida"}`
+tal como la escribe pycocotools (los tests lo comparan con pycocotools), o `{"cells": [[x, y], …]}`. `mode: "instances"`
+dibuja un conjunto, cada instancia en su tono (ahí `partition: false` deja dibujar detecciones en bruto que se solapan);
+`mode: "compare"` dibuja verdad y predicción en un solo panel. `exactfig.data.io.rle_string_from_counts` escribe RLE
+comprimido.
+
+Ejemplos en la galería: [la escena sintética](gallery/instances-truth.png) y [su comparación](gallery/instances-compare.png),
+cuya receta declara TP 4, FP 2, FN 2 y PQ 0,4670 (el PQ exacto es 21153891139/45297262530).
+
 ## Animaciones y vídeo
 
 | Generador | Qué calcula |
@@ -370,7 +394,7 @@ una. Cada entrada es un generador o una receta de la galería.
 | Probabilidad y procesos estocásticos | muestras cuasialeatorias de Halton, muestreo de disco de Poisson, sopas aleatorias con semilla, superficies brownianas fraccionarias (fBm) | [terreno](gallery/terrain-0-0.png) |
 | Análisis de Fourier | sumas parciales y fenómeno de Gibbs (`math.fourier`); la transformada discreta de una curva cerrada dibujada como epiciclos (`anim.epicycles`) | [Gibbs](gallery/fourier-square.png), [epiciclos](gallery/epicycles-heart.gif) |
 | Señales e información | tramado ordenado (Bayer) y por difusión de error, cuantización a paleta, LZW (GIF), sonificación | [cielo](gallery/sky-dusk.png), [mono](gallery/sky-mono.png) |
-| Procesamiento de imagen | remuestreo por área en luz lineal, paletas por median cut y k-medias, bordes de Sobel (`data.image`) | [conversión](gallery/convert-kmeans16-edges.png) |
+| Procesamiento de imagen | remuestreo por área en luz lineal, paletas por median cut y k-medias, bordes de Sobel (`data.image`); segmentación por instancias comprobada y puntuada con exactitud (`data.instances`) | [conversión](gallery/convert-kmeans16-edges.png) |
 | Fractales | conjuntos de Julia por tiempo de escape | [Julia](gallery/julia.png) |
 | Geografía y superficies | sombreado de relieve (Horn), tinte hipsométrico, curvas de nivel (marching squares) | [relieve](gallery/dem-relief.png), [sombreado](gallery/dem-hillshade.png) |
 | Ciencia del color | paletas OKLab: secuencial de luz creciente, divergente simétrica en luz, cíclica a igual luz | todas las figuras |

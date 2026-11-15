@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **`data.instances`**: instance masks (COCO RLE, compressed or not, or cells) drawn only after they are checked: no
+  empty mask, no shared pixel, one-to-one matching by IoU > 1/2, stated TP/FP/FN and PQ equal to the exact values
+  (fractions), and captions (`expect`) equal to the data's meta. `compare` draws truth and prediction on one panel.
+  New input format `instances`; `rle_string_from_counts` / `rle_counts_from_string` in `exactfig.data.io`, checked
+  against pycocotools. Gallery: a synthetic scene and its comparison (PQ 0.4670).
 - **`data.coloring`**: colourings of 1..n — the witnesses a SAT solver returns — drawn only after they are checked: no
   colour holds an arithmetic progression of its length (van der Waerden numbers, one length per colour allowed) or a sum
   x + y (Schur numbers; weak Schur with `distinct`). `proof_sha256` records the SHA-256 of the proof of the other half of

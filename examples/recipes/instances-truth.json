@@ -1,0 +1,1 @@
+{"generator": "data.instances", "seed": "demo", "palette": "sci", "size": [480, 360], "input": {"path": "data/instances-demo.json", "format": "instances"}, "params": {"mode": "instances", "show": "truth"}, "output": "instances-truth.png"}
