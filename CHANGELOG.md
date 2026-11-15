@@ -8,6 +8,8 @@
 - Tests: `cbrt` is checked against the exact cube root (within 1 ulp) instead of the platform's `math.cbrt`, which is
   itself a few ulp off in glibc; the example PNG is compared by pixels, as `verify` does, since zlib builds compress
   differently (Python 3.14 on Windows).
+- Continuous integration runs on the Node 24 versions of the GitHub actions (`actions/checkout@v5`,
+  `actions/setup-python@v6`); the Node 20 ones are deprecated.
 
 ## 0.2.0 (2026-10-18)
 
