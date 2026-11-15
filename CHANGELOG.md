@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.0 (2026-11-15)
+
+- **`data.sequence`**: OEIS b-files as bars (log or linear), the new terms highlighted and checked against the stated
+  `terms`, `first`, `last` and `count`; consecutive indices enforced; terms of up to 4000 digits.
+- **`data.triangle`**: right triangles with rational sides (congruent numbers), checked in exact fractions: a² + b² = c²,
+  a·b/2 = n, squarefree n, no repeats. Gallery: 5, 6, 7 and the 48-digit triangle of 157.
+- **`math.sandpile`**: the identity of the sandpile group (Creutz's formula), checked e ⊕ e = e; a stated group order is
+  checked against the number of spanning trees (exact Bareiss determinant), n ≤ 14.
+- **Ships in `data.catalog`** (`check: "ship"`, `shift`): Conway's light, middle and heavy spaceships in the gallery.
+- Readers refuse numbers of more than 4000 digits with a message (Python 3.11+ refuses to convert more than 4300).
+
 ## 0.4.0 (2026-11-15)
 
 - **`data.instances`**: instance masks (COCO RLE, compressed or not, or cells) drawn only after they are checked: no

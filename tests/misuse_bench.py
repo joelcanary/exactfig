@@ -125,6 +125,15 @@ def cases():
     yield "instances compare without prediction", {"r.json": j(dict(inst, params={"mode": "compare"})), "i.json": j({"width": 4, "height": 4, "truth": [{"cells": [[0, 0]]}]})}, ["render", "r.json"]
     yield "instances caption that the data contradicts", {"r.json": j(dict(inst, params={"expect": "date=2020"})), "i.json": j({"width": 4, "height": 4, "meta": {"date": "2019"}, "truth": [{"cells": [[0, 0]]}]})}, ["render", "r.json"]
     yield "instances image too large", {"r.json": j(inst), "i.json": j({"width": 100000, "height": 100000, "truth": []})}, ["render", "r.json"]
+    seqr = {"generator": "data.sequence", "seed": "x", "palette": "sci", "size": [40, 20], "input": {"path": "b.txt", "format": "bfile"}, "output": "q.png"}
+    yield "b-file with a gap", {"r.json": j(seqr), "b.txt": "1 0\n3 1\n"}, ["render", "r.json"]
+    yield "b-file with a term of 5000 digits", {"r.json": j(seqr), "b.txt": "1 " + "9" * 5000 + "\n"}, ["render", "r.json"]
+    yield "b-file new terms that differ", {"r.json": j(dict(seqr, params={"new_from": 2, "terms": "5"})), "b.txt": "1 0\n2 4\n"}, ["render", "r.json"]
+    trir = {"generator": "data.triangle", "seed": "x", "palette": "sci", "size": [40, 20], "input": {"path": "t.txt", "format": "triangles"}, "output": "t.png"}
+    yield "triangle that is not right", {"r.json": j(trir), "t.txt": "6 3 4 6\n"}, ["render", "r.json"]
+    yield "triangle with decimals", {"r.json": j(trir), "t.txt": "5 1.5 6.666 6.833\n"}, ["render", "r.json"]
+    yield "sandpile order too large to check", {"r.json": j({"generator": "math.sandpile", "seed": "x", "palette": "sci", "size": [32, 32], "params": {"n": 32, "order": "5"}, "output": "s.png"})}, ["render", "r.json"]
+    yield "ship with the wrong shift", {"r.json": j({"generator": "data.catalog", "seed": "x", "palette": "sci", "size": [32, 32], "input": {"path": "c.txt", "format": "catalog"}, "params": {"check": "ship", "period": 4, "shift": "2,0"}, "output": "c.png"}), "c.txt": "3x3: .O. ..O OOO\n"}, ["render", "r.json"]
     yield "animation too many pixels", {"r.json": j({"generator": "anim.life", "seed": "x", "palette": "sci", "size": [1024, 1024], "params": {"frames": 1000}, "output": "l.gif"})}, ["render", "r.json"]
     yield "animation odd delay", {"r.json": j({"generator": "anim.life", "seed": "x", "palette": "sci", "size": [16, 16], "params": {"delay": 33, "frames": 2}, "output": "l.gif"})}, ["render", "r.json"]
     yield "verify manifest missing", {}, ["verify", "--manifest", "nope.json"]

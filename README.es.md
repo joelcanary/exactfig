@@ -48,6 +48,7 @@ receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 
 - [Catálogos de patrones](#catálogos-de-patrones)
 - [Coloraciones y testigos SAT](#coloraciones-y-testigos-sat)
 - [Máscaras de instancias y segmentación](#máscaras-de-instancias-y-segmentación)
+- [Secuencias, números congruentes y pilas de arena](#secuencias-números-congruentes-y-pilas-de-arena)
 - [Animaciones y vídeo](#animaciones-y-vídeo)
 - [Capas y edición](#capas-y-edición)
 - [Lean](#lean)
@@ -72,7 +73,7 @@ receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 
 | Los mismos bits en cualquier plataforma | las funciones trascendentes salen de `exactfig.fmath` (solo aritmética básica IEEE 754); comprobado en x86-64 y ARM64 |
 | El conjunto entero queda fijado | `manifest_sha256` cubre todas las entradas: basta con firmar o publicar ese valor |
 | Una receta no puede colar una imagen | esquemas de parámetros cerrados (valores con tipo y rango, nada de matrices de píxeles); los datos solo entran como un fichero con nombre y hash |
-| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring` y `data.instances` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies) y si no, no dibujan |
+| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.instances`, `data.sequence`, `data.triangle` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies) y si no, no dibujan |
 | Los errores acaban en un mensaje claro | una línea que dice qué y por qué, nunca un traceback; se prueban más de 90 errores reales, un proceso cada uno |
 
 Lo que no prueba: quién escribió el código o eligió la receta (para eso, firma el resumen del manifiesto), ni que un modelo o
@@ -325,6 +326,31 @@ comprimido.
 
 Ejemplos en la galería: [la escena sintética](gallery/instances-truth.png) y [su comparación](gallery/instances-compare.png),
 cuya receta declara TP 4, FP 2, FN 2 y PQ 0,4670 (el PQ exacto es 21153891139/45297262530).
+
+## Secuencias, números congruentes y pilas de arena
+
+**`data.sequence`** lee un b-file de la OEIS (`n a(n)` por línea, `"format": "bfile"`) y dibuja sus términos como barras,
+en escala logarítmica o lineal, con los términos desde `new_from` en su propio color. Rechaza un fichero cuyos índices no
+sean consecutivos, y una receta cuyos `terms` (los términos nuevos, separados por comas), `first`, `last` o `count` no
+coincidan con el fichero: lo resaltado en la figura es exactamente lo que dice la contribución. Se leen términos de hasta
+4000 cifras (Python 3.11 y posteriores se niegan a convertir más largos); sus logaritmos salen de los propios enteros.
+
+**`data.triangle`** lee triángulos rectángulos de lados racionales (`n a b c` por línea, enteros o fracciones p/q,
+`"format": "triangles"`), los certificados de los números congruentes, y comprueba a² + b² = c², a·b/2 = n, lados
+positivos, n libre de cuadrados y sin repetidos, con fracciones exactas; el rechazo da la diferencia exacta. Los decimales
+se rechazan: no serían exactos.
+
+**`math.sandpile`** calcula la identidad del grupo de la pila de arena de una rejilla n × n (Creutz:
+e = estab(2·m − estab(2·m)), con m = 3 en todas partes) y comprueba e ⊕ e = e antes de dibujar; un `order` declarado
+(n ≤ 14) tiene que ser el determinante del laplaciano reducido, calculado exacto por eliminación sin fracciones: el número
+de árboles generadores (teorema de la matriz-árbol).
+
+**Naves** (`data.catalog`, `check: "ship"`, `period`, `shift: "dx,dy"`): cada patrón tiene que volver desplazado (dx, dy)
+tras exactamente `period` generaciones, y no ser una traslación de sí mismo antes.
+
+Ejemplos en la galería: [las naves de Conway](gallery/conway-ships.png), [los triángulos de 5, 6, 7 y 157](gallery/congruent-triangles.png)
+(el de 157 con numeradores de hasta 48 cifras), [el b-file de A175001](gallery/oeis-a175001.png) con tus términos 11..18 y
+[la identidad de la pila de arena de 96 × 96](gallery/sandpile-identity.png).
 
 ## Animaciones y vídeo
 

@@ -46,6 +46,7 @@ checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
 - [Catalogues of patterns](#catalogues-of-patterns)
 - [Colourings and SAT witnesses](#colourings-and-sat-witnesses)
 - [Instance masks and segmentation](#instance-masks-and-segmentation)
+- [Sequences, congruent numbers and sandpiles](#sequences-congruent-numbers-and-sandpiles)
 - [Animations and video](#animations-and-video)
 - [Layers and editing](#layers-and-editing)
 - [Lean](#lean)
@@ -70,7 +71,7 @@ checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
 | The same bits on every platform | transcendental functions come from `exactfig.fmath` (basic IEEE 754 arithmetic only); checked on x86-64 and ARM64 |
 | The whole set is pinned | `manifest_sha256` covers every entry; sign or publish that one value |
 | Recipes cannot smuggle a picture | closed parameter schemas: typed, ranged values, no pixel arrays; data enters only as a named, hashed file |
-| The figure shows only what the data proves | `data.catalog`, `data.coloring` and `data.instances` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions) and refuse to draw otherwise |
+| The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.instances`, `data.sequence`, `data.triangle` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions) and refuse to draw otherwise |
 | Mistakes end in a clear message | one line saying what and why, never a traceback; more than 90 real mistakes are tested, one process each |
 
 What it does not prove: who wrote the code or chose the recipe (sign the manifest digest for that), or that a model or a
@@ -119,6 +120,10 @@ Every file below comes from a recipe in [`examples/recipes`](examples/recipes) a
 | ![van der Waerden](gallery/vdw-2-3-3-3.png) | `data.coloring`: a SAT solver's colouring of 1..39 with 4 colours, the first never used twice and the other three without a monochromatic 3-term arithmetic progression, so w(4; 2,3,3,3) > 39. exactfig checks it before drawing; the recipe also records the SHA-256 of the DRAT proof, checked by drat-trim and cake_lpr, that 1..40 has no such colouring: w(4; 2,3,3,3) = 40 (OEIS A217008). |
 | ![Schur](gallery/schur-3.png) | `data.coloring` with `check: "schur"`: 1..13 split into three sum-free sets (no set holds x, y and x + y), so the Schur number S(3) is at least 13. |
 | ![instances](gallery/instances-truth.png) | `data.instances`, `mode: "instances"`: a synthetic segmentation scene, six filament-like instances in compressed COCO RLE, each in its own hue. Refused if a mask is empty or two instances share a pixel. |
+| ![ships](gallery/conway-ships.png) | `data.catalog` with `check: "ship"`: Conway's light, middle and heavy spaceships, each checked to come back moved by (−2, 0) after exactly 4 generations, and to no translate of itself before. |
+| ![congruent](gallery/congruent-triangles.png) | `data.triangle`: right triangles with rational sides for the congruent numbers 5, 6, 7 and 157; the last one has sides with numerators of up to 48 digits. a² + b² = c² and a·b/2 = n are checked in exact fractions before drawing. |
+| ![A175001](gallery/oeis-a175001.png) | `data.sequence`: the OEIS b-file of A175001 on a logarithmic scale, the terms from n = 11 on (6, 10, 18, 49, 103, 228, 376, 745) highlighted and checked against the file. |
+| ![sandpile](gallery/sandpile-identity.png) | `math.sandpile`: the identity of the sandpile group of a 96 × 96 grid, computed with Creutz's formula and checked: stable, and e ⊕ e = e. For n ≤ 14 a stated group order is checked against the number of spanning trees. |
 | ![compare](gallery/instances-compare.png) | `mode: "compare"`: the same ground truth against seven predictions, matched one to one by IoU > 1/2 and scored exactly: the agreed pixels, the pixels only one side has (grey), false positives (warm) and false negatives (cool). The recipe states TP 4, FP 2, FN 2 and PQ 0.4670; the exact PQ is 21153891139/45297262530, and a recipe that said anything else would not render. |
 
 ### Layers and Lean
@@ -314,6 +319,26 @@ The input (`"format": "instances"`) is `{"width": W, "height": H, "truth": [mask
 pycocotools writes it (checked against pycocotools in the tests), or `{"cells": [[x, y], …]}`. `mode: "instances"` draws
 one set, each instance in its own hue (`partition: false` allows overlapping raw detections there); `mode: "compare"`
 draws truth and prediction on one panel. `exactfig.data.io.rle_string_from_counts` writes compressed RLE.
+
+## Sequences, congruent numbers and sandpiles
+
+**`data.sequence`** reads an OEIS b-file (`n a(n)` per line, `"format": "bfile"`) and draws its terms as bars, on a
+logarithmic or a linear scale, the terms from `new_from` on in their own colour. It refuses a file whose indices are not
+consecutive, and a recipe whose `terms` (the new terms, comma-separated), `first`, `last` or `count` differ from the file:
+the highlighted part of the figure is exactly what the contribution says. Terms of up to 4000 digits are read (Python
+3.11 and later refuse to convert longer ones); their logarithms come from the integers themselves.
+
+**`data.triangle`** reads right triangles with rational sides (`n a b c` per line, integers or fractions p/q,
+`"format": "triangles"`), the certificates of congruent numbers, and checks a² + b² = c², a·b/2 = n, positive sides,
+squarefree n and no repeats in exact fractions; a refusal gives the exact difference. Decimals are refused: they would
+not be exact.
+
+**`math.sandpile`** computes the identity of the sandpile group of an n × n grid (Creutz: e = stab(2·m − stab(2·m)),
+m = 3 everywhere) and checks e ⊕ e = e before drawing; a stated `order` (n ≤ 14) must equal the determinant of the
+reduced Laplacian, computed exactly by fraction-free elimination: the number of spanning trees (matrix-tree theorem).
+
+**Ships** (`data.catalog`, `check: "ship"`, `period`, `shift: "dx,dy"`): every pattern must come back moved by
+(dx, dy) after exactly `period` generations, and be no translate of itself before.
 
 ## Animations and video
 

@@ -1,0 +1,7 @@
+# Congruent numbers n with a right triangle of rational sides a, b, c and area n: one per line, 'n a b c'.
+# 6 (3, 4, 5) and 5 and 7 are the classical first cases; the simplest triangle of area 157 has sides whose numerators
+# have up to 48 digits. exactfig checks a^2 + b^2 = c^2 and a*b/2 = n in exact fractions before drawing.
+5 3/2 20/3 41/6
+6 3 4 5
+7 24/5 35/12 337/60
+157 6803298487826435051217540/411340519227716149383203 411340519227716149383203/21666555693714761309610 224403517704336969924557513090674863160948472041/8912332268928859588025535178967163570016480830

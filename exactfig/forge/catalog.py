@@ -7,6 +7,8 @@ recipe states, and refuses to draw (ValueError naming the first pattern that fai
 
   check       "still"       every pattern is unchanged by one generation of `rule`
               "oscillator"  every pattern returns to itself after exactly `period` generations and not before
+              "ship"        every pattern returns to itself moved by `shift` (dx, dy; y grows downwards) after exactly
+                            `period` generations, and to no translate of itself before (a spaceship)
               "none"        nothing is checked about the dynamics
   strict      (still lifes) no pattern splits into two or more groups of its islands (8-connected components) that are
               each still on their own: the "strict" still lifes that sequences such as OEIS A019473 count
@@ -48,6 +50,33 @@ def returns_after(cells, rule, generations: int) -> list[bool]:
         now = step(now, birth, survive)
         out.append(now == start)
     return out
+
+
+def translations(cells, rule, generations: int) -> list:
+    """[(dx, dy) if generation g is the pattern moved by (dx, dy), else None] for g = 1..generations."""
+    birth, survive = rule
+    start = sorted(cells)
+    x0, y0 = min(x for x, _ in start), min(y for _, y in start)
+    norm = [(x - x0, y - y0) for x, y in start]
+    now, out = set(cells), []
+    for _ in range(generations):
+        now = step(now, birth, survive)
+        if len(now) != len(norm) or not now:
+            out.append(None)
+            continue
+        nx, ny = min(x for x, _ in now), min(y for _, y in now)
+        out.append((nx - x0, ny - y0) if sorted((x - nx, y - ny) for x, y in now) == norm else None)
+    return out
+
+
+def parse_shift(text: str) -> tuple[int, int]:
+    try:
+        dx, dy = (int(t) for t in text.replace(" ", "").split(","))
+    except ValueError:
+        raise ValueError(f"shift {text!r}: write dx,dy, e.g. 1,1 (y grows downwards)") from None
+    if (dx, dy) == (0, 0):
+        raise ValueError("shift 0,0 is an oscillator, not a ship: use check oscillator")
+    return dx, dy
 
 
 def islands(cells) -> list[list[tuple[int, int]]]:
@@ -133,6 +162,15 @@ def check(patterns, p) -> dict:
                 first = next((g + 1 for g, b in enumerate(back) if b), None)
                 raise ValueError(f"{where}: not of period {p['period']} under {p['rule']}"
                                  + (f" (it returns after {first})" if first else " (it does not return)"))
+        elif p["check"] == "ship":
+            want = parse_shift(p["shift"])
+            moves = translations(cells, rule, p["period"])
+            early = next((g + 1 for g, m in enumerate(moves[:-1]) if m is not None), None)
+            if moves[-1] != want or early:
+                got = (f"after {p['period']} it is moved by {moves[-1]}" if moves[-1] is not None
+                       else f"after {p['period']} it is not a translate of itself")
+                raise ValueError(f"{where}: not a ship of period {p['period']} moving by {want} under {p['rule']}: "
+                                 + (f"it is already a translate after {early}" if early else got))
         if p["distinct"]:
             c = canonical(cells)
             if c in seen:

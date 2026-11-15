@@ -1,0 +1,1 @@
+{"generator": "data.catalog", "seed": "ships", "palette": "sci", "size": [384, 128], "input": {"path": "data/conway-ships.txt", "format": "catalog"}, "params": {"rule": "B3/S23", "check": "ship", "period": 4, "shift": "-2,0", "count": 3, "columns": 3, "padding": 8}, "output": "conway-ships.png"}

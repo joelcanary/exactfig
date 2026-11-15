@@ -166,7 +166,8 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import annotate, catalog, coloring, datavis, flora, icons, instances, mathviz, motion, skies, sprites, tiles
+    from .forge import (annotate, catalog, coloring, datavis, flora, icons, instances, mathviz, motion, sandpile,
+                        sequence, skies, sprites, tiles, triangle)
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
     from .music.theory import MODES
@@ -321,9 +322,11 @@ def _gens() -> dict[str, Generator]:
             (128, 128), 2048, data="image"),
         Generator("data.catalog", "1", "image", catalog.catalog, {
             "rule": P("text", "B3/S23", maxlen=24, doc="Life-like rule the patterns are checked under, e.g. B368/S245"),
-            "check": P("str", "still", choices=("still", "oscillator", "none"),
-                       doc="refuse to draw unless every pattern is a still life, or an oscillator of `period`"),
-            "period": P("int", 2, 1, 1000, doc="oscillator: exact period"),
+            "check": P("str", "still", choices=("still", "oscillator", "ship", "none"),
+                       doc="refuse to draw unless every pattern is a still life, an oscillator of `period`, or a ship "
+                           "moving by `shift` every `period` generations"),
+            "period": P("int", 2, 1, 1000, doc="oscillator or ship: exact period"),
+            "shift": P("text", "1,1", maxlen=24, doc="ship: dx,dy per period (y grows downwards)"),
             "strict": P("bool", False, doc="still lifes: refuse pseudo still lifes (islands that split into still groups)"),
             "population": P("int", 0, 0, 100000, doc="every pattern has exactly this many live cells; 0 = any"),
             "count": P("int", 0, 0, 100000, doc="the catalogue has exactly this many patterns (a sequence term); 0 = any"),
@@ -370,6 +373,38 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/instances.py"),
             "instance masks (COCO RLE) checked first: no empty mask, no overlap, one-to-one IoU > 1/2, exact PQ, captions",
             (256, 256), 2048, data="instances"),
+        Generator("data.triangle", "1", "image", triangle.triangles, {
+            "squarefree": P("bool", True, doc="every area n is squarefree (the convention for congruent numbers)"),
+            "distinct": P("bool", True, doc="no area n appears twice"),
+            "count": P("int", 0, 0, 100000, doc="number of triangles in the file; 0 = any"),
+            "columns": P("int", 0, 0, 1000, doc="0 = chosen from the number of triangles and the aspect ratio"),
+            "ramp": P("str", "seq", choices=DATA_RAMPS, doc="fill: the order of n along the light part of the ramp"),
+            "edge_ramp": P("str", "paper", choices=DATA_RAMPS),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/triangle.py"),
+            "right triangles with rational sides (congruent numbers), checked exactly: a² + b² = c², a·b/2 = n",
+            (256, 256), 2048, data="triangles"),
+        Generator("data.sequence", "1", "image", sequence.sequence, {
+            "scale": P("str", "log", choices=("log", "linear"), doc="bar height: log10(a + 1), or a itself"),
+            "new_from": P("int", -1, -1, 10 ** 9, doc="first index of the new terms, drawn in ramp_new; -1 = none"),
+            "terms": P("text", "", maxlen=4000, doc="the terms from new_from on, comma-separated; checked exactly"),
+            "first": P("int", -1, -1, 10 ** 9, doc="stated first index; -1 = any"),
+            "last": P("int", -1, -1, 10 ** 9, doc="stated last index; -1 = any"),
+            "count": P("int", 0, 0, 100000, doc="number of terms; 0 = any"),
+            "nonneg": P("bool", True, doc="refuse negative terms"),
+            "ramp_old": P("str", "grey", choices=DATA_RAMPS), "ramp_new": P("str", "seq", choices=DATA_RAMPS),
+            "axis_ramp": P("str", "grey", choices=DATA_RAMPS),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/sequence.py"),
+            "the terms of an integer sequence (OEIS b-file) as bars, the new terms highlighted and checked",
+            (480, 200), 2048, data="sequence"),
+        Generator("math.sandpile", "1", "image", sandpile.sandpile, {
+            "n": P("int", 64, 1, 160, doc="side of the grid; the border leaks to a sink"),
+            "order": P("text", "", maxlen=400, doc="stated order of the sandpile group (checked for n ≤ 14)"),
+            "ramp": P("str", "seq", choices=DATA_RAMPS, doc="0, 1, 2, 3 grains as four steps of the ramp"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("forge/sandpile.py",), "the identity of the sandpile group on an n × n grid, checked: stable, e ⊕ e = e",
+            (256, 256), 2048),
         Generator("math.fourier", "1", "image", mathviz.fourier, {
             "wave": P("str", "square", choices=("square", "sawtooth", "triangle")),
             "orders": P("text", "1,3,9,27", maxlen=64, doc="comma-separated numbers of terms, one curve each (1..2000)"),

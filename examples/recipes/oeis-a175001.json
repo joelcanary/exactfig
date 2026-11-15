@@ -1,0 +1,1 @@
+{"generator": "data.sequence", "seed": "a175001", "palette": "sci", "size": [540, 200], "input": {"path": "data/b175001.txt", "format": "bfile"}, "params": {"new_from": 11, "terms": "6,10,18,49,103,228,376,745", "first": 1, "last": 18}, "output": "oeis-a175001.png"}

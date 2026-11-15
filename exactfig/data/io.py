@@ -26,6 +26,11 @@ Two shapes of data, each from several standard formats, all read with the standa
             instances (a .json file, `format` must say so)  {"width": W, "height": H, "truth": [mask, …],
                                  "prediction": [mask, …], "meta": {"date": "…", …}}; a mask is COCO run-length encoding
                                  {"size": [H, W], "counts": [ …] or "compressed string"} or {"cells": [[x, y], …]}
+  triangles right triangles with rational sides (e.g. the triangles of congruent numbers)
+            triangles (any extension, `format` must say so)  one per line: `n a b c`, each an integer or a fraction p/q
+                                 (legs a, b, hypotenuse c, area n); `#` or `!` starts a comment line
+  sequence  terms of an integer sequence
+            bfile (any extension, `format` must say so)  the OEIS b-file format: one `n a(n)` per line, `#` comments
   colorings colourings of 1..n (e.g. a SAT solver's witness that 1..n can be coloured without a monochromatic
             arithmetic progression, or split into sum-free sets)
             coloring (any extension, `format` must say so)  one colouring per line: either one digit per number
@@ -60,8 +65,13 @@ IMAGE_FORMATS = ("png", "ppm")
 PATTERN_FORMATS = ("catalog",)
 COLORING_FORMATS = ("coloring",)
 INSTANCE_FORMATS = ("instances",)
+TRIANGLE_FORMATS = ("triangles",)
+SEQUENCE_FORMATS = ("bfile",)
+MAX_TERMS = 100_000
+MAX_DIGITS = 4000            # below the 4300-digit limit Python 3.11+ (and 3.10.7+) puts on int(str)
 FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMATS, "image": IMAGE_FORMATS,
-           "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS, "instances": INSTANCE_FORMATS}
+           "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS, "instances": INSTANCE_FORMATS,
+           "triangles": TRIANGLE_FORMATS, "sequence": SEQUENCE_FORMATS}
 MAX_INSTANCE_PIXELS = 2048 * 2048
 MAX_INSTANCES = 10_000
 MAX_COLORING = 5000
@@ -736,6 +746,86 @@ def read_instances(path: str) -> Instances:
     return Instances(w, h, sets["truth"], sets["prediction"], meta)
 
 
+def _rational(tok: str, where: str):
+    """An exact rational from '12', '-3' or 'p/q' (no decimals: they would not be exact)."""
+    from fractions import Fraction
+    t = tok.strip()
+    num, sep, den = t.partition("/")
+    ok = num.lstrip("-").isdigit() and num.isascii() and (not sep or (den.isdigit() and den.isascii()))
+    if not ok or len(t) > MAX_DIGITS:
+        raise DataError(f"{where}: {tok!r} is not an integer or a fraction p/q")
+    if sep and int(den) == 0:
+        raise DataError(f"{where}: {tok!r} has a zero denominator")
+    return Fraction(int(num), int(den) if sep else 1)
+
+
+@dataclass
+class Triangles:
+    """Right triangles in file order: (n, a, b, c) with exact fractions (legs a, b, hypotenuse c, stated area n)."""
+    triangles: list
+
+    def __len__(self):
+        return len(self.triangles)
+
+    def describe(self) -> dict:
+        return {"triangles": len(self.triangles), "n": [str(t[0]) for t in self.triangles[:8]]}
+
+
+def read_triangles(path: str) -> Triangles:
+    """One triangle per line: `n a b c` (integers or fractions p/q)."""
+    out = []
+    for k, raw in enumerate(read_text(path).splitlines(), 1):
+        line = raw.strip()
+        if not line or line[0] in "#!":
+            continue
+        toks = line.split()
+        where = f"{path}, line {k}"
+        if len(toks) != 4:
+            raise DataError(f"{where}: a triangle is 'n a b c' (4 numbers), found {len(toks)}")
+        out.append(tuple(_rational(t, where) for t in toks))
+        if len(out) > MAX_TERMS:
+            raise DataError(f"{path}: more than {MAX_TERMS} triangles")
+    if not out:
+        raise DataError(f"{path}: no triangle")
+    return Triangles(out)
+
+
+@dataclass
+class Sequence:
+    """Terms (n, a(n)) of an integer sequence, n consecutive."""
+    terms: list
+
+    def __len__(self):
+        return len(self.terms)
+
+    def describe(self) -> dict:
+        return {"terms": len(self.terms), "n": [self.terms[0][0], self.terms[-1][0]]}
+
+
+def read_bfile(path: str) -> Sequence:
+    """An OEIS b-file: `n a(n)` per line, consecutive n; `#` lines and blank lines are skipped."""
+    out = []
+    for k, raw in enumerate(read_text(path).splitlines(), 1):
+        line = raw.strip()
+        if not line or line[0] == "#":
+            continue
+        toks = line.split()
+        where = f"{path}, line {k}"
+        if len(toks) != 2 or not all(t.lstrip("-").isdigit() and t.isascii() for t in toks):
+            raise DataError(f"{where}: a b-file line is 'n a(n)', two integers")
+        if len(toks[1]) > MAX_DIGITS:
+            raise DataError(f"{where}: a term of more than {MAX_DIGITS} digits")
+        n, v = int(toks[0]), int(toks[1])
+        if out and n != out[-1][0] + 1:
+            raise DataError(f"{where}: index {n} after {out[-1][0]}; a b-file lists consecutive indices")
+        out.append((n, v))
+        if len(out) > MAX_TERMS:
+            raise DataError(f"{path}: more than {MAX_TERMS} terms")
+    if not out:
+        raise DataError(f"{path}: no terms")
+    return Sequence(out)
+
+
 def load(path: str, shape: str, fmt: str | None = None):
     """Read `path` as a `grid`, `points`, `frames`, an `image` or `patterns`."""
     f = format_of(path, fmt)
@@ -753,6 +843,10 @@ def load(path: str, shape: str, fmt: str | None = None):
         readers = {"coloring": read_coloring}
     elif shape == "instances":
         readers = {"instances": read_instances}
+    elif shape == "triangles":
+        readers = {"triangles": read_triangles}
+    elif shape == "sequence":
+        readers = {"bfile": read_bfile}
     else:
         raise AssertionError(shape)
     if f not in readers:

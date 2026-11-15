@@ -1,0 +1,5 @@
+# Conway's orthogonal spaceships of period 4 (lightweight, middleweight, heavyweight), each moving 2 cells to the left
+# every 4 generations under B3/S23; exactfig simulates each one before drawing it.
+5x4: .O..O O.... O...O OOOO.
+6x5: ...O.. .O...O O..... O....O OOOOO.
+7x5: ...OO.. .O....O O...... O.....O OOOOOO.
