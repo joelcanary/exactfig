@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.4.0 (2026-11-15)
 
 - **`data.instances`**: instance masks (COCO RLE, compressed or not, or cells) drawn only after they are checked: no
   empty mask, no shared pixel, one-to-one matching by IoU > 1/2, stated TP/FP/FN and PQ equal to the exact values

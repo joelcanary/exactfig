@@ -10,7 +10,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.tile.cave",
@@ -95,7 +95,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.image",
@@ -231,7 +231,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.image",
@@ -309,7 +309,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.image",
@@ -429,7 +429,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.sprite.critters",
@@ -520,7 +520,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "anim.diffuse",
@@ -643,7 +643,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.field",
@@ -772,7 +772,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.field",
@@ -901,7 +901,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "math.domain",
@@ -1004,7 +1004,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "math.domain",
@@ -1107,7 +1107,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "anim.epicycles",
@@ -1212,7 +1212,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "anim.epicycles",
@@ -1317,7 +1317,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "compose",
@@ -1517,7 +1517,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "compose",
@@ -1728,7 +1728,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "math.fourier",
@@ -1827,7 +1827,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "math.fourier",
@@ -1926,7 +1926,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.scatter",
@@ -2061,7 +2061,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.scatter",
@@ -2196,7 +2196,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.icon.gem",
@@ -2281,7 +2281,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.icon.gem",
@@ -2366,7 +2366,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.icon.gem",
@@ -2451,7 +2451,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.instances",
@@ -2565,7 +2565,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.instances",
@@ -2679,7 +2679,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.fractal.julia",
@@ -2764,7 +2764,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "anim.frames",
@@ -2884,7 +2884,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "anim.life",
@@ -2991,7 +2991,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "anim.life",
@@ -3098,7 +3098,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "math.logistic",
@@ -3205,7 +3205,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "anim.lorenz",
@@ -3319,7 +3319,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "math.modmult",
@@ -3418,7 +3418,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "math.modmult",
@@ -3517,7 +3517,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "music.piece",
@@ -3559,7 +3559,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "music.piece",
@@ -3601,7 +3601,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "music.piece",
@@ -3643,7 +3643,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "music.piece",
@@ -3685,7 +3685,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.field",
@@ -3814,7 +3814,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.coloring",
@@ -3929,7 +3929,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.sky.gradient",
@@ -4018,7 +4018,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.sky.gradient",
@@ -4078,7 +4078,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.catalog",
@@ -4195,7 +4195,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.tile.stone",
@@ -4281,7 +4281,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.tile.stone",
@@ -4367,7 +4367,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.tile.terrain",
@@ -4454,7 +4454,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.tile.terrain",
@@ -4541,7 +4541,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.flora.tree",
@@ -4629,7 +4629,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.flora.tree",
@@ -4717,7 +4717,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "forge.flora.tree",
@@ -4805,7 +4805,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "math.ulam",
@@ -4903,7 +4903,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "data.coloring",
@@ -5018,7 +5018,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "anim.wave",
@@ -5126,7 +5126,7 @@
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.3.0"
+    "version": "0.4.0"
    },
    "recipe": {
     "generator": "anim.wave",
@@ -5226,5 +5226,5 @@
    ]
   }
  },
- "manifest_sha256": "035ff14c10670a2bb04905de4e16eb8bece5b814ce6013077a805bcc3c7bd05e"
+ "manifest_sha256": "1c602921fc1f280eb50be750b0df1da1faa5c5590e6a2ef6eb7b76729008353e"
 }
