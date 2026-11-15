@@ -27,14 +27,12 @@ compara el resultado con el fichero en disco, **píxel a píxel, fotograma a fot
 máquina; publicar un solo valor (`manifest_sha256`) fija la figura, sus datos y el código que la dibujó. Python puro, sin
 dependencias, en Linux, macOS y Windows.
 
-| | | |
-|---|---|---|
-| ![vidas quietas](gallery/still-lifes-a175001.png) | ![segmentación](gallery/instances-compare.png) | ![Vida](gallery/life-conway.gif) |
-| Las 49 vidas quietas estrictas de 14 células con la regla B368/S245, el término A175001(14) = 49 de la OEIS, cada una simulada antes de dibujarla | Verdad frente a predicción, emparejadas uno a uno y puntuadas con exactitud: PQ = 21153891139/45297262530 ≈ 0,4670, como dice la receta | La Vida de Conway desde una sopa con semilla, células coloreadas por edad |
-| ![doble rendija](gallery/wave-double-slit.gif) | ![reconstrucción](gallery/franke-linear.png) | ![retrato de fase](gallery/domain-wegert.png) |
-| La ecuación de ondas a través de una doble rendija (leapfrog, borde absorbente) | La función de Franke a partir de 256 muestras dispersas (Delaunay exacto) | Retrato de fase de una función compleja con líneas de módulo |
+<table>
+<tr><td width="33%" align="center" valign="top"><img src="gallery/still-lifes-a175001.png" width="250" alt="vidas quietas"><br><sub>Las 49 vidas quietas estrictas de 14 células con B368/S245, el término A175001(14) = 49 de la OEIS, cada una simulada antes de dibujarla</sub></td><td width="33%" align="center" valign="top"><img src="gallery/instances-compare.png" width="250" alt="segmentación"><br><sub>Verdad frente a predicción, emparejadas uno a uno y puntuadas con exactitud: PQ = 21153891139/45297262530 ≈ 0,4670, como dice la receta</sub></td><td width="33%" align="center" valign="top"><img src="gallery/life-conway.gif" width="250" alt="Vida"><br><sub>La Vida de Conway desde una sopa con semilla, células coloreadas por edad</sub></td></tr>
+<tr><td width="33%" align="center" valign="top"><img src="gallery/wave-double-slit.gif" width="250" alt="doble rendija"><br><sub>La ecuación de ondas a través de una doble rendija (leapfrog, borde absorbente)</sub></td><td width="33%" align="center" valign="top"><img src="gallery/franke-linear.png" width="250" alt="reconstrucción"><br><sub>La función de Franke a partir de 256 muestras dispersas (Delaunay exacto)</sub></td><td width="33%" align="center" valign="top"><img src="gallery/domain-wegert.png" width="250" alt="retrato de fase"><br><sub>Retrato de fase de una función compleja con líneas de módulo</sub></td></tr>
+</table>
 
-![testigo de van der Waerden](gallery/vdw-2-3-3-3.png)
+<p align="center"><img src="gallery/vdw-2-3-3-3.png" width="780" alt="testigo de van der Waerden"></p>
 
 Una coloración de 1..39 hallada por un resolvedor SAT sin ninguna progresión prohibida, así que w(4; 2,3,3,3) > 39; la
 receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 no tiene ninguna: w(4; 2,3,3,3) = 40.

@@ -25,14 +25,12 @@ is recorded in a *manifest*. `exactfig verify` runs every recipe again and compa
 **pixel for pixel, frame by frame, byte for byte**, on any machine; publishing one value (`manifest_sha256`) pins the
 figure, its data and the code that drew it. Pure Python, no dependencies, Linux, macOS and Windows.
 
-| | | |
-|---|---|---|
-| ![still lifes](gallery/still-lifes-a175001.png) | ![segmentation](gallery/instances-compare.png) | ![Life](gallery/life-conway.gif) |
-| The 49 strict still lifes of 14 cells under the rule B368/S245, the term A175001(14) = 49 of the OEIS, each one simulated before it is drawn | Ground truth against prediction, matched one to one and scored exactly: PQ = 21153891139/45297262530 ≈ 0.4670, as the recipe states | Conway's Life from a seeded soup, cells coloured by age |
-| ![double slit](gallery/wave-double-slit.gif) | ![reconstruction](gallery/franke-linear.png) | ![phase portrait](gallery/domain-wegert.png) |
-| The wave equation through a double slit (leapfrog, absorbing border) | Franke's function from 256 scattered samples (exact Delaunay) | Phase portrait of a complex function with modulus lines |
+<table>
+<tr><td width="33%" align="center" valign="top"><img src="gallery/still-lifes-a175001.png" width="250" alt="still lifes"><br><sub>The 49 strict still lifes of 14 cells under B368/S245, the term A175001(14) = 49 of the OEIS, each simulated before it is drawn</sub></td><td width="33%" align="center" valign="top"><img src="gallery/instances-compare.png" width="250" alt="segmentation"><br><sub>Ground truth against prediction, matched one to one and scored exactly: PQ = 21153891139/45297262530 ≈ 0.4670, as the recipe states</sub></td><td width="33%" align="center" valign="top"><img src="gallery/life-conway.gif" width="250" alt="Life"><br><sub>Conway's Life from a seeded soup, cells coloured by age</sub></td></tr>
+<tr><td width="33%" align="center" valign="top"><img src="gallery/wave-double-slit.gif" width="250" alt="double slit"><br><sub>The wave equation through a double slit (leapfrog, absorbing border)</sub></td><td width="33%" align="center" valign="top"><img src="gallery/franke-linear.png" width="250" alt="reconstruction"><br><sub>Franke's function from 256 scattered samples (exact Delaunay)</sub></td><td width="33%" align="center" valign="top"><img src="gallery/domain-wegert.png" width="250" alt="phase portrait"><br><sub>Phase portrait of a complex function with modulus lines</sub></td></tr>
+</table>
 
-![van der Waerden witness](gallery/vdw-2-3-3-3.png)
+<p align="center"><img src="gallery/vdw-2-3-3-3.png" width="780" alt="van der Waerden witness"></p>
 
 A SAT solver's colouring of 1..39 with no forbidden progression, so w(4; 2,3,3,3) > 39; the recipe names the DRAT proof,
 checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
