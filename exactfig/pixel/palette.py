@@ -226,7 +226,19 @@ def get(spec) -> Palette:
     if isinstance(spec, str):
         return builtin(spec)
     if isinstance(spec, dict):
-        return Palette(spec.get("name", "custom"), spec["colors"], spec.get("ramps"))
+        extra = set(spec) - {"name", "colors", "ramps"}
+        if extra:
+            raise ValueError(f"palette object: unknown keys {sorted(extra)} (it takes name, colors and ramps)")
+        colors, ramps, name = spec.get("colors"), spec.get("ramps"), spec.get("name", "custom")
+        if not isinstance(colors, list) or not all(isinstance(c, str) for c in colors):
+            raise ValueError('palette object needs "colors": ["#rrggbb", …]')
+        if ramps is not None and (not isinstance(ramps, dict) or any(
+                not isinstance(v, list) or any(isinstance(i, bool) or not isinstance(i, int) for i in v)
+                for v in ramps.values())):
+            raise ValueError('palette "ramps" must be {"name": [colour indices], …}')
+        if not isinstance(name, str):
+            raise ValueError("palette name must be a string")
+        return Palette(name, colors, ramps)
     raise ValueError("palette must be a built-in name or {colors: [...]} ")
 
 

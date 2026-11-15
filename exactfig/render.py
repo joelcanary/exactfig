@@ -227,6 +227,53 @@ class Rendered:
     duration_ms: int = 0
 
 
+MAX_SIMULATION_WORK = 400_000_000      # cells × generations a simulation may compute (a few minutes in pure Python)
+OUTPUT_EXTENSIONS = {"image": (".png",), "animation": (".gif", ".png", ".apng"), "midi": (".mid", ".midi")}
+
+
+def load_recipe(path: str) -> dict:
+    """A recipe file: a JSON object in UTF-8 (with or without a BOM) or UTF-16 with a BOM."""
+    with open(path, "rb") as fh:
+        raw = fh.read(4 * 1024 * 1024 + 1)
+    if len(raw) > 4 * 1024 * 1024:
+        raise ValueError(f"{path}: a recipe of more than 4 MiB (recipes are small; data goes in input files)")
+    try:
+        recipe = json.loads(dataio.decode_text(raw, path))
+    except json.JSONDecodeError as ex:
+        raise ValueError(f"{path}: not valid JSON ({ex.msg}, line {ex.lineno}, column {ex.colno})") from None
+    if not isinstance(recipe, dict):
+        raise ValueError(f"{path}: a recipe is a JSON object {{\"generator\": …}}")
+    return recipe
+
+
+def output_name(name, kind: str) -> str:
+    """Check a recipe's `output`: a relative path with '/', inside its folder, with an extension that matches `kind`."""
+    if not isinstance(name, str):
+        raise ValueError("output must be a file name")
+    parts = name.split("/")
+    if (not name or len(name) > 256 or name.startswith("/") or "\\" in name or ":" in name
+            or any(s in ("", ".", "..") for s in parts)):
+        raise ValueError(f"output {name!r} must be relative, with '/', and stay inside its folder")
+    ext = os.path.splitext(name)[1].lower()
+    if ext not in OUTPUT_EXTENSIONS[kind]:
+        what = {"image": "an image", "animation": "an animation", "midi": "a MIDI file"}[kind]
+        raise ValueError(f"output {name!r}: {what} is written as {' or '.join(OUTPUT_EXTENSIONS[kind])}")
+    return name
+
+
+def _budget(gen, r, w, h):
+    """Refuse an animation or simulation that would be too large BEFORE computing it, not after."""
+    p, k = r["params"], r["scale"]
+    frames = p.get("frames")
+    if gen.kind == "animation" and isinstance(frames, int) and w * h * k * k * frames > MAX_ANIMATION_PIXELS:
+        raise ValueError(f"{frames} frames of {w * k}×{h * k} is more than {MAX_ANIMATION_PIXELS} pixels in all: "
+                         "use fewer frames, a smaller size or a smaller scale")
+    every = p.get("every")
+    if isinstance(frames, int) and isinstance(every, int) and w * h * frames * every > MAX_SIMULATION_WORK:
+        raise ValueError(f"{w}×{h} cells for {frames}×{every} steps is more than {MAX_SIMULATION_WORK} cell-steps "
+                         "(it would run for a very long time): use fewer frames, fewer steps per frame or a smaller size")
+
+
 def container_of(output: str | None) -> str:
     """Animation container from the output name: .gif (default) or .png / .apng (APNG)."""
     ext = os.path.splitext(output or "")[1].lower()
@@ -246,6 +293,7 @@ def render(recipe: dict, base: str = ".", container: str | None = None) -> Rende
         return Rendered("midi", data, sha256(data))
     pal = palettes.get(r["palette"])
     w, h = r["size"]
+    _budget(gen, r, w, h)
     inputs: list = []
     out = _compose(r, pal, w, h, base, inputs) if gen.name == "compose" else _draw(r, pal, w, h, base, inputs)
     inputs = inputs or None

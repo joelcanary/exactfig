@@ -36,6 +36,7 @@ dynamical system. The figure, its data and the code that drew it are tied togeth
 - [Image conversion](#image-conversion)
 - [Mathematics by area](#mathematics-by-area)
 - [Verification](#verification)
+- [When something goes wrong](#when-something-goes-wrong)
 - [Python API](#python-api)
 - [Numerical reproducibility](#numerical-reproducibility)
 - [Limits](#limits)
@@ -415,6 +416,44 @@ exact range reduction are refused, never silently wrong. The tests pin fmath res
 calls the platform's transcendental functions or `**` on floats. The Delaunay predicates are exact (integer arithmetic), and
 numbers in input files are parsed by Python's correctly rounded `float`. The gallery reproduces exactly on x86-64 and ARM64,
 on two operating systems.
+
+## When something goes wrong
+
+exactfig never answers a mistake with a Python traceback. Every refusal is one line, `exactfig: what and why`, and the
+exit code says what kind of problem it was:
+
+| Exit code | Meaning |
+|---|---|
+| 0 | done (for `verify`: everything reproduced exactly) |
+| 1 | `verify` found an asset that does not reproduce; the report says which and how |
+| 2 | your input or your environment was refused (a recipe, a data file, a path, a missing tool) |
+| 3 | an internal error: a bug in exactfig, not in your input. Run again with `EXACTFIG_DEBUG=1` for the traceback and report it |
+| 130 | interrupted (Ctrl+C) |
+
+What usually happens, and what to do:
+
+| You see | Why | Do |
+|---|---|---|
+| `not UTF-8 text (byte …)` | the file was saved in another encoding (Latin-1, Windows-1252) | save it as UTF-8. A UTF-8 BOM (Notepad) and UTF-16 with a BOM (`>` in Windows PowerShell 5) are read as they are |
+| `'1,5' is not a number (decimal commas …)` | decimal commas, as spreadsheets write them in many countries | export with a decimal point |
+| `input '…' changed: sha256 …` | the data file is not the one the recipe pinned | if the new data is intended, record the recipe again; if not, restore the file |
+| `output '../x.png' must … stay inside its folder` | an output name that would write elsewhere (a recipe from someone else cannot overwrite your files) | use a plain relative name |
+| `output 'x.bmp': an image is written as .png` | the extension does not match what is written | images `.png`; animations `.gif`, `.png` or `.apng`; MIDI `.mid` |
+| `… frames of … is more than 64000000 pixels` / `… cell-steps` | the animation or simulation would be too large or run for hours; refused before computing anything | fewer frames, a smaller size or scale, fewer steps per frame |
+| `no such manifest` / `not in …manifest.json` | `verify` was given a path that does not exist | check the path: verifying nothing is never reported as a pass |
+| `damaged PNG …` / `truncated PNG …` | the picture is cut off or corrupted | export it again |
+| `generator source changed since recording` | the code of a generator differs from the code that made the asset | a warning; with `--strict` a failure. Re-record if the change is intended |
+| `ffmpeg is not installed` | `video` needs FFmpeg | install it, or share the GIF/APNG, which `verify` can check |
+
+**Where it runs.** Python 3.10 or newer, standard library only, on Linux, macOS and Windows (all three in continuous
+integration, with Python 3.10, 3.12 and 3.14), on x86-64 and ARM64 with the same bits; `exactfig selftest` checks a
+machine in seconds. Paths with spaces and accents work; the Windows console is switched to UTF-8 for the messages.
+exactfig never touches the network.
+
+**How this is tested.** [`tests/misuse_bench.py`](tests/misuse_bench.py) runs the command line, one process per case, on
+more than 80 mistakes a user can actually make (wrong encodings, truncated and corrupted files, absurd sizes, paths that
+try to leave their folder, broken manifests, a missing FFmpeg, …) and fails if any case ends in a traceback, a hang, a
+silent success, or a refusal without a message. It runs with the test suite.
 
 ## Limits
 

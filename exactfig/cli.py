@@ -25,16 +25,20 @@ import sys
 
 from . import __version__, provenance, registry
 from .pixel import palette as palettes
-from .render import render
+from .render import load_recipe, output_name, render
 
 
 def _render(files, out_dir, data_dir):
+    if os.path.exists(out_dir) and not os.path.isdir(out_dir):
+        raise ValueError(f"--out-dir {out_dir!r} is a file, not a folder")
     for rf in files:
-        with open(rf, encoding="utf-8") as fh:
-            recipe = json.load(fh)
+        recipe = load_recipe(rf)
         out = render(recipe, data_dir)
         ext = {"image": ".png", "animation": ".gif", "midi": ".mid"}[out.kind]
-        name = recipe.get("output") or os.path.splitext(os.path.basename(rf))[0] + ext
+        if "output" in recipe:
+            name = output_name(recipe["output"], out.kind)
+        else:
+            name = os.path.splitext(os.path.basename(rf))[0] + ext
         path = os.path.join(out_dir, name)
         os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
         with open(path, "wb") as fh:
@@ -62,8 +66,7 @@ def _video(rf, out_path, scale, data_dir):
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise ValueError("ffmpeg is not installed: install it, or share the GIF/APNG (which verify can check)")
-    with open(rf, encoding="utf-8") as fh:
-        recipe = json.load(fh)
+    recipe = load_recipe(rf)
     out = render(recipe, data_dir, "apng")
     if out.kind != "animation":
         raise ValueError(f"{rf} is not an animation")
@@ -96,8 +99,7 @@ def _edit(rf, sets, out_path, data_dir):
     """`--set params.contours=12`, `--set layers.1.blend=\"under\"`, `--set seed=7`: the value is JSON, or a plain
     string when it is not valid JSON. The edited recipe must still normalise; nothing is written otherwise."""
     from .render import normalize
-    with open(rf, encoding="utf-8") as fh:
-        recipe = json.load(fh)
+    recipe = load_recipe(rf)
     for item in sets:
         key, sep, raw = item.partition("=")
         if not sep or not key:
@@ -216,9 +218,27 @@ def main(argv=None) -> int:
         if args.cmd == "list":
             return _list()
         return _palettes()
-    except (ValueError, OSError) as ex:
-        print(f"exactfig: {ex}", file=sys.stderr)
+    except KeyboardInterrupt:
+        print("exactfig: interrupted", file=sys.stderr)
+        return 130
+    except BrokenPipeError:                      # e.g. `exactfig list | head`: the reader went away
+        return 0
+    except (ValueError, OSError) as ex:          # the user's input or environment: one line saying what and why
+        print(f"exactfig: {_plain(ex)}", file=sys.stderr)
         return 2
+    except Exception as ex:                      # a bug in exactfig: say so, and how to get the details
+        if os.environ.get("EXACTFIG_DEBUG"):
+            raise
+        print(f"exactfig: internal error ({type(ex).__name__}: {ex}). This is a bug in exactfig, not in your input: "
+              "run again with EXACTFIG_DEBUG=1 for the traceback and report it.", file=sys.stderr)
+        return 3
+
+
+def _plain(ex: Exception) -> str:
+    """An OSError as 'file: reason' instead of '[Errno 2] No such file or directory: …'."""
+    if isinstance(ex, OSError) and ex.filename is not None and ex.strerror:
+        return f"{ex.filename}: {ex.strerror.lower()}"
+    return str(ex)
 
 
 if __name__ == "__main__":

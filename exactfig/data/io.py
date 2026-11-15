@@ -119,6 +119,32 @@ def format_of(path: str, fmt: str | None = None) -> str:
     return _EXT[ext]
 
 
+def decode_text(raw: bytes, path: str) -> str:
+    """Text of a file: UTF-8 with or without a BOM (Notepad writes one), or UTF-16 with its BOM (what `>` writes in
+    Windows PowerShell 5). Anything else is refused with a message that says how to fix it."""
+    if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
+        try:
+            return raw.decode("utf-16")
+        except UnicodeDecodeError:
+            raise DataError(f"{path}: damaged UTF-16 text; save it as UTF-8") from None
+    try:
+        return raw.decode("utf-8-sig")
+    except UnicodeDecodeError as ex:
+        raise DataError(f"{path}: not UTF-8 text (byte {ex.start} is 0x{raw[ex.start]:02x}); save it as UTF-8") from None
+
+
+def read_text(path: str) -> str:
+    """`decode_text` of a file, within the size limit."""
+    return decode_text(_read(path), path)
+
+
+def _json(path: str):
+    try:
+        return json.loads(read_text(path))
+    except json.JSONDecodeError as ex:
+        raise DataError(f"{path}: not valid JSON ({ex.msg}, line {ex.lineno}, column {ex.colno})") from None
+
+
 def _read(path: str) -> bytes:
     size = os.path.getsize(path)
     if size > MAX_BYTES:
@@ -134,7 +160,9 @@ def _num(tok: str, where: str) -> float:
     try:
         v = float(t)
     except ValueError:
-        raise DataError(f"{where}: {tok!r} is not a number") from None
+        hint = (" (decimal commas are not read: write 1.5, not 1,5, and separate columns with ';' or tabs only if "
+                "the decimals use a point)") if re.search(r"[0-9],[0-9]", t) or re.search(r"[0-9];[0-9]", t) else ""
+        raise DataError(f"{where}: {tok!r} is not a number{hint}") from None
     if math.isinf(v):
         raise DataError(f"{where}: infinite value")
     return v
@@ -176,14 +204,14 @@ def _table(text: str):
 
 def read_grid_csv(path: str) -> Grid:
     """A grid from a delimited text file (comma, semicolon, tab or spaces; '#' comments; empty/nan/NA missing)."""
-    text = _read(path).decode("utf-8-sig")
+    text = read_text(path)
     rows = [[_num(t, f"{path}:{n}") for t in toks] for n, toks in _table(text)]
     return _check_grid(rows, path)
 
 
 def read_points_csv(path: str) -> Points:
     """Scattered points from three delimited columns x, y, value, with an optional header row."""
-    text = _read(path).decode("utf-8-sig")
+    text = read_text(path)
     table = _table(text)
     if table and not _is_number(table[0][1][0]):
         table = table[1:]                       # header row of names
@@ -349,7 +377,7 @@ def _json_num(v, where):
 
 def read_grid_json(path: str) -> Grid:
     """A grid from {"values": [[…], …]} or a bare list of rows; null is a missing value."""
-    obj = json.loads(_read(path).decode("utf-8"))
+    obj = _json(path)
     rows = obj.get("values") if isinstance(obj, dict) else obj
     if not isinstance(rows, list) or not all(isinstance(r, list) for r in rows):
         raise DataError(f"{path}: expected {{\"values\": [[…], …]}} or a list of rows")
@@ -358,7 +386,7 @@ def read_grid_json(path: str) -> Grid:
 
 def read_points_json(path: str) -> Points:
     """Points from {"points": [[x, y, v], …]} or {"x": […], "y": […], "value": […]}."""
-    obj = json.loads(_read(path).decode("utf-8"))
+    obj = _json(path)
     if isinstance(obj, dict) and "points" in obj:
         pts = obj["points"]
         if not isinstance(pts, list) or any(not isinstance(p, list) or len(p) != 3 for p in pts):
@@ -390,7 +418,7 @@ class Frames:
 
 def read_frames_json(path: str) -> Frames:
     """A sequence of equal-shaped grids from {"frames": [[[…], …], …]}, keeping the file's other scalar keys."""
-    obj = json.loads(_read(path).decode("utf-8"))
+    obj = _json(path)
     if not isinstance(obj, dict) or not isinstance(obj.get("frames"), list) or not obj["frames"]:
         raise DataError(f"{path}: expected {{\"frames\": [[[…], …], …]}}")
     if len(obj["frames"]) > MAX_FRAMES:
@@ -432,7 +460,7 @@ def read_png(path: str) -> Image:
     from ..pixel import png
     data = _read(path)
     try:
-        w, h, rgba = png.decode(data)
+        w, h, rgba = png.decode(data, MAX_IMAGE_PIXELS)
     except (ValueError, KeyError, IndexError) as ex:
         raise DataError(f"{path}: {ex}") from None
     return _check_image(w, h, rgba, path)
@@ -502,10 +530,7 @@ _SIZE = re.compile(r"^([0-9]+)x([0-9]+)$")
 
 def read_catalog(path: str) -> Catalog:
     """One pattern per line: `[WxH:] row row …`, `O`/`*` alive, `.` dead. A declared WxH must match the rows."""
-    try:
-        text = _read(path).decode("utf-8")
-    except UnicodeDecodeError:
-        raise DataError(f"{path}: not UTF-8 text") from None
+    text = read_text(path)
     out = []
     for k, raw in enumerate(text.splitlines(), 1):
         line = raw.strip()

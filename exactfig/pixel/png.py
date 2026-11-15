@@ -79,18 +79,30 @@ def _unfilter(raw: bytes, w: int, h: int, bpp: int) -> list[bytearray]:
     return rows
 
 
-def decode(data: bytes) -> tuple[int, int, bytes]:
-    """→ (w, h, RGBA8 bytes)."""
+def decode(data: bytes, max_pixels: int | None = None) -> tuple[int, int, bytes]:
+    """→ (w, h, RGBA8 bytes). A truncated, damaged or oversized file raises ValueError saying which."""
     if data[:8] != SIG:
         raise ValueError("not a PNG file")
     p, idat, plte, trns = 8, bytearray(), None, None
     w = h = depth = ctype = interlace = None
     while p < len(data):
+        if p + 12 > len(data):
+            raise ValueError("truncated PNG (a chunk header is cut off)")
         n, kind = struct.unpack(">I4s", data[p:p + 8])
+        if p + 12 + n > len(data):
+            raise ValueError(f"truncated PNG (the {kind.decode('latin-1')} chunk is cut off)")
         body = data[p + 8:p + 8 + n]
+        if zlib.crc32(kind + body) & 0xFFFFFFFF != struct.unpack(">I", data[p + 8 + n:p + 12 + n])[0]:
+            raise ValueError(f"damaged PNG (bad checksum in the {kind.decode('latin-1')} chunk)")
         p += 12 + n
         if kind == b"IHDR":
+            if n != 13:
+                raise ValueError("damaged PNG (bad IHDR)")
             w, h, depth, ctype, _, _, interlace = struct.unpack(">IIBBBBB", body)
+            if not w or not h:
+                raise ValueError("PNG of zero width or height")
+            if max_pixels is not None and w * h > max_pixels:
+                raise ValueError(f"PNG of {w}x{h} is more than the {max_pixels}-pixel limit")
         elif kind == b"PLTE":
             plte = body
         elif kind == b"tRNS":
@@ -99,11 +111,21 @@ def decode(data: bytes) -> tuple[int, int, bytes]:
             idat += body
         elif kind == b"IEND":
             break
+    if w is None:
+        raise ValueError("damaged PNG (no IHDR)")
     if depth != 8 or interlace or ctype not in (0, 2, 3, 4, 6):
         raise ValueError(f"unsupported PNG (bit depth {depth}, colour type {ctype}, interlace {interlace})")
     bpp = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}[ctype]
     stride = w * bpp
-    rows = _unfilter(zlib.decompress(bytes(idat)), w, h, bpp)
+    need = h * (stride + 1)
+    try:
+        d = zlib.decompressobj()
+        raw = d.decompress(bytes(idat), need + 1)        # never inflate more than the image can hold
+    except zlib.error:
+        raise ValueError("damaged PNG (the image data does not decompress)") from None
+    if len(raw) != need:
+        raise ValueError(f"damaged PNG (image data of {len(raw)} bytes, {need} expected)")
+    rows = _unfilter(raw, w, h, bpp)
     out = bytearray()
     for line in rows:
         if ctype == 6:
@@ -118,7 +140,11 @@ def decode(data: bytes) -> tuple[int, int, bytes]:
             for i in range(0, stride, 2):
                 out += bytes((line[i], line[i], line[i], line[i + 1]))
         else:
+            if plte is None or len(plte) % 3:
+                raise ValueError("damaged PNG (an indexed image without a valid PLTE)")
             for i in line:
+                if 3 * i + 3 > len(plte):
+                    raise ValueError(f"damaged PNG (colour index {i} beyond a {len(plte) // 3}-colour palette)")
                 out += plte[3 * i:3 * i + 3] + bytes([trns[i] if trns is not None and i < len(trns) else 255])
     return w, h, bytes(out)
 

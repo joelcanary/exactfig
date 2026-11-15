@@ -36,6 +36,7 @@ publicar un solo valor (`manifest_sha256`) fija el conjunto entero.
 - [Conversión de imágenes](#conversión-de-imágenes)
 - [Matemáticas por área](#matemáticas-por-área)
 - [Verificación](#verificación)
+- [Cuando algo falla](#cuando-algo-falla)
 - [API de Python](#api-de-python)
 - [Reproducibilidad numérica](#reproducibilidad-numérica)
 - [Límites](#límites)
@@ -425,6 +426,44 @@ erróneo en silencio. Las pruebas fijan resultados de fmath como patrones de bit
 funciones trascendentes del sistema o a `**` con decimales. Los predicados de Delaunay son exactos (aritmética entera) y los
 números de los ficheros de entrada los lee el `float` de Python, con redondeo correcto. La galería se reproduce exacta en
 x86-64 y ARM64, en dos sistemas operativos.
+
+## Cuando algo falla
+
+exactfig nunca responde a un error con un traceback de Python. Todo rechazo es una línea, `exactfig: qué y por qué`, y el
+código de salida dice de qué tipo fue:
+
+| Código | Significado |
+|---|---|
+| 0 | hecho (en `verify`: todo se reproduce exactamente) |
+| 1 | `verify` encontró una obra que no se reproduce; el informe dice cuál y cómo |
+| 2 | se rechazó tu entrada o tu entorno (una receta, un fichero de datos, una ruta, una herramienta que falta) |
+| 3 | error interno: un fallo de exactfig, no de tu entrada. Repite con `EXACTFIG_DEBUG=1` para ver el traceback y avísalo |
+| 130 | interrumpido (Ctrl+C) |
+
+Lo que suele pasar y qué hacer:
+
+| Ves | Por qué | Haz |
+|---|---|---|
+| `not UTF-8 text (byte …)` | el fichero se guardó con otra codificación (Latin-1, Windows-1252) | guárdalo en UTF-8. El BOM de UTF-8 (Bloc de notas) y UTF-16 con BOM (`>` en Windows PowerShell 5) se leen tal cual |
+| `'1,5' is not a number (decimal commas …)` | comas decimales, como las escriben las hojas de cálculo en español | exporta con punto decimal |
+| `input '…' changed: sha256 …` | el fichero de datos no es el que fijó la receta | si los datos nuevos son los buenos, vuelve a grabar la receta; si no, recupera el fichero |
+| `output '../x.png' must … stay inside its folder` | un nombre de salida que escribiría en otro sitio (una receta ajena no puede sobrescribir tus ficheros) | usa un nombre relativo normal |
+| `output 'x.bmp': an image is written as .png` | la extensión no corresponde a lo que se escribe | imágenes `.png`; animaciones `.gif`, `.png` o `.apng`; MIDI `.mid` |
+| `… frames of … is more than 64000000 pixels` / `… cell-steps` | la animación o la simulación sería demasiado grande o tardaría horas; se rechaza antes de calcular nada | menos fotogramas, menor tamaño o escala, menos pasos por fotograma |
+| `no such manifest` / `not in …manifest.json` | a `verify` se le dio una ruta que no existe | revisa la ruta: comprobar nada nunca cuenta como aprobado |
+| `damaged PNG …` / `truncated PNG …` | la imagen está cortada o corrupta | vuelve a exportarla |
+| `generator source changed since recording` | el código de un generador no es el que hizo la obra | es un aviso; con `--strict`, un fallo. Si el cambio es intencionado, vuelve a grabar |
+| `ffmpeg is not installed` | `video` necesita FFmpeg | instálalo, o comparte el GIF/APNG, que `verify` sí puede comprobar |
+
+**Dónde funciona.** Python 3.10 o posterior, solo la biblioteca estándar, en Linux, macOS y Windows (los tres en
+integración continua, con Python 3.10, 3.12 y 3.14), en x86-64 y ARM64 con los mismos bits; `exactfig selftest` comprueba
+una máquina en segundos. Las rutas con espacios y tildes funcionan; la consola de Windows se pasa a UTF-8 para los
+mensajes. exactfig nunca usa la red.
+
+**Cómo se prueba.** [`tests/misuse_bench.py`](tests/misuse_bench.py) lanza la línea de comandos, un proceso por caso, con
+más de 80 errores que un usuario puede cometer de verdad (codificaciones equivocadas, ficheros truncados y corruptos,
+tamaños absurdos, rutas que intentan salir de su carpeta, manifiestos rotos, FFmpeg ausente…) y falla si algún caso acaba
+en traceback, se cuelga, sale bien cuando no debía o se rechaza sin mensaje. Corre con la batería de tests.
 
 ## Límites
 

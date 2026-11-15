@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+- **Mistakes end in a clear message, never a traceback.** One line `exactfig: what and why`, and exit codes 0 / 1 (verify
+  found a difference) / 2 (input or environment refused) / 3 (internal error; `EXACTFIG_DEBUG=1` shows the traceback) /
+  130 (interrupted). A new test, `tests/misuse_bench.py`, runs more than 80 real mistakes, one process each.
+- **Security:** a recipe's `output` must be a relative path inside its folder, with the extension of what is written;
+  before, `"../x.png"` or an absolute path wrote outside the output folder.
+- **`verify` of a manifest that does not exist, or of a path that is not in it, now fails**; before, it reported
+  "0/0 assets reproduced exactly" and exited 0, so a typo in a CI job would have passed.
+- Animations and simulations over the limits are refused **before** computing (a 1024² × 1000-frame animation used to
+  run for many minutes and then be refused); a new limit of 400 million cell-steps for simulations.
+- Text files (recipes, manifests, CSV, JSON, catalogues) may be UTF-8 with or without a BOM, or UTF-16 with a BOM (what
+  Notepad and Windows PowerShell 5 write); other encodings are refused with how to fix them. Decimal commas get a hint.
+- The PNG reader refuses truncated, corrupted (checksums, image data) and oversized files with a message, and never
+  inflates more data than the image can hold. Malformed inline palettes and manifests are refused with a message.
 - **`data.catalog`**: a catalogue of cell patterns (one per line, `WxH: rows`) drawn as a mosaic only after it is checked
   against the recipe: still lifes or oscillators of an exact period under a Life-like rule (simulated on the infinite
   plane), strict rather than pseudo still lifes, the population of every pattern, the number of patterns (the sequence

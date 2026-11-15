@@ -20,7 +20,8 @@ from dataclasses import dataclass, field
 
 from .. import __version__, registry
 from ..pixel import anim, png
-from ..render import canonical, container_of, identity, normalize, render, sha256
+from ..data import io as dataio
+from ..render import canonical, container_of, identity, load_recipe, normalize, output_name, render, sha256
 
 MAX_HISTORY = 20
 
@@ -36,10 +37,18 @@ def load(path: str) -> dict:
     """Read a manifest (an empty one if the file does not exist); ValueError for another format."""
     if not os.path.exists(path):
         return empty()
-    with open(path, encoding="utf-8") as fh:
-        man = json.load(fh)
-    if man.get("format") != FORMAT:
+    with open(path, "rb") as fh:
+        raw = fh.read()
+    try:
+        man = json.loads(dataio.decode_text(raw, path))
+    except json.JSONDecodeError as ex:
+        raise ValueError(f"{path}: not valid JSON ({ex.msg}, line {ex.lineno}, column {ex.colno})") from None
+    if not isinstance(man, dict) or man.get("format") != FORMAT:
         raise ValueError(f"{path}: not a {FORMAT} file")
+    assets = man.get("assets")
+    if not isinstance(assets, dict) or any(not isinstance(e, dict) or not isinstance(e.get("output"), dict)
+                                           for e in assets.values()):
+        raise ValueError(f"{path}: damaged manifest (\"assets\" must map each file to its entry)")
     return man
 
 
@@ -91,11 +100,11 @@ def record(recipe_files: list[str], manifest_path: str, log=print) -> dict:
     man = load(manifest_path)
     base = os.path.dirname(os.path.abspath(manifest_path))
     for rf in recipe_files:
-        with open(rf, encoding="utf-8") as fh:
-            recipe = json.load(fh)
+        recipe = load_recipe(rf)
         if "output" not in recipe:
             raise ValueError(f"{rf}: the recipe needs an 'output' file name")
         a, b = render(recipe, base), render(recipe, base)
+        output_name(recipe["output"], a.kind)
         if a.data != b.data or a.content_sha256 != b.content_sha256:
             raise RuntimeError(f"{rf}: two renders differ: the generator is not deterministic")
         target = os.path.join(base, recipe["output"])
@@ -238,8 +247,14 @@ def _verify_animation(c, e, out, data, again):
 
 
 def verify(manifest_path: str, strict: bool = False, only: list[str] | None = None) -> tuple[list[Check], list[str]]:
-    """Verify every entry (or only the given paths) and the manifest digest."""
+    """Verify every entry (or only the given paths) and the manifest digest. A manifest that does not exist, or a path
+    that is not in it, is an error: verifying nothing must never look like a pass."""
+    if not os.path.isfile(manifest_path):
+        raise ValueError(f"{manifest_path}: no such manifest (verify needs one; record creates it)")
     man = load(manifest_path)
+    missing = sorted(set(only or ()) - set(man["assets"]))
+    if missing:
+        raise ValueError(f"not in {manifest_path}: {', '.join(missing)}")
     base = os.path.dirname(os.path.abspath(manifest_path))
     top = []
     if man.get("manifest_sha256") != sha256(canonical(man.get("assets", {}))):
