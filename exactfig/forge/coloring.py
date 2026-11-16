@@ -14,8 +14,9 @@ checker. This generator draws witnesses, and only after checking them against wh
   length       every colouring colours exactly 1..length (0 = any)
   count        the file has exactly this many colourings (0 = any)
   proof_sha256 the SHA-256 of the proof that 1..length+1 has no such colouring (the other half of the theorem). It is
-               recorded in the manifest so the figure names the proof; exactfig does not read or check it (that is the
-               job of a proof checker such as drat-trim or cake_lpr).
+               recorded in the manifest so the figure names the proof. This generator does not read it; an LRAT proof
+               is checked by data.refutation, whose input is pinned by the same SHA-256 (larger proofs belong to a
+               verified checker such as cake_lpr).
 
 A refusal names the colouring, the colour and the numbers that break the rule.
 """

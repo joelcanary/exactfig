@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.6.0 (2026-11-16)
+
+- **`data.pratt`**: a Pratt certificate of primality drawn as a tree, only after every line is checked in exact integer
+  arithmetic: p − 1 is the product of the stated factors, the witness g has order exactly p − 1 (g^(p−1) ≡ 1 and
+  g^((p−1)/q) ≢ 1 for each q), each factor above 2 has its own line, and no line is unused. A composite number has no
+  certificate, so none can be drawn (tested for every witness of every composite below 700, Carmichael 561 included).
+  New input format `pratt`. Gallery: the 19-line certificate of 2^127 − 1, the prime Lucas proved by hand in 1876.
+- **`data.refutation`**: the "no" half of a SAT answer. An LRAT proof that 1..n cannot be coloured (van der Waerden,
+  Schur, weak Schur) is checked by reverse unit propagation against a formula exactfig writes itself from the recipe,
+  so a proof of another claim does not check; RAT steps are refused; it must reach the empty clause. Drawn as the
+  numbers against proof order. New input format `lrat` (textual). Gallery: the proof that 1..14 has no 3-colouring
+  without x + y in a colour, beside the witness for 13, whose recipe now names the proof by its SHA-256: S(3) = 13.
+  Tested against W(2;3) = 9 and W(2;4) = 35 (CaDiCaL proofs, also accepted by cake_lpr) and against `data.coloring`'s
+  check on every colouring of small cases.
+- `data.coloring`: `proof_sha256` now points to `data.refutation` for checking the proof.
+
 ## 0.5.0 (2026-11-15)
 
 - **`data.sequence`**: OEIS b-files as bars (log or linear), the new terms highlighted and checked against the stated

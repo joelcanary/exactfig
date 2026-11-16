@@ -73,7 +73,7 @@ receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 
 | Los mismos bits en cualquier plataforma | las funciones trascendentes salen de `exactfig.fmath` (solo aritmética básica IEEE 754); comprobado en x86-64 y ARM64 |
 | El conjunto entero queda fijado | `manifest_sha256` cubre todas las entradas: basta con firmar o publicar ese valor |
 | Una receta no puede colar una imagen | esquemas de parámetros cerrados (valores con tipo y rango, nada de matrices de píxeles); los datos solo entran como un fichero con nombre y hash |
-| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.instances`, `data.sequence`, `data.triangle` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies) y si no, no dibujan |
+| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad) y si no, no dibujan |
 | Los errores acaban en un mensaje claro | una línea que dice qué y por qué, nunca un traceback; se prueban más de 90 errores reales, un proceso cada uno |
 
 Lo que no prueba: quién escribió el código o eligió la receta (para eso, firma el resumen del manifiesto), ni que un modelo o
@@ -293,16 +293,29 @@ prueba para 40.
 | `check: "ap"` + `lengths` | ningún color tenga una progresión aritmética de su longitud (`"3"` para todos, o `"2,3,3,3"`, una por color) |
 | `check: "schur"` (+ `distinct`) | ningún color tenga x, y y x + y (con `distinct`, solo x < y: números de Schur débiles) |
 | `colors`, `length`, `count` | los colores estén por debajo de `colors`, cada coloración cubra exactamente 1..`length` y el fichero tenga `count` coloraciones |
-| `proof_sha256` | (no es una comprobación) el SHA-256 de la prueba de que 1..`length`+1 no se puede colorear, que queda en el manifiesto para que la figura nombre la otra mitad del teorema; la prueba en sí se comprueba con drat-trim o cake_lpr |
+| `proof_sha256` | (aquí no se comprueba) el SHA-256 de la prueba de que 1..`length`+1 no se puede colorear, que queda en el manifiesto para que la figura nombre la otra mitad del teorema; esa prueba la comprueba `data.refutation` |
 
 El formato es una coloración por línea, o un dígito por número (`0112…`, colores 0–9) o números separados por espacios
 o comas; `#` y `!` empiezan comentarios; en la receta va `"format": "coloring"`. El rechazo nombra la coloración, el
 color y la progresión o la suma que rompe la regla. Las comprobaciones se prueban contra W(2;3) = 9, S(2) = 4 y el número
 de Schur débil WS(2) = 8, cada uno decidido por fuerza bruta sobre todas las coloraciones.
 
+`data.refutation` dibuja la otra mitad: una prueba, en el formato LRAT que escriben los resolvedores SAT (CaDiCaL
+`--lrat`, drat-trim `-L`), de que 1..n no se puede colorear. exactfig no saca la fórmula del fichero: la escribe él a
+partir de la receta (`check`, `lengths`, `colors`, `distinct`, `length` = n), con variables x(i, c) = (i − 1)·r + c + 1 y
+el orden de cláusulas que da su documentación, así que una prueba de otra cosa no pasa. Cada cláusula añadida se comprueba
+por propagación unitaria inversa siguiendo sus pistas, y la prueba tiene que llegar a la cláusula vacía; los pasos RAT se
+rechazan, y `steps` fija cuántas cláusulas añade. La figura: una fila por número, la prueba en orden de izquierda a
+derecha, cada celda del color que la prueba más menciona ahí, y a la derecha la columna de la cláusula vacía. La fórmula
+se prueba contra la propia comprobación de `data.coloring` en todas las coloraciones de casos pequeños, y el comprobador
+contra pruebas de CaDiCaL que también acepta el comprobador verificado cake_lpr. El comprobador en Python puro es para
+pruebas de hasta unos pocos millones de pasos (W(3;3) = 27, 7945 cláusulas, tarda una décima de segundo); las más grandes
+son trabajo de cake_lpr.
+
 Ejemplos en la galería: [el testigo SAT de w(4; 2,3,3,3) = 40](gallery/vdw-2-3-3-3.png), con el SHA-256 de la prueba DRAT
 que comprobaron drat-trim y cake_lpr (OEIS A217008), y [una partición de 1..13 en tres conjuntos sin sumas](gallery/schur-3.png)
-(S(3) ≥ 13).
+(S(3) ≥ 13) junto a [la refutación de 1..14](gallery/schur-3-refutation.png), una prueba de CaDiCaL de 311 cláusulas que
+exactfig comprueba paso a paso: con las dos, S(3) = 13.
 
 ## Máscaras de instancias y segmentación
 
@@ -340,6 +353,14 @@ coincidan con el fichero: lo resaltado en la figura es exactamente lo que dice l
 positivos, n libre de cuadrados y sin repetidos, con fracciones exactas; el rechazo da la diferencia exacta. Los decimales
 se rechazan: no serían exactos.
 
+**`data.pratt`** lee un certificado de primalidad de Pratt (`"format": "pratt"`): un primo por línea, `p g q1^e1 q2^e2 …`,
+un testigo g y la factorización de p − 1; la primera línea es el primo que se prueba y cada factor mayor que 2 tiene su
+propia línea. Antes de dibujar comprueba, con aritmética entera exacta, que los factores multiplican p − 1, que
+g^(p−1) ≡ 1 y g^((p−1)/q) ≢ 1 (mód p) para cada q (Lucas), que ningún factor se queda sin su línea y que no sobra ninguna
+línea; `prime` y `primes` fijan el número probado y el número de líneas. Encontrar el certificado exige factorizar p − 1
+y se hace fuera; comprobarlo cuesta unas pocas exponenciaciones modulares por línea. Un número compuesto no tiene
+certificado, así que ningún fichero puede hacer que esta figura mienta.
+
 **`math.sandpile`** calcula la identidad del grupo de la pila de arena de una rejilla n × n (Creutz:
 e = estab(2·m − estab(2·m)), con m = 3 en todas partes) y comprueba e ⊕ e = e antes de dibujar; un `order` declarado
 (n ≤ 14) tiene que ser el determinante del laplaciano reducido, calculado exacto por eliminación sin fracciones: el número
@@ -350,7 +371,7 @@ tras exactamente `period` generaciones, y no ser una traslación de sí mismo an
 
 Ejemplos en la galería: [las naves de Conway](gallery/conway-ships.png), [los triángulos de 5, 6, 7 y 157](gallery/congruent-triangles.png)
 (el de 157 con numeradores de hasta 48 cifras), [el b-file de A175001](gallery/oeis-a175001.png) con tus términos 11..18 y
-[la identidad de la pila de arena de 96 × 96](gallery/sandpile-identity.png).
+[la identidad de la pila de arena de 96 × 96](gallery/sandpile-identity.png) y [el árbol de Pratt de 2^127 − 1](gallery/pratt-m127.png).
 
 ## Animaciones y vídeo
 

@@ -31,11 +31,21 @@ Two shapes of data, each from several standard formats, all read with the standa
                                  (legs a, b, hypotenuse c, area n); `#` or `!` starts a comment line
   sequence  terms of an integer sequence
             bfile (any extension, `format` must say so)  the OEIS b-file format: one `n a(n)` per line, `#` comments
+  primes    a Pratt certificate: a proof that a number is prime that anyone can check (Lucas's converse of Fermat)
+            pratt (any extension, `format` must say so)  one prime per line, `p g q1^e1 q2^e2 …`: a witness g and the
+                                 factorisation of p − 1 (`^e` may be left out when e = 1); the first line is the prime the
+                                 certificate is for, and every factor q > 2 has a line of its own; `2` alone is allowed;
+                                 `#` or `!` starts a comment line
   colorings colourings of 1..n (e.g. a SAT solver's witness that 1..n can be coloured without a monochromatic
             arithmetic progression, or split into sum-free sets)
             coloring (any extension, `format` must say so)  one colouring per line: either one digit per number
                                  (`0112…`, colours 0-9) or numbers separated by spaces or commas; `#` or `!` starts a
                                  comment line
+  proof     a clausal proof that a formula has no solution (the "no" half of a SAT answer), e.g. that 1..n cannot be
+            coloured without a monochromatic progression
+            lrat (any extension, `format` must say so)  the textual LRAT format of SAT solvers and drat-trim: an added
+                                 clause `id lit … 0 hint … 0`, a deletion `id d id … 0`; lines starting with `c` are
+                                 comments; binary LRAT is not read
 
 The reader is chosen by `format` or else by the file extension. A file is data, never code: nothing is evaluated, object
 arrays are refused, and sizes are capped (`MAX_CELLS`, `MAX_POINTS`, `MAX_BYTES`).
@@ -67,11 +77,15 @@ COLORING_FORMATS = ("coloring",)
 INSTANCE_FORMATS = ("instances",)
 TRIANGLE_FORMATS = ("triangles",)
 SEQUENCE_FORMATS = ("bfile",)
+PRIME_FORMATS = ("pratt",)
+PROOF_FORMATS = ("lrat",)
 MAX_TERMS = 100_000
+MAX_PROOF_STEPS = 2_000_000
 MAX_DIGITS = 4000            # below the 4300-digit limit Python 3.11+ (and 3.10.7+) puts on int(str)
 FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMATS, "image": IMAGE_FORMATS,
            "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS, "instances": INSTANCE_FORMATS,
-           "triangles": TRIANGLE_FORMATS, "sequence": SEQUENCE_FORMATS}
+           "triangles": TRIANGLE_FORMATS, "sequence": SEQUENCE_FORMATS, "primes": PRIME_FORMATS,
+           "proof": PROOF_FORMATS}
 MAX_INSTANCE_PIXELS = 2048 * 2048
 MAX_INSTANCES = 10_000
 MAX_COLORING = 5000
@@ -826,6 +840,105 @@ def read_bfile(path: str) -> Sequence:
     return Sequence(out)
 
 
+@dataclass
+class Pratt:
+    """A Pratt certificate in file order: (p, g, [(q, e), ...]) per line; g is 0 on the line of the prime 2."""
+    nodes: list
+
+    def __len__(self):
+        return len(self.nodes)
+
+    def describe(self) -> dict:
+        root = str(self.nodes[0][0])
+        return {"primes": len(self.nodes), "root": root if len(root) <= 40 else root[:18] + "…" + root[-18:],
+                "digits": len(root)}
+
+
+def _natural(tok: str, where: str, what: str) -> int:
+    if not (tok.isdigit() and tok.isascii()) or len(tok) > MAX_DIGITS:
+        raise DataError(f"{where}: {what} {tok[:40]!r} is not a natural number of at most {MAX_DIGITS} digits")
+    return int(tok)
+
+
+def read_pratt(path: str) -> Pratt:
+    """One prime per line: `p g q1^e1 q2^e2 …` (the factorisation of p − 1); `2` alone; the first line is the root."""
+    out, seen = [], {}
+    for k, raw in enumerate(read_text(path).splitlines(), 1):
+        line = raw.strip()
+        if not line or line[0] in "#!":
+            continue
+        where = f"{path}, line {k}"
+        toks = line.split()
+        p = _natural(toks[0], where, "the prime")
+        if p in seen:
+            raise DataError(f"{where}: {p} already has a line (line {seen[p]})")
+        seen[p] = k
+        if p == 2:
+            if len(toks) != 1:
+                raise DataError(f"{where}: the line of 2 is just '2' (2 needs no witness)")
+            out.append((2, 0, []))
+            continue
+        if len(toks) < 3:
+            raise DataError(f"{where}: a line is 'p g q1^e1 …': the prime, a witness and the factors of p − 1")
+        g = _natural(toks[1], where, "the witness")
+        fac = []
+        for t in toks[2:]:
+            q, hat, e = t.partition("^")
+            fac.append((_natural(q, where, "the factor"), _natural(e, where, "the exponent") if hat else 1))
+        if len(fac) > 4096:
+            raise DataError(f"{where}: more than 4096 factors")
+        out.append((p, g, fac))
+        if len(out) > MAX_TERMS:
+            raise DataError(f"{path}: more than {MAX_TERMS} lines")
+    if not out:
+        raise DataError(f"{path}: no prime")
+    return Pratt(out)
+
+
+@dataclass
+class Proof:
+    """An LRAT proof in file order: ("a", id, lits, hints) for an added clause, ("d", ids) for a deletion."""
+    steps: list
+
+    def __len__(self):
+        return len(self.steps)
+
+    def describe(self) -> dict:
+        added = sum(1 for s in self.steps if s[0] == "a")
+        return {"steps": len(self.steps), "added": added, "deletions": len(self.steps) - added}
+
+
+def read_lrat(path: str) -> Proof:
+    """Textual LRAT: `id lit … 0 hint … 0` adds a clause, `id d id … 0` deletes clauses; `c …` is a comment."""
+    raw = _read(path)
+    if b"\x00" in raw[:4096] or raw[:1] in (b"a", b"d"):      # binary LRAT starts each step with the byte 'a' or 'd'
+        raise DataError(f"{path}: binary LRAT; write the proof as text (e.g. CaDiCaL --lrat --binary=false)")
+    out = []
+    for k, line in enumerate(decode_text(raw, path).splitlines(), 1):
+        toks = line.split()
+        if not toks or toks[0] == "c":
+            continue
+        where = f"{path}, line {k}"
+        if len(toks) >= 2 and toks[1] == "d":
+            if toks[-1] != "0" or not all(t.isdigit() and t.isascii() for t in toks[2:]):
+                raise DataError(f"{where}: a deletion is 'id d id … 0'")
+            out.append(("d", tuple(int(t) for t in toks[2:-1])))
+        else:
+            try:
+                nums = [int(t) for t in toks]
+            except ValueError:
+                raise DataError(f"{where}: an LRAT line is integers, 'id lit … 0 hint … 0'") from None
+            if len(nums) < 3 or nums[0] < 1 or nums[-1] != 0 or nums.count(0) != 2:
+                raise DataError(f"{where}: an added clause is 'id lit … 0 hint … 0' (two zeros)")
+            z = nums.index(0)
+            out.append(("a", nums[0], tuple(nums[1:z]), tuple(nums[z + 1:-1])))
+        if len(out) > MAX_PROOF_STEPS:
+            raise DataError(f"{path}: more than {MAX_PROOF_STEPS} proof steps")
+    if not out:
+        raise DataError(f"{path}: no proof step")
+    return Proof(out)
+
+
 def load(path: str, shape: str, fmt: str | None = None):
     """Read `path` as a `grid`, `points`, `frames`, an `image` or `patterns`."""
     f = format_of(path, fmt)
@@ -847,6 +960,10 @@ def load(path: str, shape: str, fmt: str | None = None):
         readers = {"triangles": read_triangles}
     elif shape == "sequence":
         readers = {"bfile": read_bfile}
+    elif shape == "primes":
+        readers = {"pratt": read_pratt}
+    elif shape == "proof":
+        readers = {"lrat": read_lrat}
     else:
         raise AssertionError(shape)
     if f not in readers:

@@ -1,0 +1,22 @@
+# Pratt certificate that 2^127 - 1 is prime (Lucas 1876 proved it by hand; the largest prime found without a
+# computer). One prime per line: p, a witness g of order p - 1 modulo p, and the factorisation of p - 1.
+# exactfig checks every line with exact modular exponentiation before drawing the tree.
+170141183460469231731687303715884105727 43 2 3^3 7^2 19 43 73 127 337 5419 92737 649657 77158673929
+77158673929 11 2^3 3^3 7 73 699053
+699053 2 2^2 174763
+649657 5 2^3 3^2 7 1289
+174763 17 2 3^2 7 19 73
+92737 5 2^6 3^2 7 23
+5419 3 2 3^2 7 43
+1289 6 2^3 7 23
+337 10 2^4 3 7
+127 3 2 3^2 7
+73 5 2^3 3^2
+43 3 2 3 7
+23 5 2 11
+19 2 2 3^2
+11 2 2 5
+7 3 2 3
+5 2 2^2
+3 2 2
+2

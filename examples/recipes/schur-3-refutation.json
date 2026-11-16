@@ -1,0 +1,1 @@
+{"generator": "data.refutation", "seed": "schur", "palette": "sci", "size": [416, 112], "input": {"path": "data/schur-3-n14.lrat", "format": "lrat"}, "params": {"check": "schur", "colors": 3, "length": 14, "steps": 311}, "output": "schur-3-refutation.png"}

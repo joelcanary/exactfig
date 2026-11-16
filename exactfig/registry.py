@@ -166,8 +166,8 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import (annotate, catalog, coloring, datavis, flora, icons, instances, mathviz, motion, sandpile,
-                        sequence, skies, sprites, tiles, triangle)
+    from .forge import (annotate, catalog, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
+                        refutation, sandpile, sequence, skies, sprites, tiles, triangle)
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
     from .music.theory import MODES
@@ -349,7 +349,7 @@ def _gens() -> dict[str, Generator]:
             "length": P("int", 0, 0, 5000, doc="every colouring colours exactly 1..length; 0 = any"),
             "count": P("int", 0, 0, 100000, doc="number of colourings in the file; 0 = any"),
             "proof_sha256": P("text", "", maxlen=64, doc="SHA-256 of the proof that 1..length+1 cannot be coloured "
-                              "(recorded in the manifest, not checked here)"),
+                              "(recorded in the manifest; an LRAT proof is checked by data.refutation)"),
             "columns": P("int", 0, 0, 5000, doc="numbers per row; 0 = all on one row"),
             "separate": P("bool", True, doc="an empty row between colourings"),
             "cell_gap": P("int", 1, 0, 16, doc="pixels between neighbouring squares (at most a third of a square)"),
@@ -384,6 +384,30 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/triangle.py"),
             "right triangles with rational sides (congruent numbers), checked exactly: a² + b² = c², a·b/2 = n",
             (256, 256), 2048, data="triangles"),
+        Generator("data.pratt", "1", "image", pratt.pratt, {
+            "prime": P("text", "", maxlen=4000, doc="the prime the certificate proves (its first line); empty = any"),
+            "primes": P("int", 0, 0, 100000, doc="number of lines in the certificate; 0 = any"),
+            "ramp": P("str", "seq", choices=DATA_RAMPS, doc="node colour by the bits of its prime, along the light part"),
+            "edge_ramp": P("str", "grey", choices=DATA_RAMPS),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/pratt.py"),
+            "a Pratt certificate of primality as a tree, checked first: p − 1 factored, g of order p − 1, down to 2",
+            (256, 160), 2048, data="primes"),
+        Generator("data.refutation", "1", "image", refutation.refutation, {
+            "check": P("str", "ap", choices=("ap", "schur"),
+                       doc="the claim refuted: 1..length cannot be coloured without a monochromatic progression of its "
+                           "length (van der Waerden), or split into sum-free sets (Schur)"),
+            "lengths": P("text", "3", maxlen=200, doc="ap: one progression length for every colour, or one per colour"),
+            "distinct": P("bool", False, doc="schur: only x < y (weak Schur numbers)"),
+            "colors": P("int", 0, 0, 64, doc="number of colours; 0 = from lengths"),
+            "length": P("int", 0, 0, 5000, doc="the n of the claim; the formula is written by exactfig from it"),
+            "steps": P("int", 0, 0, 10 ** 7, doc="clauses the proof adds up to the empty one; 0 = any"),
+            "ramp": P("str", "cyc", choices=DATA_RAMPS, doc="colour c is taken evenly round the ramp (as data.coloring)"),
+            "mark_ramp": P("str", "paper", choices=DATA_RAMPS, doc="the column of the empty clause"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/refutation.py", "forge/coloring.py"),
+            "an LRAT proof that 1..n cannot be coloured, checked first against a formula exactfig writes from the claim",
+            (512, 112), 2048, data="proof"),
         Generator("data.sequence", "1", "image", sequence.sequence, {
             "scale": P("str", "log", choices=("log", "linear"), doc="bar height: log10(a + 1), or a itself"),
             "new_from": P("int", -1, -1, 10 ** 9, doc="first index of the new terms, drawn in ramp_new; -1 = none"),

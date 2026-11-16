@@ -132,6 +132,14 @@ def cases():
     trir = {"generator": "data.triangle", "seed": "x", "palette": "sci", "size": [40, 20], "input": {"path": "t.txt", "format": "triangles"}, "output": "t.png"}
     yield "triangle that is not right", {"r.json": j(trir), "t.txt": "6 3 4 6\n"}, ["render", "r.json"]
     yield "triangle with decimals", {"r.json": j(trir), "t.txt": "5 1.5 6.666 6.833\n"}, ["render", "r.json"]
+    prr = {"generator": "data.pratt", "seed": "x", "palette": "sci", "size": [40, 20], "input": {"path": "p.txt", "format": "pratt"}, "output": "p.png"}
+    yield "pratt certificate of a composite", {"r.json": j(prr), "p.txt": "91 2 2 3^2 5\n5 2 2^2\n3 2 2\n2\n"}, ["render", "r.json"]
+    yield "pratt factor without its line", {"r.json": j(prr), "p.txt": "97 5 2^5 3\n"}, ["render", "r.json"]
+    yield "pratt prime of 5000 digits", {"r.json": j(prr), "p.txt": "9" * 5000 + " 2 2\n"}, ["render", "r.json"]
+    rfr = {"generator": "data.refutation", "seed": "x", "palette": "sci", "size": [40, 20], "input": {"path": "p.lrat", "format": "lrat"}, "params": {"check": "ap", "lengths": "3", "colors": 2, "length": 8}, "output": "r.png"}
+    yield "refutation of a colourable claim", {"r.json": j(rfr), "p.lrat": "18 -1 0 1 0\n19 0 18 0\n"}, ["render", "r.json"]
+    yield "refutation in binary LRAT", {"r.json": j(rfr), "p.lrat": "a\x02\x00\x00"}, ["render", "r.json"]
+    yield "refutation without a length", {"r.json": j(dict(rfr, params={"check": "ap", "colors": 2})), "p.lrat": "18 0 1 0\n"}, ["render", "r.json"]
     yield "sandpile order too large to check", {"r.json": j({"generator": "math.sandpile", "seed": "x", "palette": "sci", "size": [32, 32], "params": {"n": 32, "order": "5"}, "output": "s.png"})}, ["render", "r.json"]
     yield "ship with the wrong shift", {"r.json": j({"generator": "data.catalog", "seed": "x", "palette": "sci", "size": [32, 32], "input": {"path": "c.txt", "format": "catalog"}, "params": {"check": "ship", "period": 4, "shift": "2,0"}, "output": "c.png"}), "c.txt": "3x3: .O. ..O OOO\n"}, ["render", "r.json"]
     yield "animation too many pixels", {"r.json": j({"generator": "anim.life", "seed": "x", "palette": "sci", "size": [1024, 1024], "params": {"frames": 1000}, "output": "l.gif"})}, ["render", "r.json"]

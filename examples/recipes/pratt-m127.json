@@ -1,0 +1,1 @@
+{"generator": "data.pratt", "seed": "pratt", "palette": "sci", "size": [640, 260], "input": {"path": "data/pratt-m127.txt", "format": "pratt"}, "params": {"prime": "170141183460469231731687303715884105727", "primes": 19}, "output": "pratt-m127.png"}

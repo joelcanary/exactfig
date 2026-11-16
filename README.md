@@ -71,7 +71,7 @@ checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
 | The same bits on every platform | transcendental functions come from `exactfig.fmath` (basic IEEE 754 arithmetic only); checked on x86-64 and ARM64 |
 | The whole set is pinned | `manifest_sha256` covers every entry; sign or publish that one value |
 | Recipes cannot smuggle a picture | closed parameter schemas: typed, ranged values, no pixel arrays; data enters only as a named, hashed file |
-| The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.instances`, `data.sequence`, `data.triangle` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions) and refuse to draw otherwise |
+| The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions, primality) and refuse to draw otherwise |
 | Mistakes end in a clear message | one line saying what and why, never a traceback; more than 90 real mistakes are tested, one process each |
 
 What it does not prove: who wrote the code or chose the recipe (sign the manifest digest for that), or that a model or a
@@ -119,9 +119,11 @@ Every file below comes from a recipe in [`examples/recipes`](examples/recipes) a
 | ![still lifes](gallery/still-lifes-a175001.png) | `data.catalog`: the 49 strict still lifes of 14 cells under the Move rule B368/S245, the term A175001(14) = 49 of the OEIS. Before drawing, exactfig simulates every pattern and refuses the figure if one is not a still life, is a pseudo still life, does not have 14 cells, repeats another up to symmetry, or if there are not exactly 49. The picture cannot show more than the data proves. |
 | ![van der Waerden](gallery/vdw-2-3-3-3.png) | `data.coloring`: a SAT solver's colouring of 1..39 with 4 colours, the first never used twice and the other three without a monochromatic 3-term arithmetic progression, so w(4; 2,3,3,3) > 39. exactfig checks it before drawing; the recipe also records the SHA-256 of the DRAT proof, checked by drat-trim and cake_lpr, that 1..40 has no such colouring: w(4; 2,3,3,3) = 40 (OEIS A217008). |
 | ![Schur](gallery/schur-3.png) | `data.coloring` with `check: "schur"`: 1..13 split into three sum-free sets (no set holds x, y and x + y), so the Schur number S(3) is at least 13. |
+| ![Schur refutation](gallery/schur-3-refutation.png) | `data.refutation`: the other half, a CaDiCaL proof (311 clauses, LRAT) that 1..14 cannot be split so, checked step by step against the formula exactfig writes from the claim. With the witness above, whose recipe names this proof by its SHA-256: S(3) = 13. |
 | ![instances](gallery/instances-truth.png) | `data.instances`, `mode: "instances"`: a synthetic segmentation scene, six filament-like instances in compressed COCO RLE, each in its own hue. Refused if a mask is empty or two instances share a pixel. |
 | ![ships](gallery/conway-ships.png) | `data.catalog` with `check: "ship"`: Conway's light, middle and heavy spaceships, each checked to come back moved by (−2, 0) after exactly 4 generations, and to no translate of itself before. |
 | ![congruent](gallery/congruent-triangles.png) | `data.triangle`: right triangles with rational sides for the congruent numbers 5, 6, 7 and 157; the last one has sides with numerators of up to 48 digits. a² + b² = c² and a·b/2 = n are checked in exact fractions before drawing. |
+| ![Pratt](gallery/pratt-m127.png) | `data.pratt`: the Pratt certificate that 2^127 − 1 is prime, as a tree: below each prime, the primes of p − 1, down to 2; the disc grows with the bits. Each of the 19 lines is checked before drawing (p − 1 factored, a witness of order p − 1). A composite number has no certificate, so no file can make this figure lie. |
 | ![A175001](gallery/oeis-a175001.png) | `data.sequence`: the OEIS b-file of A175001 on a logarithmic scale, the terms from n = 11 on (6, 10, 18, 49, 103, 228, 376, 745) highlighted and checked against the file. |
 | ![sandpile](gallery/sandpile-identity.png) | `math.sandpile`: the identity of the sandpile group of a 96 × 96 grid, computed with Creutz's formula and checked: stable, and e ⊕ e = e. For n ≤ 14 a stated group order is checked against the number of spanning trees. |
 | ![compare](gallery/instances-compare.png) | `mode: "compare"`: the same ground truth against seven predictions, matched one to one by IoU > 1/2 and scored exactly: the agreed pixels, the pixels only one side has (grey), false positives (warm) and false negatives (cool). The recipe states TP 4, FP 2, FN 2 and PQ 0.4670; the exact PQ is 21153891139/45297262530, and a recipe that said anything else would not render. |
@@ -294,12 +296,23 @@ needs a proof checker. A theorem such as w(4; 2,3,3,3) = 40 is both: a witness f
 | `check: "ap"` + `lengths` | no colour holds an arithmetic progression of its length (`"3"` for every colour, or `"2,3,3,3"`, one per colour) |
 | `check: "schur"` (+ `distinct`) | no colour holds x, y and x + y (with `distinct`, only x < y: weak Schur numbers) |
 | `colors`, `length`, `count` | the colours are below `colors`, every colouring colours exactly 1..`length`, the file has `count` colourings |
-| `proof_sha256` | (not a check) the SHA-256 of the proof that 1..`length`+1 cannot be coloured, recorded in the manifest so the figure names the other half of the theorem; check the proof itself with drat-trim or cake_lpr |
+| `proof_sha256` | (not a check here) the SHA-256 of the proof that 1..`length`+1 cannot be coloured, recorded in the manifest so the figure names the other half of the theorem; `data.refutation` checks that proof |
 
 The format is one colouring per line, either one digit per number (`0112…`, colours 0–9) or numbers separated by spaces
 or commas; `#` and `!` start comment lines; give `"format": "coloring"`. A refusal names the colouring, the colour and
 the progression or the sum that breaks the rule. The checks are tested against W(2;3) = 9, S(2) = 4 and the weak Schur
 number WS(2) = 8, each decided by brute force over every colouring.
+
+`data.refutation` draws the other half: a proof, in the LRAT format SAT solvers write (CaDiCaL `--lrat`, drat-trim
+`-L`), that 1..n cannot be coloured. exactfig does not take the formula from the file: it writes the formula itself from
+the recipe (`check`, `lengths`, `colors`, `distinct`, `length` = n), with variables x(i, c) = (i − 1)·r + c + 1 and the
+clause order its documentation gives, so a proof of anything else does not check. Every added clause is checked by
+reverse unit propagation along its hints, and the proof must reach the empty clause; RAT steps are refused, and `steps`
+pins the number of added clauses. The figure: one row per number, the proof in order from left to right, each cell in
+the colour the proof mentions most there, and at the right the column of the empty clause. The formula is tested
+against `data.coloring`'s own check on every colouring of small cases, and the checker against proofs from CaDiCaL that
+the verified checker cake_lpr also accepts. The pure-Python checker is for proofs up to a few million steps (W(3;3) = 27,
+7945 clauses, takes a tenth of a second); larger ones belong to cake_lpr.
 
 ## Instance masks and segmentation
 
@@ -332,6 +345,13 @@ the highlighted part of the figure is exactly what the contribution says. Terms 
 `"format": "triangles"`), the certificates of congruent numbers, and checks a² + b² = c², a·b/2 = n, positive sides,
 squarefree n and no repeats in exact fractions; a refusal gives the exact difference. Decimals are refused: they would
 not be exact.
+
+**`data.pratt`** reads a Pratt certificate of primality (`"format": "pratt"`): one prime per line, `p g q1^e1 q2^e2 …`, a
+witness g and the factorisation of p − 1, the first line being the prime it proves and every factor above 2 having a
+line of its own. Before drawing it checks, in exact integer arithmetic, that the factors multiply to p − 1, that
+g^(p−1) ≡ 1 and g^((p−1)/q) ≢ 1 (mod p) for each q (Lucas), that no factor lacks its line and that no line is unused;
+`prime` and `primes` pin the number proved and the number of lines. Finding a certificate needs p − 1 factored and is
+done elsewhere; checking it takes a few modular exponentiations per line.
 
 **`math.sandpile`** computes the identity of the sandpile group of an n × n grid (Creutz: e = stab(2·m − stab(2·m)),
 m = 3 everywhere) and checks e ⊕ e = e before drawing; a stated `order` (n ≤ 14) must equal the determinant of the
