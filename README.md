@@ -508,6 +508,7 @@ python -m exactfig verify --manifest gallery/manifest.json --strict   # …which
 python -m exactfig verify --json                                       # a machine-readable report
 python -m exactfig crate --manifest gallery/manifest.json --date 2026-11-22 --license CC-BY-4.0   # RO-Crate
 python -m exactfig alt --manifest gallery/manifest.json               # the exact alternative text of every file
+python -m exactfig cvd --manifest gallery/manifest.json               # colour pairs colour-blind readers may confuse
 ```
 
 For each entry, in order: the recipe hash and normal form, the generator and its version, the source hash, every input
@@ -537,6 +538,15 @@ comparison: *"[…] 4 true positives, 2 false positives, 2 false negatives, pano
 `python -m exactfig alt --manifest gallery/manifest.json` lists them (`--json` for a page); `verify` warns, and with
 `--strict` fails, when the text this version writes differs from the recorded one; the RO-Crate uses it as each file's
 description.
+
+**Colour-blind readers.** `python -m exactfig cvd --manifest gallery/manifest.json` simulates protanopia, deuteranopia
+and tritanopia (Machado, Oliveira and Fernandes 2009, full severity, in linear sRGB) on the colours each recorded image
+actually uses, and reports for each vision the closest pair (OKLab distance; about 0.02 is barely visible, 0.1 clear)
+and how many pairs fall below `--min` (0.06 by default). It informs and does not judge: a sequential ramp has close
+neighbours by design, while colours that carry different meanings should stay apart. On this gallery it finds, for
+instance, that two of the four colours of the van der Waerden witness come within 0.017 for a deuteranope, and that the
+gate colours of the circuit figures include a pair at 0.028 for every vision; the refutations, the Pratt tree and the
+still lifes stay clear for all four.
 
 ## Python API
 

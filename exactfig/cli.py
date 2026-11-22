@@ -5,6 +5,8 @@ exactfig command line / línea de órdenes.
   exactfig record RECIPE.json …  --manifest M.json        render, write next to the manifest and record provenance
   exactfig verify [--manifest M.json] [--strict] [--json] [PATH …]
                                                            re-run every recorded recipe and compare pixel/byte for byte
+  exactfig cvd [--manifest M.json] [--min D] [--share S] [--json]
+                                                           colour pairs that colour-blind readers may confuse (inform)
   exactfig alt [--manifest M.json] [--json]               the alternative text of every recorded file (exact)
   exactfig crate [--manifest M.json] [--date D] [--license SPDX] [--author A] [--name N]
                                                            write ro-crate-metadata.json beside the manifest (RO-Crate
@@ -178,6 +180,12 @@ def main(argv=None) -> int:
     a.add_argument("--manifest", default="gallery/manifest.json")
     a.add_argument("--strict", action="store_true", help="also fail on changed generator source or re-encoded files")
     a.add_argument("--json", action="store_true")
+    a = sub.add_parser("cvd", help="which colours of each recorded image run together for colour-blind readers")
+    a.add_argument("--manifest", default="gallery/manifest.json")
+    a.add_argument("--min", type=float, default=0.06, help="report pairs closer than this OKLab distance (default 0.06)")
+    a.add_argument("--share", type=float, default=0.005,
+                   help="only colours covering at least this share of the opaque pixels (default 0.005)")
+    a.add_argument("--json", action="store_true")
     a = sub.add_parser("alt", help="the alternative text of every recorded file (exact: stated from the checks)")
     a.add_argument("--manifest", default="gallery/manifest.json")
     a.add_argument("--json", action="store_true", help="a JSON object {file: text}")
@@ -218,6 +226,8 @@ def main(argv=None) -> int:
             return 0
         if args.cmd == "verify":
             return provenance.main_verify(args.manifest, args.strict, args.json, args.paths or None)
+        if args.cmd == "cvd":
+            return _cvd(args.manifest, args.min, args.share, args.json)
         if args.cmd == "alt":
             assets = provenance.load(args.manifest)["assets"]
             texts = {rel: e.get("alt", "") for rel, e in sorted(assets.items())}
@@ -263,6 +273,45 @@ def main(argv=None) -> int:
         print(f"exactfig: internal error ({type(ex).__name__}: {ex}). This is a bug in exactfig, not in your input: "
               "run again with EXACTFIG_DEBUG=1 for the traceback and report it.", file=sys.stderr)
         return 3
+
+
+def _cvd(manifest: str, minimum: float, share: float, as_json: bool) -> int:
+    """Colour-blindness audit of every recorded PNG image (animations and MIDI are skipped); exit 0 even when pairs
+    are reported: it informs, it does not judge a figure."""
+    from .pixel import cvd, png as pngmod
+    if not 0 < minimum < 1 or not 0 <= share < 1:
+        raise ValueError("--min must be between 0 and 1, --share between 0 and 1")
+    base = os.path.dirname(os.path.abspath(manifest))
+    report = {}
+    for rel, e in sorted(provenance.load(manifest)["assets"].items()):
+        if e.get("kind") != "image":
+            continue
+        with open(os.path.join(base, rel), "rb") as fh:
+            w, h, rgba = pngmod.decode(fh.read())
+        counts = {}
+        for i in range(0, len(rgba), 4):
+            if rgba[i + 3]:
+                key = (rgba[i], rgba[i + 1], rgba[i + 2])
+                counts[key] = counts.get(key, 0) + 1
+        total = sum(counts.values()) or 1
+        cols = sorted(c for c, n in counts.items() if n >= share * total)
+        hexes = ["#%02x%02x%02x" % c for c in cols]
+        res = cvd.audit(cols, minimum)
+        report[rel] = {v: {"closest": round(r["closest"][0], 4) if r["closest"] else None,
+                           "pair": [hexes[r["closest"][1]], hexes[r["closest"][2]]] if r["closest"] else None,
+                           "below": len(r["below"])} for v, r in res.items()}
+        report[rel]["colours"] = len(cols)
+    if as_json:
+        print(json.dumps(report, ensure_ascii=False, indent=1))
+        return 0
+    for rel, r in report.items():
+        cells = []
+        for v in cvd.VISIONS:
+            x = r[v]
+            cells.append(f"{v} {x['closest']:.3f}" + (f" ({x['below']} pairs below)" if x["below"] else "")
+                         if x["closest"] is not None else f"{v} -")
+        print(f"{rel}	{r['colours']} colours	" + " | ".join(cells))
+    return 0
 
 
 def _plain(ex: Exception) -> str:

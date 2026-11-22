@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.11.0 (2026-11-22)
+
+- **`exactfig cvd`**: a colour-blindness audit of every recorded image. It simulates protanopia, deuteranopia and
+  tritanopia (Machado, Oliveira and Fernandes 2009, severity 1, linear sRGB; `pixel/cvd.py`, pure) on the colours each
+  image actually uses (`--share`, default 0.5 % of the opaque pixels) and reports, per vision, the closest pair in OKLab
+  and the pairs below `--min` (default 0.06); `--json` for a machine report. It informs and changes nothing. Tested
+  against facts that do not depend on exactfig: every row of the three matrices sums to 1 (greys unchanged), red and
+  green come together for protanopes and deuteranopes but not for tritanopes, blue and yellow stay apart.
+  On this gallery it finds the van der Waerden witness (two colours at 0.017 for deuteranopes), the instance masks and
+  the circuits' gate colours worth revisiting.
+
 ## 0.10.0 (2026-11-22)
 
 - **Alternative text, exact.** Every recorded file now carries an `alt` text in the manifest (schema: `alt`, at most

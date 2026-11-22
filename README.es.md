@@ -544,6 +544,7 @@ python -m exactfig verify --manifest gallery/manifest.json --strict   # …que e
 python -m exactfig verify --json                                       # un informe para máquinas
 python -m exactfig crate --manifest gallery/manifest.json --date 2026-11-22 --license CC-BY-4.0   # RO-Crate
 python -m exactfig alt --manifest gallery/manifest.json               # el texto alternativo exacto de cada fichero
+python -m exactfig cvd --manifest gallery/manifest.json               # pares de colores que un daltónico puede confundir
 ```
 
 Para cada entrada, en orden: el hash y la forma normal de la receta, el generador y su versión, el hash del código, el hash de
@@ -573,6 +574,15 @@ remainder 1 on division by 3, checked on all 32 inputs […] 1 on 10 of the 32."
 llevan su propio resumen, su nombre y su tamaño, y no afirman nada más. `python -m exactfig alt --manifest
 gallery/manifest.json` los lista (`--json` para una página); `verify` avisa, y con `--strict` falla, si el texto que
 escribe esta versión no coincide con el apuntado; el RO-Crate lo usa como descripción de cada fichero.
+
+**Lectores daltónicos.** `python -m exactfig cvd --manifest gallery/manifest.json` simula la protanopia, la
+deuteranopia y la tritanopia (Machado, Oliveira y Fernandes 2009, severidad completa, en sRGB lineal) sobre los colores
+que de verdad usa cada imagen apuntada, y da para cada visión el par más cercano (distancia OKLab; unos 0,02 apenas se
+nota, 0,1 se ve claro) y cuántos pares quedan por debajo de `--min` (0,06 por defecto). Informa y no juzga: una rampa
+secuencial tiene vecinos cercanos a propósito, mientras que los colores que significan cosas distintas deberían quedar
+separados. En esta galería encuentra, por ejemplo, que dos de los cuatro colores del testigo de van der Waerden quedan a
+0,017 para una persona con deuteranopia, y que los colores de las puertas de las figuras de circuitos incluyen un par a
+0,028 para cualquier visión; las refutaciones, el árbol de Pratt y las vidas quietas quedan claros para las cuatro.
 
 ## API de Python
 
