@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.0 (2026-11-22)
+
+- **`data.circuit`**: a Boolean circuit of two-input gates (a straight-line program), drawn by depth with its value on
+  every input along the bottom, only after it is evaluated on all 2^n inputs (bit-parallel, exact) and found equal to
+  the stated function: `mod M R`, `threshold K`, `parity` or a hexadecimal truth table. `inputs` and `gates` pin the
+  size; `strict` (default) refuses gates that do not lead to the output, so `gates` is the size of the circuit; the
+  recipe can name a proof that no smaller circuit exists by its SHA-256 (`proof_sha256`, recorded, not checked). New
+  input format `circuit`. Gallery: a 9-gate circuit for MOD_3 with residue 1 on 5 inputs, the smallest size (Knuth,
+  TAOCP 7.1.2). Tested on all 16 two-input functions, against a direct count of ones for every target up to 6 inputs,
+  and with textbook circuits (the XOR chain is parity, four gates make the majority of 3).
+
 ## 0.6.0 (2026-11-16)
 
 - **`data.pratt`**: a Pratt certificate of primality drawn as a tree, only after every line is checked in exact integer

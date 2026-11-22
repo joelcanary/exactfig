@@ -57,6 +57,8 @@ SMALL = {
     "math.sandpile": {"palette": "sci", "size": [16, 16], "params": {"n": 8}},
     "data.pratt": {"palette": "sci", "size": [40, 20], "input": {"path": "data/pratt-m127.txt", "format": "pratt"},
                    "params": {"primes": 19}},
+    "data.circuit": {"palette": "sci", "size": [48, 32], "input": {"path": "data/mod3-1-n5.circuit", "format": "circuit"},
+                     "params": {"function": "mod 3 1", "inputs": 5, "gates": 9}},
     "data.refutation": {"palette": "sci", "size": [40, 14], "input": {"path": "data/schur-3-n14.lrat", "format": "lrat"},
                         "params": {"check": "schur", "colors": 3, "length": 14}},
     "data.coloring": {"palette": "sci", "size": [39, 4], "input": {"path": "data/vdw-2-3-3-3.txt", "format": "coloring"},
@@ -68,7 +70,8 @@ DATA = os.path.join(os.path.abspath(ROOT), "gallery")   # input paths of the dat
 SEEDLESS = ("forge.icon.gem", "forge.fractal.julia", "data.field", "data.scatter", "anim.wave", "anim.lorenz", "anim.diffuse",
             "anim.frames", "compose", "draw.annotate", "math.domain", "math.logistic", "math.ulam", "math.modmult",
             "data.image", "math.fourier", "anim.epicycles", "data.catalog", "data.coloring", "data.instances",
-            "data.triangle", "data.sequence", "math.sandpile", "data.pratt", "data.refutation")   # the output does not depend on the seed
+            "data.triangle", "data.sequence", "math.sandpile", "data.pratt", "data.refutation",
+            "data.circuit")   # the output does not depend on the seed
 
 
 def rb(path):

@@ -140,6 +140,12 @@ def cases():
     yield "refutation of a colourable claim", {"r.json": j(rfr), "p.lrat": "18 -1 0 1 0\n19 0 18 0\n"}, ["render", "r.json"]
     yield "refutation in binary LRAT", {"r.json": j(rfr), "p.lrat": "a\x02\x00\x00"}, ["render", "r.json"]
     yield "refutation without a length", {"r.json": j(dict(rfr, params={"check": "ap", "colors": 2})), "p.lrat": "18 0 1 0\n"}, ["render", "r.json"]
+    cir = {"generator": "data.circuit", "seed": "x", "palette": "sci", "size": [40, 20], "input": {"path": "c.txt", "format": "circuit"}, "params": {"function": "parity"}, "output": "c.png"}
+    yield "circuit that computes another function", {"r.json": j(cir), "c.txt": "inputs 2\ng = and x1 x2\noutput g\n"}, ["render", "r.json"]
+    yield "circuit with a cycle", {"r.json": j(cir), "c.txt": "inputs 2\ng = xor x1 h\nh = xor g x2\noutput h\n"}, ["render", "r.json"]
+    yield "circuit with an unused gate", {"r.json": j(cir), "c.txt": "inputs 2\nd = and x1 x2\ng = xor x1 x2\noutput g\n"}, ["render", "r.json"]
+    yield "circuit of 30 inputs", {"r.json": j(cir), "c.txt": "inputs 30\noutput x1\n"}, ["render", "r.json"]
+    yield "circuit without a function", {"r.json": j(dict(cir, params={})), "c.txt": "inputs 2\ng = xor x1 x2\noutput g\n"}, ["render", "r.json"]
     yield "sandpile order too large to check", {"r.json": j({"generator": "math.sandpile", "seed": "x", "palette": "sci", "size": [32, 32], "params": {"n": 32, "order": "5"}, "output": "s.png"})}, ["render", "r.json"]
     yield "ship with the wrong shift", {"r.json": j({"generator": "data.catalog", "seed": "x", "palette": "sci", "size": [32, 32], "input": {"path": "c.txt", "format": "catalog"}, "params": {"check": "ship", "period": 4, "shift": "2,0"}, "output": "c.png"}), "c.txt": "3x3: .O. ..O OOO\n"}, ["render", "r.json"]
     yield "animation too many pixels", {"r.json": j({"generator": "anim.life", "seed": "x", "palette": "sci", "size": [1024, 1024], "params": {"frames": 1000}, "output": "l.gif"})}, ["render", "r.json"]

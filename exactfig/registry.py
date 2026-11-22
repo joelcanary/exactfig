@@ -166,7 +166,7 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import (annotate, catalog, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
+    from .forge import (annotate, catalog, circuit, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
                         refutation, sandpile, sequence, skies, sprites, tiles, triangle)
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
@@ -393,6 +393,22 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/pratt.py"),
             "a Pratt certificate of primality as a tree, checked first: p − 1 factored, g of order p − 1, down to 2",
             (256, 160), 2048, data="primes"),
+        Generator("data.circuit", "1", "image", circuit.circuit, {
+            "function": P("text", "", maxlen=400, doc="what the circuit computes: mod M R, threshold K, parity or "
+                                                      "table HEX (bit m = the value on input m)"),
+            "inputs": P("int", 0, 0, 20, doc="number of inputs; 0 = the file's"),
+            "gates": P("int", 0, 0, 100000, doc="number of gates in the file; 0 = any"),
+            "strict": P("bool", True, doc="every gate leads to the output"),
+            "proof_sha256": P("text", "", maxlen=64, doc="SHA-256 of a proof that no smaller circuit exists; recorded, "
+                                                         "not checked"),
+            "ramp": P("str", "cyc", choices=DATA_RAMPS, doc="gate colour by its operation, the 16 evenly round the ramp"),
+            "input_ramp": P("str", "grey", choices=DATA_RAMPS),
+            "edge_ramp": P("str", "grey", choices=DATA_RAMPS, doc="wires (middle step) and the 0 cells (first step)"),
+            "mark_ramp": P("str", "paper", choices=DATA_RAMPS, doc="the ring of the output and the 1 cells"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/circuit.py"),
+            "a Boolean circuit of two-input gates, checked first on every one of its 2^n inputs against the function",
+            (480, 320), 2048, data="circuit"),
         Generator("data.refutation", "1", "image", refutation.refutation, {
             "check": P("str", "ap", choices=("ap", "schur"),
                        doc="the claim refuted: 1..length cannot be coloured without a monochromatic progression of its "

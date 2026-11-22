@@ -41,6 +41,11 @@ Two shapes of data, each from several standard formats, all read with the standa
             coloring (any extension, `format` must say so)  one colouring per line: either one digit per number
                                  (`0112…`, colours 0-9) or numbers separated by spaces or commas; `#` or `!` starts a
                                  comment line
+  circuit   a Boolean circuit of two-input gates (a straight-line program), e.g. a smallest circuit found by a search
+            circuit (any extension, `format` must say so)  `inputs n` first, then one gate per line `name = op a b`
+                                 (a, b are x1..xn or earlier gates; op is and, or, xor, nand, nor, xnor, andnot = a ∧ ¬b,
+                                 notand = ¬a ∧ b, ornot = a ∨ ¬b, notor = ¬a ∨ b, or a table t0110 giving op(0,0),
+                                 op(0,1), op(1,0), op(1,1)), and `output name` last; `#` or `!` starts a comment line
   proof     a clausal proof that a formula has no solution (the "no" half of a SAT answer), e.g. that 1..n cannot be
             coloured without a monochromatic progression
             lrat (any extension, `format` must say so)  the textual LRAT format of SAT solvers and drat-trim: an added
@@ -79,13 +84,18 @@ TRIANGLE_FORMATS = ("triangles",)
 SEQUENCE_FORMATS = ("bfile",)
 PRIME_FORMATS = ("pratt",)
 PROOF_FORMATS = ("lrat",)
+CIRCUIT_FORMATS = ("circuit",)
+MAX_GATES = 100_000
+MAX_CIRCUIT_INPUTS = 20      # the check evaluates all 2^n inputs, bit-parallel
+GATE_OPS = {"and": "0001", "or": "0111", "xor": "0110", "nand": "1110", "nor": "1000", "xnor": "1001",
+            "andnot": "0010", "notand": "0100", "ornot": "1011", "notor": "1101"}
 MAX_TERMS = 100_000
 MAX_PROOF_STEPS = 2_000_000
 MAX_DIGITS = 4000            # below the 4300-digit limit Python 3.11+ (and 3.10.7+) puts on int(str)
 FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMATS, "image": IMAGE_FORMATS,
            "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS, "instances": INSTANCE_FORMATS,
            "triangles": TRIANGLE_FORMATS, "sequence": SEQUENCE_FORMATS, "primes": PRIME_FORMATS,
-           "proof": PROOF_FORMATS}
+           "proof": PROOF_FORMATS, "circuit": CIRCUIT_FORMATS}
 MAX_INSTANCE_PIXELS = 2048 * 2048
 MAX_INSTANCES = 10_000
 MAX_COLORING = 5000
@@ -939,6 +949,75 @@ def read_lrat(path: str) -> Proof:
     return Proof(out)
 
 
+@dataclass
+class Circuit:
+    """A circuit in file order: `inputs` = n, `gates` = [(name, table, a, b)] with table the 4 characters op(0,0),
+    op(0,1), op(1,0), op(1,1) and a, b names of inputs (x1..xn) or earlier gates, `output` = a gate name."""
+    inputs: int
+    gates: list
+    output: str
+
+    def __len__(self):
+        return len(self.gates)
+
+    def describe(self) -> dict:
+        return {"inputs": self.inputs, "gates": len(self.gates), "output": self.output}
+
+
+_NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_]{0,63}\Z")
+
+
+def read_circuit(path: str) -> Circuit:
+    """`inputs n`, then `name = op a b` per gate, then `output name`; names are checked to be defined before use."""
+    n, gates, output, known = None, [], None, {}
+    for k, raw in enumerate(read_text(path).splitlines(), 1):
+        line = raw.strip()
+        if not line or line[0] in "#!":
+            continue
+        where = f"{path}, line {k}"
+        toks = line.split()
+        if output is not None:
+            raise DataError(f"{where}: nothing may follow the `output` line")
+        if n is None:
+            if len(toks) != 2 or toks[0] != "inputs" or not (toks[1].isdigit() and toks[1].isascii()):
+                raise DataError(f"{where}: the first line is `inputs n`")
+            n = int(toks[1])
+            if not 1 <= n <= MAX_CIRCUIT_INPUTS:
+                raise DataError(f"{where}: between 1 and {MAX_CIRCUIT_INPUTS} inputs")
+            known = {f"x{i}": f"line {k}" for i in range(1, n + 1)}
+            continue
+        if toks[0] == "output":
+            if len(toks) != 2 or toks[1] not in known:
+                raise DataError(f"{where}: `output name`, with a gate or input defined above")
+            output = toks[1]
+            continue
+        if len(toks) != 5 or toks[1] != "=":
+            raise DataError(f"{where}: a gate is `name = op a b`")
+        name, op, a, b = toks[0], toks[2], toks[3], toks[4]
+        if not _NAME.match(name):
+            raise DataError(f"{where}: {name[:40]!r} is not a name (a letter, then letters, digits or _)")
+        if name in known:
+            raise DataError(f"{where}: {name} is already defined ({known[name]})")
+        if op in GATE_OPS:
+            table = GATE_OPS[op]
+        elif len(op) == 5 and op[0] == "t" and set(op[1:]) <= {"0", "1"}:
+            table = op[1:]
+        else:
+            raise DataError(f"{where}: unknown gate {op[:20]!r} (use {', '.join(GATE_OPS)} or a table such as t0110)")
+        for arg in (a, b):
+            if arg not in known:
+                raise DataError(f"{where}: {arg[:40]!r} is used before it is defined (a circuit has no cycles)")
+        known[name] = f"line {k}"
+        gates.append((name, table, a, b))
+        if len(gates) > MAX_GATES:
+            raise DataError(f"{path}: more than {MAX_GATES} gates")
+    if n is None:
+        raise DataError(f"{path}: no `inputs` line")
+    if output is None:
+        raise DataError(f"{path}: no `output` line")
+    return Circuit(n, gates, output)
+
+
 def load(path: str, shape: str, fmt: str | None = None):
     """Read `path` as a `grid`, `points`, `frames`, an `image` or `patterns`."""
     f = format_of(path, fmt)
@@ -964,6 +1043,8 @@ def load(path: str, shape: str, fmt: str | None = None):
         readers = {"pratt": read_pratt}
     elif shape == "proof":
         readers = {"lrat": read_lrat}
+    elif shape == "circuit":
+        readers = {"circuit": read_circuit}
     else:
         raise AssertionError(shape)
     if f not in readers:

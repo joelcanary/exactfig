@@ -1,0 +1,15 @@
+# A circuit of 9 two-input gates computing MOD_3 with residue 1 on 5 inputs: the output is 1 exactly when
+# x1 + x2 + x3 + x4 + x5 = 1 or 4. Found by a SAT search for the smallest size; that 8 gates do not suffice was
+# proved by cube-and-conquer (2002 cubes, each closed by unit propagation or by a proof checked with drat-trim and
+# cake_lpr). The size 9 itself was known (Knuth, TAOCP 7.1.2, the exact cost of every 5-input function).
+inputs 5
+g6 = xor x4 x5
+g7 = xor x1 g6
+g8 = xor x4 g7
+g9 = or g6 g8
+g10 = xor x2 g9
+g11 = xor x3 g10
+g12 = xor g7 g10
+g13 = and g9 g12
+g14 = andnot g11 g13
+output g14

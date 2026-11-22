@@ -73,7 +73,7 @@ receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 
 | Los mismos bits en cualquier plataforma | las funciones trascendentes salen de `exactfig.fmath` (solo aritmética básica IEEE 754); comprobado en x86-64 y ARM64 |
 | El conjunto entero queda fijado | `manifest_sha256` cubre todas las entradas: basta con firmar o publicar ese valor |
 | Una receta no puede colar una imagen | esquemas de parámetros cerrados (valores con tipo y rango, nada de matrices de píxeles); los datos solo entran como un fichero con nombre y hash |
-| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad) y si no, no dibujan |
+| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad) y si no, no dibujan |
 | Los errores acaban en un mensaje claro | una línea que dice qué y por qué, nunca un traceback; se prueban más de 90 errores reales, un proceso cada uno |
 
 Lo que no prueba: quién escribió el código o eligió la receta (para eso, firma el resumen del manifiesto), ni que un modelo o
@@ -361,6 +361,15 @@ línea; `prime` y `primes` fijan el número probado y el número de líneas. Enc
 y se hace fuera; comprobarlo cuesta unas pocas exponenciaciones modulares por línea. Un número compuesto no tiene
 certificado, así que ningún fichero puede hacer que esta figura mienta.
 
+**`data.circuit`** lee un circuito booleano (`"format": "circuit"`): `inputs n`, luego una puerta por línea
+`nombre = op a b` (op es and, or, xor, nand, nor, xnor, andnot = a ∧ ¬b, notand = ¬a ∧ b, ornot, notor, o una tabla como
+`t0110` con op(0,0), op(0,1), op(1,0), op(1,1)), con argumentos x1..xn o puertas anteriores, y `output nombre` al final.
+Antes de dibujar evalúa todas las puertas en las 2^n entradas a la vez (un bit por entrada, n ≤ 20) y compara la salida
+con `function` (`mod M R`, `threshold K`, `parity` o `table HEX`, con el bit m = el valor en la entrada m y x_i = el bit
+i − 1 de m); el rechazo dice la primera entrada en la que no coinciden. `inputs`, `gates` y `strict` (ninguna puerta sin
+usar) fijan el tamaño. Un circuito es una cota superior; que no exista uno más pequeño necesita una refutación, que
+`proof_sha256` puede nombrar.
+
 **`math.sandpile`** calcula la identidad del grupo de la pila de arena de una rejilla n × n (Creutz:
 e = estab(2·m − estab(2·m)), con m = 3 en todas partes) y comprueba e ⊕ e = e antes de dibujar; un `order` declarado
 (n ≤ 14) tiene que ser el determinante del laplaciano reducido, calculado exacto por eliminación sin fracciones: el número
@@ -370,8 +379,8 @@ de árboles generadores (teorema de la matriz-árbol).
 tras exactamente `period` generaciones, y no ser una traslación de sí mismo antes.
 
 Ejemplos en la galería: [las naves de Conway](gallery/conway-ships.png), [los triángulos de 5, 6, 7 y 157](gallery/congruent-triangles.png)
-(el de 157 con numeradores de hasta 48 cifras), [el b-file de A175001](gallery/oeis-a175001.png) con tus términos 11..18 y
-[la identidad de la pila de arena de 96 × 96](gallery/sandpile-identity.png) y [el árbol de Pratt de 2^127 − 1](gallery/pratt-m127.png).
+(el de 157 con numeradores de hasta 48 cifras), [el b-file de A175001](gallery/oeis-a175001.png) con tus términos 11..18,
+[la identidad de la pila de arena de 96 × 96](gallery/sandpile-identity.png), [el árbol de Pratt de 2^127 − 1](gallery/pratt-m127.png) y [un circuito de 9 puertas para MOD_3 con 5 entradas](gallery/mod3-circuit.png), el tamaño mínimo (Knuth, TAOCP 7.1.2).
 
 ## Animaciones y vídeo
 
