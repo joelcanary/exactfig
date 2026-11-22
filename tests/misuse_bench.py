@@ -129,6 +129,12 @@ def cases():
     yield "b-file with a gap", {"r.json": j(seqr), "b.txt": "1 0\n3 1\n"}, ["render", "r.json"]
     yield "b-file with a term of 5000 digits", {"r.json": j(seqr), "b.txt": "1 " + "9" * 5000 + "\n"}, ["render", "r.json"]
     yield "b-file new terms that differ", {"r.json": j(dict(seqr, params={"new_from": 2, "terms": "5"})), "b.txt": "1 0\n2 4\n"}, ["render", "r.json"]
+    bnd = {"generator": "data.bounds", "seed": "x", "palette": "sci", "size": [120, 60], "input": {"path": "t.txt", "format": "bounds"}, "output": "b.png"}
+    yield "bounds table with an empty range", {"r.json": j(bnd), "t.txt": "R,3\n3,9..8\n"}, ["render", "r.json"]
+    yield "bounds table that decreases", {"r.json": j(dict(bnd, params={"monotone": "rows"})), "t.txt": "R,3,4\n3,9,>50\n4,60,49\n"}, ["render", "r.json"]
+    yield "bounds caption the table contradicts", {"r.json": j(dict(bnd, params={"claims": "3,3:10"})), "t.txt": "R,3\n3,9\n"}, ["render", "r.json"]
+    yield "bounds table not symmetric", {"r.json": j(dict(bnd, params={"symmetric": True})), "t.txt": "R,3,4\n3,6,9\n4,8,18\n"}, ["render", "r.json"]
+    yield "bounds table too large for the picture", {"r.json": j(dict(bnd, size=[8, 8])), "t.txt": "R,3\n3,9\n"}, ["render", "r.json"]
     trir = {"generator": "data.triangle", "seed": "x", "palette": "sci", "size": [40, 20], "input": {"path": "t.txt", "format": "triangles"}, "output": "t.png"}
     yield "triangle that is not right", {"r.json": j(trir), "t.txt": "6 3 4 6\n"}, ["render", "r.json"]
     yield "triangle with decimals", {"r.json": j(trir), "t.txt": "5 1.5 6.666 6.833\n"}, ["render", "r.json"]

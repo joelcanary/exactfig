@@ -1,0 +1,12 @@
+# van der Waerden numbers W(r, k): the least n such that every colouring of 1..n with r colours has a
+# monochromatic arithmetic progression of length k. Rows k, columns r. Lower bounds as the source prints them (">n").
+# Source: Wikipedia, "Van der Waerden number", revision 1382726730 (29 October 2026), after Rabung and Lotts (2012) except:
+#   W(2,3) = 9, W(3,3) = 27, W(2,4) = 35: Chvátal (1970); W(4,3) = 76: Beeler and O'Neil (1979);
+#   W(2,5) = 178: Stevens and Shantaram (1978); W(3,4) = 293: Kouril (2012); W(2,6) = 1132: Kouril and Paul (2008);
+#   W(5,5) > 98741: Heule (2017); several bounds in rows 4-6: Monroe (2019).
+# Licence: these are published mathematical facts (numbers only); no text of the source is reproduced.
+K/R, 2, 3, 4, 5, 6
+3, 9, 27, 76, >170, >225
+4, 35, 293, >1048, >2254, >9778
+5, 178, >2173, >17705, >98741, >98748
+6, 1132, >11191, >157209, >786740, >1555549

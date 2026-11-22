@@ -14,6 +14,7 @@ those checks as facts. `text` is called after the generator has drawn; it never 
   data.catalog             the patterns, their cells, the rule, what each was checked to be, distinct or not
   data.instances           the masks; in compare mode TP, FP, FN and the exact panoptic quality
   data.sequence            the indices, the scale, the largest term, the new terms checked
+  data.bounds              the shape, the cells by kind, what was checked (order, symmetry, the stated cells)
   data.triangle            the areas, squarefree or not, a² + b² = c² and a·b/2 = n checked
   math.sandpile            the grid, the checks on the identity, the group order if stated
   anything else            the generator's own summary, its name and the picture's size
@@ -168,7 +169,32 @@ def _sandpile(p, data, w, h):
             f"stable and to satisfy e ⊕ e = e; 0, 1, 2 and 3 grains as four steps of colour.{order}")
 
 
-DESCRIBE = {"data.catalog": _catalog, "data.instances": _instances, "data.sequence": _sequence,
+def _bounds(p, data, w, h):
+    from .bounds import NAMES, kind
+    counts = {k: 0 for k in NAMES}
+    for _, cells in data.rows:
+        for c in cells:
+            if c is not None:
+                counts[kind(c)] += 1
+    parts = [f"{n} {'exact values' if k == 'exact' else NAMES[k].lower() + ('s' if n != 1 else '')}"
+             for k, n in counts.items() if n and k != "exact"]
+    parts = ([f"{counts['exact']} exact value{'s' if counts['exact'] != 1 else ''}"] if counts["exact"] else []) + parts
+    checks = ["every range non-empty"]
+    if p["monotone"] != "none":
+        checks.append({"rows": "the values not decreasing along the rows", "columns": "the values not decreasing down "
+                       "the columns", "both": "the values not decreasing along rows and columns"}[p["monotone"]])
+    if p["symmetric"]:
+        checks.append("the table symmetric")
+    from .bounds import parse_claims
+    claims = parse_claims(p["claims"])
+    if claims:
+        shown = "; ".join(f"{r}, {c}: {cell[0]}" for r, c, cell in claims[:6])
+        checks.append(f"the stated cells ({shown}{' …' if len(claims) > 6 else ''})")
+    return (f"A table of {len(data.rows)} rows by {len(data.cols)} columns ({data.corner}): {', '.join(parts)}. Each "
+            f"cell shows its value and is coloured by its kind. Checked before drawing: {', '.join(checks)}.")
+
+
+DESCRIBE = {"data.bounds": _bounds, "data.catalog": _catalog, "data.instances": _instances, "data.sequence": _sequence,
             "data.triangle": _triangles, "math.sandpile": _sandpile, "data.pratt": _pratt, "data.circuit": _circuit, "data.circuit_refutation": _circuit_refutation,
             "data.refutation": _refutation, "data.coloring": _coloring}
 

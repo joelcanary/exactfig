@@ -166,7 +166,7 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import (annotate, catalog, circuit, circuit_refutation, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
+    from .forge import (annotate, bounds, catalog, circuit, circuit_refutation, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
                         refutation, sandpile, sequence, skies, sprites, tiles, triangle)
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
@@ -451,6 +451,28 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/sequence.py"),
             "the terms of an integer sequence (OEIS b-file) as bars, the new terms highlighted and checked",
             (480, 200), 2048, data="sequence"),
+        Generator("data.bounds", "1", "image", bounds.bounds, {
+            "rows": P("int", 0, 0, 64, doc="number of rows of the table; 0 = any"),
+            "columns": P("int", 0, 0, 64, doc="number of columns; 0 = any"),
+            "exact": P("int", -1, -1, 4096, doc="number of exact cells; -1 = any"),
+            "bounded": P("int", -1, -1, 4096, doc="number of cells that are bounds or ranges; -1 = any"),
+            "monotone": P("str", "none", choices=("none", "rows", "columns", "both"),
+                          doc="the values never decrease left to right along the rows, down the columns, or both"),
+            "symmetric": P("bool", False, doc="square, row labels = column labels, cell (i, j) = cell (j, i)"),
+            "claims": P("text", "", maxlen=4000, doc="cells the figure states, row,column:cell separated by ';' "
+                                                     "(e.g. 5,3:>2173), each checked to allow exactly those integers"),
+            "text_size": P("int", 2, 1, 4, doc="pixel scale of the 3×5 font"),
+            "legend": P("bool", True, doc="a legend of the kinds of cell present, under the table"),
+            "ramp": P("str", "cat", choices=DATA_RAMPS, doc="cell colour by kind: lower bound, exact, range, upper "
+                                                           "bound, evenly along the ramp (cat: safe for colour-blind "
+                                                           "readers)"),
+            "grid_ramp": P("str", "grey", choices=DATA_RAMPS, doc="unknown cells (the middle step)"),
+            "text_ramp": P("str", "ink", choices=DATA_RAMPS, doc="the values written in the cells"),
+            "label_ramp": P("str", "paper", choices=DATA_RAMPS, doc="row and column labels and the legend"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/bounds.py", "forge/annotate.py"),
+            "a table of exact values and bounds (Ramsey, van der Waerden numbers…), checked first: ranges non-empty, "
+            "stated cells, order and symmetry", (320, 200), 2048, data="bounds"),
         Generator("math.sandpile", "1", "image", sandpile.sandpile, {
             "n": P("int", 64, 1, 160, doc="side of the grid; the border leaks to a sink"),
             "order": P("text", "", maxlen=400, doc="stated order of the sandpile group (checked for n ≤ 14)"),

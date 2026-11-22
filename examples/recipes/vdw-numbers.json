@@ -1,0 +1,1 @@
+{"generator": "data.bounds", "seed": "vdw-numbers", "palette": "sci", "size": [320, 104], "input": {"path": "data/vdw-numbers.bounds", "format": "bounds"}, "params": {"rows": 4, "columns": 5, "exact": 7, "bounded": 13, "monotone": "both", "claims": "3,2:9; 3,3:27; 3,4:76; 4,2:35; 4,3:293; 5,2:178; 6,2:1132", "text_size": 2}, "output": "vdw-numbers.png", "scale": 3}

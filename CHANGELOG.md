@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.14.0 (2026-11-22)
+
+- **`data.bounds`: tables of exact values and bounds, checked.** A new data format (`bounds`: labelled rows of cells,
+  each an integer, a bound `>n`, `>=n`, `<n`, `<=n`, a range `a..b`, `?` or `-`) and a generator that refuses to draw
+  a table whose ranges are empty, whose numbers of exact cells and bounds differ from the recipe's, whose values
+  decrease where `monotone` says they cannot, that is not symmetric when `symmetric` says it is, or whose cells differ
+  from the ones the recipe quotes (`claims`). Cells are coloured by kind (Okabe–Ito) and carry their value in the 3×5
+  font; a legend names the kinds present; the alternative text says what was checked. Gallery: the known van der Waerden
+  numbers W(r, k), 7 exact and 13 lower bounds, with their sources in the data file. Tested: the cell grammar by
+  membership, W(2, 3) = 9 by brute force, a symmetric table of small Ramsey numbers and the same table spoiled, every
+  refusal, and five new misuse cases. The gallery SVG's embedded code hash changes with the data reader; no other output
+  changes.
+
 ## 0.13.0 (2026-11-22)
 
 - **SVG output, with the provenance inside.** An image recipe whose `output` ends in `.svg` is written as SVG: the same

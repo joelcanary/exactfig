@@ -51,6 +51,11 @@ Two shapes of data, each from several standard formats, all read with the standa
             lrat (any extension, `format` must say so)  the textual LRAT format of SAT solvers and drat-trim: an added
                                  clause `id lit … 0 hint … 0`, a deletion `id d id … 0`; lines starting with `c` are
                                  comments; binary LRAT is not read
+  bounds    a table of exact values and bounds (e.g. the known Ramsey or van der Waerden numbers)
+            bounds (any extension, `format` must say so)  rows of cells separated by commas, semicolons or tabs; the
+                                 first row is a corner label and the column labels, every other row a row label and its
+                                 cells; a cell is an integer `9`, a bound `>170`, `>=171`, `<46`, `<=45` (`≥`, `≤` too), a
+                                 range `43..46`, `?` (unknown) or `-` / empty (no such entry); `#` starts a comment
 
 The reader is chosen by `format` or else by the file extension. A file is data, never code: nothing is evaluated, object
 arrays are refused, and sizes are capped (`MAX_CELLS`, `MAX_POINTS`, `MAX_BYTES`).
@@ -69,6 +74,8 @@ import re
 import struct
 from dataclasses import dataclass
 
+from ..forge import bounds as _bounds
+
 MAX_BYTES = 64 * 1024 * 1024
 MAX_CELLS = 4096 * 4096
 MAX_POINTS = 200_000
@@ -85,6 +92,9 @@ SEQUENCE_FORMATS = ("bfile",)
 PRIME_FORMATS = ("pratt",)
 PROOF_FORMATS = ("lrat",)
 CIRCUIT_FORMATS = ("circuit",)
+BOUNDS_FORMATS = ("bounds",)
+MAX_TABLE_SIDE = 64
+MAX_LABEL = 16
 MAX_GATES = 100_000
 MAX_CIRCUIT_INPUTS = 20      # the check evaluates all 2^n inputs, bit-parallel
 GATE_OPS = {"and": "0001", "or": "0111", "xor": "0110", "nand": "1110", "nor": "1000", "xnor": "1001",
@@ -95,7 +105,8 @@ MAX_DIGITS = 4000            # below the 4300-digit limit Python 3.11+ (and 3.10
 FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMATS, "image": IMAGE_FORMATS,
            "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS, "instances": INSTANCE_FORMATS,
            "triangles": TRIANGLE_FORMATS, "sequence": SEQUENCE_FORMATS, "primes": PRIME_FORMATS,
-           "proof": PROOF_FORMATS, "circuit": CIRCUIT_FORMATS}
+           "proof": PROOF_FORMATS, "circuit": CIRCUIT_FORMATS,
+           "bounds": BOUNDS_FORMATS}
 MAX_INSTANCE_PIXELS = 2048 * 2048
 MAX_INSTANCES = 10_000
 MAX_COLORING = 5000
@@ -1018,6 +1029,56 @@ def read_circuit(path: str) -> Circuit:
     return Circuit(n, gates, output)
 
 
+@dataclass
+class Bounds:
+    """A table of exact values and bounds: `corner` label, column labels, and rows (label, cells). A cell is None (no
+    entry) or (text, lo, hi): the integers it allows are lo ≤ x ≤ hi, with None for an open end; lo == hi is an exact
+    value, (None, None) is unknown."""
+    corner: str
+    cols: list
+    rows: list
+
+    def __len__(self):
+        return len(self.rows)
+
+    def describe(self) -> dict:
+        return {"rows": len(self.rows), "columns": len(self.cols),
+                "cells": sum(1 for _, cells in self.rows for c in cells if c is not None)}
+
+
+def read_bounds(path: str) -> Bounds:
+    """A table of exact values and bounds (see the module): first row the corner and the column labels, then one row
+    per label, every row with as many cells as there are columns."""
+    rows = _table(read_text(path))
+    if len(rows) < 2:
+        raise DataError(f"{path}: a bounds table needs a row of column labels and at least one row")
+    (_, head), body = rows[0], rows[1:]
+    if len(head) < 2:
+        raise DataError(f"{path}, line {rows[0][0]}: the first row is the corner label and at least one column label")
+    corner, cols = head[0], head[1:]
+    if len(cols) > MAX_TABLE_SIDE or len(body) > MAX_TABLE_SIDE:
+        raise DataError(f"{path}: more than {MAX_TABLE_SIDE} rows or columns")
+    out = []
+    for n, toks in body:
+        where = f"{path}, line {n}"
+        if len(toks) != len(cols) + 1:
+            raise DataError(f"{where}: {len(toks) - 1} cells, the first row has {len(cols)} column labels")
+        cells = []
+        for k, t in enumerate(toks[1:]):
+            try:
+                cells.append(_bounds.parse_cell(t))
+            except ValueError as e:
+                raise DataError(f"{where}, column {k + 1}: {e}") from None
+        out.append((toks[0], cells))
+    for lab in [corner] + cols + [r[0] for r in out]:
+        if len(lab) > MAX_LABEL:
+            raise DataError(f"{path}: label {lab[:20]!r} is longer than {MAX_LABEL} characters")
+    labels = [r[0] for r in out]
+    if len(set(labels)) != len(labels) or len(set(cols)) != len(cols):
+        raise DataError(f"{path}: two rows or two columns have the same label")
+    return Bounds(corner, cols, out)
+
+
 def load(path: str, shape: str, fmt: str | None = None):
     """Read `path` as a `grid`, `points`, `frames`, an `image` or `patterns`."""
     f = format_of(path, fmt)
@@ -1045,6 +1106,8 @@ def load(path: str, shape: str, fmt: str | None = None):
         readers = {"lrat": read_lrat}
     elif shape == "circuit":
         readers = {"circuit": read_circuit}
+    elif shape == "bounds":
+        readers = {"bounds": read_bounds}
     else:
         raise AssertionError(shape)
     if f not in readers:

@@ -71,7 +71,7 @@ checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
 | The same bits on every platform | transcendental functions come from `exactfig.fmath` (basic IEEE 754 arithmetic only); checked on x86-64 and ARM64 |
 | The whole set is pinned | `manifest_sha256` covers every entry; sign or publish that one value |
 | Recipes cannot smuggle a picture | closed parameter schemas: typed, ranged values, no pixel arrays; data enters only as a named, hashed file |
-| The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions, primality) and refuse to draw otherwise |
+| The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation`, `data.bounds` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions, primality, the cells of a table of bounds) and refuse to draw otherwise |
 | The description says what was checked | every recorded file carries an alternative text written after its data passed their checks, from the checked numbers themselves (counts, sizes, the function a circuit computes, the exact panoptic quality); `verify` notices a text that no longer matches |
 | Mistakes end in a clear message | one line saying what and why, never a traceback; more than 110 real mistakes are tested, one process each |
 
@@ -127,6 +127,7 @@ Every file below comes from a recipe in [`examples/recipes`](examples/recipes) a
 | ![Pratt](gallery/pratt-m127.png) | `data.pratt`: the Pratt certificate that 2^127 − 1 is prime, as a tree: below each prime, the primes of p − 1, down to 2; the disc grows with the bits. Each of the 19 lines is checked before drawing (p − 1 factored, a witness of order p − 1). A composite number has no certificate, so no file can make this figure lie. |
 | ![MOD3 circuit](gallery/mod3-circuit.png) | `data.circuit`: a circuit of 9 two-input gates that outputs 1 exactly when x1 + … + x5 leaves remainder 1 on division by 3, the smallest size for this function (Knuth, TAOCP 7.1.2). Inputs on top, each gate on the row of its depth, coloured by its operation; along the bottom, the output on each of the 32 inputs. Before drawing, exactfig evaluates the circuit on all 32 and refuses it if one differs, if a gate is unused or if it does not have 9 gates. |
 | ![MOD3 lower bound](gallery/mod3-n3-refutation.png) | `data.circuit_refutation`: the proof (CaDiCaL, LRAT, 677 clauses) that no circuit of 3 gates outputs 1 exactly when one of x1, x2, x3 is 1, checked against the formula exactfig writes from the claim; one row per gate, in proof order. With [the 4-gate circuit](gallery/mod3-n3-circuit.png), whose recipe names this proof by its SHA-256, the size is exactly 4. |
+| ![van der Waerden numbers](gallery/vdw-numbers.png) | `data.bounds`: what is known about the van der Waerden numbers W(r, k) (rows k = 3–6, columns r = 2–6 colours): 7 exact values and 13 lower bounds, as printed in the literature (sources in the data file's header). Before drawing, exactfig checks that the values never decrease along a row or down a column, that the table has 7 exact cells and 13 bounds, and that the seven exact values are the ones the recipe states; the test suite recomputes W(2, 3) = 9 by brute force. |
 | ![A175001](gallery/oeis-a175001.png) | `data.sequence`: the OEIS b-file of A175001 on a logarithmic scale, the terms from n = 11 on (6, 10, 18, 49, 103, 228, 376, 745) highlighted and checked against the file. |
 | ![sandpile](gallery/sandpile-identity.png) | `math.sandpile`: the identity of the sandpile group of a 96 × 96 grid, computed with Creutz's formula and checked: stable, and e ⊕ e = e. For n ≤ 14 a stated group order is checked against the number of spanning trees. |
 | ![compare](gallery/instances-compare.png) | `mode: "compare"`: the same ground truth against six predictions, matched one to one by IoU > 1/2 and scored exactly: the agreed pixels, the pixels only one side has (grey), false positives (warm) and false negatives (cool). The recipe states TP 4, FP 2, FN 2 and PQ 0.4670; the exact PQ is 21153891139/45297262530, and a recipe that said anything else would not render. |
@@ -369,6 +370,16 @@ writes from `function`, `inputs` and `gates` = s, which says that some circuit o
 operations) has its last gate equal to the function on every input. Smaller circuits pad to s gates with gates that
 copy an argument, so the formula is satisfiable exactly when the size is at most s, and a checked proof shows it is at
 least s + 1. The variable and clause order are documented in the module, so any proof tool can target them.
+
+**`data.bounds`** draws a table of what is known about a family of numbers (Ramsey, van der Waerden, Schur numbers, the
+sizes of smallest circuits): `"format": "bounds"`, rows of cells separated by commas, semicolons or tabs, the first row
+the corner and column labels, then a label and the cells of each row. A cell is an integer (`9`), a bound (`>170`,
+`>=171`, `<46`, `<=45`; `≥` and `≤` too), a range (`43..46`), `?` or `-`. Each is read as the integers it allows, and
+before drawing exactfig checks that every range is non-empty, the number of exact cells and of bounds (`exact`,
+`bounded`), that the values never decrease along the rows, the columns or both (`monotone`: refused when the least value
+one cell allows is above the largest a later cell allows), that the table is symmetric (`symmetric`, for R(s, t) =
+R(t, s)), and that the cells a caption quotes (`claims`, `row,column:cell; …`) allow exactly the stated integers. Cells
+are coloured by kind (Okabe–Ito by default) and carry their value in the 3×5 font, so the table reads without colour.
 
 **`math.sandpile`** computes the identity of the sandpile group of an n × n grid (Creutz: e = stab(2·m − stab(2·m)),
 m = 3 everywhere) and checks e ⊕ e = e before drawing; a stated `order` (n ≤ 14) must equal the determinant of the

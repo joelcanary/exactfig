@@ -74,7 +74,7 @@ receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 
 | El conjunto entero queda fijado | `manifest_sha256` cubre todas las entradas: basta con firmar o publicar ese valor |
 | Una receta no puede colar una imagen | esquemas de parámetros cerrados (valores con tipo y rango, nada de matrices de píxeles); los datos solo entran como un fichero con nombre y hash |
 | La descripción dice lo que se comprobó | cada fichero apuntado lleva un texto alternativo escrito después de que sus datos pasaran las comprobaciones, con las propias cifras comprobadas (recuentos, tamaños, la función que calcula un circuito, la calidad panóptica exacta); `verify` avisa si un texto ya no coincide |
-| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad) y si no, no dibujan |
+| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation`, `data.bounds` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad, las casillas de una tabla de cotas) y si no, no dibujan |
 | Los errores acaban en un mensaje claro | una línea que dice qué y por qué, nunca un traceback; se prueban más de 90 errores reales, un proceso cada uno |
 
 Lo que no prueba: quién escribió el código o eligió la receta (para eso, firma el resumen del manifiesto), ni que un modelo o
@@ -129,6 +129,7 @@ Cada fichero sale de una receta de [`examples/recipes`](examples/recipes) y est�
 | ![Pratt](gallery/pratt-m127.png) | `data.pratt`: el certificado de Pratt de que 2^127 − 1 es primo, como árbol: bajo cada primo, los primos de p − 1, hasta llegar a 2; el disco crece con los bits. Cada una de las 19 líneas se comprueba antes de dibujar (p − 1 factorizado, un testigo de orden p − 1). Un número compuesto no tiene certificado, así que ningún fichero puede hacer que esta figura mienta. |
 | ![circuito MOD3](gallery/mod3-circuit.png) | `data.circuit`: un circuito de 9 puertas de dos entradas que da 1 exactamente cuando x1 + … + x5 deja resto 1 al dividir entre 3, el tamaño mínimo para esta función (Knuth, TAOCP 7.1.2). Las entradas arriba, cada puerta en la fila de su profundidad y con el color de su operación; abajo, la salida en cada una de las 32 entradas. Antes de dibujar, exactfig evalúa el circuito en las 32 y lo rechaza si alguna no coincide, si sobra una puerta o si no tiene 9 puertas. |
 | ![cota inferior MOD3](gallery/mod3-n3-refutation.png) | `data.circuit_refutation`: la prueba (CaDiCaL, LRAT, 677 cláusulas) de que ningún circuito de 3 puertas da 1 exactamente cuando una de x1, x2, x3 vale 1, comprobada contra la fórmula que exactfig escribe desde la afirmación; una fila por puerta, en el orden de la prueba. Con [el circuito de 4 puertas](gallery/mod3-n3-circuit.png), cuya receta nombra esta prueba por su SHA-256, el tamaño es exactamente 4. |
+| ![números de van der Waerden](gallery/vdw-numbers.png) | `data.bounds`: lo que se sabe de los números de van der Waerden W(r, k) (filas k = 3–6, columnas r = 2–6 colores): 7 valores exactos y 13 cotas inferiores, tal como los da la literatura (las fuentes, en la cabecera del fichero de datos). Antes de dibujar, exactfig comprueba que los valores no bajan a lo largo de una fila ni de una columna, que la tabla tiene 7 casillas exactas y 13 cotas, y que los siete valores exactos son los que dice la receta; los tests recalculan W(2, 3) = 9 por fuerza bruta. |
 | ![A175001](gallery/oeis-a175001.png) | `data.sequence`: el b-file de A175001 de la OEIS en escala logarítmica, con los términos desde n = 11 (6, 10, 18, 49, 103, 228, 376, 745) resaltados y comprobados contra el fichero. |
 | ![pila de arena](gallery/sandpile-identity.png) | `math.sandpile`: la identidad del grupo de la pila de arena de una rejilla de 96 × 96, calculada con la fórmula de Creutz y comprobada: estable, y e ⊕ e = e. Con n ≤ 14, un orden del grupo declarado se compara con el número de árboles generadores. |
 | ![comparación](gallery/instances-compare.png) | `mode: "compare"`: la misma verdad contra seis predicciones, emparejadas una a una por IoU > 1/2 y puntuadas de forma exacta: los píxeles en que coinciden, los que solo tiene un lado (gris), los falsos positivos (cálidos) y los falsos negativos (fríos). La receta declara TP 4, FP 2, FN 2 y PQ 0,4670; el PQ exacto es 21153891139/45297262530, y una receta que dijera otra cosa no se dibujaría. |
@@ -395,6 +396,17 @@ entradas (cualquiera de las 16 operaciones) tiene su última puerta igual a la f
 más pequeño se completa hasta s puertas con puertas que copian un argumento, así que la fórmula se puede satisfacer
 exactamente cuando el tamaño es como mucho s, y una prueba comprobada demuestra que es al menos s + 1. El orden de las
 variables y las cláusulas está documentado en el módulo, para que cualquier herramienta de pruebas pueda apuntar a él.
+
+**`data.bounds`** dibuja una tabla de lo que se sabe de una familia de números (números de Ramsey, de van der Waerden, de
+Schur, tamaños de circuitos mínimos): `"format": "bounds"`, filas de casillas separadas por comas, puntos y coma o
+tabuladores, la primera fila la esquina y las etiquetas de columna, y luego la etiqueta y las casillas de cada fila. Una
+casilla es un entero (`9`), una cota (`>170`, `>=171`, `<46`, `<=45`; también `≥` y `≤`), un intervalo (`43..46`), `?` o
+`-`. Cada una se lee como los enteros que admite, y antes de dibujar exactfig comprueba que ningún intervalo está vacío,
+el número de casillas exactas y de cotas (`exact`, `bounded`), que los valores no bajan a lo largo de las filas, las
+columnas o ambas (`monotone`: rechaza cuando lo menos que admite una casilla está por encima de lo más que admite otra
+posterior), que la tabla es simétrica (`symmetric`, para R(s, t) = R(t, s)), y que las casillas que cita un pie
+(`claims`, `fila,columna:casilla; …`) admiten exactamente los enteros dichos. Las casillas se colorean por tipo
+(Okabe–Ito por defecto) y llevan su valor escrito en la fuente de 3×5, así que la tabla se lee sin el color.
 
 **`math.sandpile`** calcula la identidad del grupo de la pila de arena de una rejilla n × n (Creutz:
 e = estab(2·m − estab(2·m)), con m = 3 en todas partes) y comprueba e ⊕ e = e antes de dibujar; un `order` declarado
