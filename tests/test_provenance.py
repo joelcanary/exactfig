@@ -59,6 +59,8 @@ SMALL = {
                    "params": {"primes": 19}},
     "data.circuit": {"palette": "sci", "size": [48, 32], "input": {"path": "data/mod3-1-n5.circuit", "format": "circuit"},
                      "params": {"function": "mod 3 1", "inputs": 5, "gates": 9}},
+    "data.circuit_refutation": {"palette": "sci", "size": [40, 12], "input": {"path": "data/circuit-mod3-1-n3-s3.lrat",
+                                "format": "lrat"}, "params": {"function": "mod 3 1", "inputs": 3, "gates": 3}},
     "data.refutation": {"palette": "sci", "size": [40, 14], "input": {"path": "data/schur-3-n14.lrat", "format": "lrat"},
                         "params": {"check": "schur", "colors": 3, "length": 14}},
     "data.coloring": {"palette": "sci", "size": [39, 4], "input": {"path": "data/vdw-2-3-3-3.txt", "format": "coloring"},
@@ -71,7 +73,7 @@ SEEDLESS = ("forge.icon.gem", "forge.fractal.julia", "data.field", "data.scatter
             "anim.frames", "compose", "draw.annotate", "math.domain", "math.logistic", "math.ulam", "math.modmult",
             "data.image", "math.fourier", "anim.epicycles", "data.catalog", "data.coloring", "data.instances",
             "data.triangle", "data.sequence", "math.sandpile", "data.pratt", "data.refutation",
-            "data.circuit")   # the output does not depend on the seed
+            "data.circuit", "data.circuit_refutation")   # the output does not depend on the seed
 
 
 def rb(path):

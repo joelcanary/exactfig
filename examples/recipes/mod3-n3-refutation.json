@@ -1,0 +1,1 @@
+{"generator": "data.circuit_refutation", "seed": "circuit", "palette": "sci", "size": [512, 96], "input": {"path": "data/circuit-mod3-1-n3-s3.lrat", "format": "lrat"}, "params": {"function": "mod 3 1", "inputs": 3, "gates": 3, "steps": 677}, "output": "mod3-n3-refutation.png"}

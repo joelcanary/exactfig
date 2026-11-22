@@ -73,7 +73,7 @@ receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 
 | Los mismos bits en cualquier plataforma | las funciones trascendentes salen de `exactfig.fmath` (solo aritmética básica IEEE 754); comprobado en x86-64 y ARM64 |
 | El conjunto entero queda fijado | `manifest_sha256` cubre todas las entradas: basta con firmar o publicar ese valor |
 | Una receta no puede colar una imagen | esquemas de parámetros cerrados (valores con tipo y rango, nada de matrices de píxeles); los datos solo entran como un fichero con nombre y hash |
-| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad) y si no, no dibujan |
+| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad) y si no, no dibujan |
 | Los errores acaban en un mensaje claro | una línea que dice qué y por qué, nunca un traceback; se prueban más de 90 errores reales, un proceso cada uno |
 
 Lo que no prueba: quién escribió el código o eligió la receta (para eso, firma el resumen del manifiesto), ni que un modelo o
@@ -369,6 +369,13 @@ con `function` (`mod M R`, `threshold K`, `parity` o `table HEX`, con el bit m =
 i − 1 de m); el rechazo dice la primera entrada en la que no coinciden. `inputs`, `gates` y `strict` (ninguna puerta sin
 usar) fijan el tamaño. Un circuito es una cota superior; que no exista uno más pequeño necesita una refutación, que
 `proof_sha256` puede nombrar.
+
+**`data.circuit_refutation`** comprueba esa refutación: una prueba LRAT (como en `data.refutation`) contra una fórmula
+que exactfig escribe a partir de `function`, `inputs` y `gates` = s, y que dice que algún circuito de s puertas de dos
+entradas (cualquiera de las 16 operaciones) tiene su última puerta igual a la función en todas las entradas. Un circuito
+más pequeño se completa hasta s puertas con puertas que copian un argumento, así que la fórmula se puede satisfacer
+exactamente cuando el tamaño es como mucho s, y una prueba comprobada demuestra que es al menos s + 1. El orden de las
+variables y las cláusulas está documentado en el módulo, para que cualquier herramienta de pruebas pueda apuntar a él.
 
 **`math.sandpile`** calcula la identidad del grupo de la pila de arena de una rejilla n × n (Creutz:
 e = estab(2·m − estab(2·m)), con m = 3 en todas partes) y comprueba e ⊕ e = e antes de dibujar; un `order` declarado

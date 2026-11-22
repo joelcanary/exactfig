@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "exactfig"
-version = "0.7.0"
+version = "0.8.0"
 description = "Scientific figures that check their data before they draw it, and that anyone can re-run bit for bit."
 readme = "README.md"
 requires-python = ">=3.10"

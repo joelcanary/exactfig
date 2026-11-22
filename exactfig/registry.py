@@ -166,7 +166,7 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import (annotate, catalog, circuit, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
+    from .forge import (annotate, catalog, circuit, circuit_refutation, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
                         refutation, sandpile, sequence, skies, sprites, tiles, triangle)
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
@@ -409,6 +409,19 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/circuit.py"),
             "a Boolean circuit of two-input gates, checked first on every one of its 2^n inputs against the function",
             (480, 320), 2048, data="circuit"),
+        Generator("data.circuit_refutation", "1", "image", circuit_refutation.circuit_refutation, {
+            "function": P("text", "", maxlen=400, doc="the function, as in data.circuit: mod M R, threshold K, parity "
+                                                      "or table HEX"),
+            "inputs": P("int", 0, 0, 12, doc="the n of the claim (at least 2)"),
+            "gates": P("int", 0, 0, 64, doc="the s of the claim 'no circuit of s gates': the size is at least s + 1"),
+            "steps": P("int", 0, 0, 10 ** 7, doc="clauses the proof adds up to the empty one; 0 = any"),
+            "ramp": P("str", "cyc", choices=DATA_RAMPS, doc="the three kinds of variable taken evenly round the ramp"),
+            "mark_ramp": P("str", "paper", choices=DATA_RAMPS, doc="the column of the empty clause"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/circuit_refutation.py", "forge/circuit.py", "forge/refutation.py",
+                  "forge/coloring.py"),
+            "an LRAT proof that no circuit of s gates computes the function, checked first against a formula exactfig "
+            "writes from the claim", (512, 112), 2048, data="proof"),
         Generator("data.refutation", "1", "image", refutation.refutation, {
             "check": P("str", "ap", choices=("ap", "schur"),
                        doc="the claim refuted: 1..length cannot be coloured without a monochromatic progression of its "

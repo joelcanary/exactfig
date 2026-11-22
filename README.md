@@ -71,7 +71,7 @@ checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
 | The same bits on every platform | transcendental functions come from `exactfig.fmath` (basic IEEE 754 arithmetic only); checked on x86-64 and ARM64 |
 | The whole set is pinned | `manifest_sha256` covers every entry; sign or publish that one value |
 | Recipes cannot smuggle a picture | closed parameter schemas: typed, ranged values, no pixel arrays; data enters only as a named, hashed file |
-| The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions, primality) and refuse to draw otherwise |
+| The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions, primality) and refuse to draw otherwise |
 | Mistakes end in a clear message | one line saying what and why, never a traceback; more than 90 real mistakes are tested, one process each |
 
 What it does not prove: who wrote the code or chose the recipe (sign the manifest digest for that), or that a model or a
@@ -125,6 +125,7 @@ Every file below comes from a recipe in [`examples/recipes`](examples/recipes) a
 | ![congruent](gallery/congruent-triangles.png) | `data.triangle`: right triangles with rational sides for the congruent numbers 5, 6, 7 and 157; the last one has sides with numerators of up to 48 digits. a² + b² = c² and a·b/2 = n are checked in exact fractions before drawing. |
 | ![Pratt](gallery/pratt-m127.png) | `data.pratt`: the Pratt certificate that 2^127 − 1 is prime, as a tree: below each prime, the primes of p − 1, down to 2; the disc grows with the bits. Each of the 19 lines is checked before drawing (p − 1 factored, a witness of order p − 1). A composite number has no certificate, so no file can make this figure lie. |
 | ![MOD3 circuit](gallery/mod3-circuit.png) | `data.circuit`: a circuit of 9 two-input gates that outputs 1 exactly when x1 + … + x5 leaves remainder 1 on division by 3, the smallest size for this function (Knuth, TAOCP 7.1.2). Inputs on top, each gate on the row of its depth, coloured by its operation; along the bottom, the output on each of the 32 inputs. Before drawing, exactfig evaluates the circuit on all 32 and refuses it if one differs, if a gate is unused or if it does not have 9 gates. |
+| ![MOD3 lower bound](gallery/mod3-n3-refutation.png) | `data.circuit_refutation`: the proof (CaDiCaL, LRAT, 677 clauses) that no circuit of 3 gates outputs 1 exactly when one of x1, x2, x3 is 1, checked against the formula exactfig writes from the claim; one row per gate, in proof order. With [the 4-gate circuit](gallery/mod3-n3-circuit.png), whose recipe names this proof by its SHA-256, the size is exactly 4. |
 | ![A175001](gallery/oeis-a175001.png) | `data.sequence`: the OEIS b-file of A175001 on a logarithmic scale, the terms from n = 11 on (6, 10, 18, 49, 103, 228, 376, 745) highlighted and checked against the file. |
 | ![sandpile](gallery/sandpile-identity.png) | `math.sandpile`: the identity of the sandpile group of a 96 × 96 grid, computed with Creutz's formula and checked: stable, and e ⊕ e = e. For n ≤ 14 a stated group order is checked against the number of spanning trees. |
 | ![compare](gallery/instances-compare.png) | `mode: "compare"`: the same ground truth against seven predictions, matched one to one by IoU > 1/2 and scored exactly: the agreed pixels, the pixels only one side has (grey), false positives (warm) and false negatives (cool). The recipe states TP 4, FP 2, FN 2 and PQ 0.4670; the exact PQ is 21153891139/45297262530, and a recipe that said anything else would not render. |
@@ -361,6 +362,12 @@ drawing it evaluates every gate on all 2^n inputs at once (one bit per input, n 
 `function` (`mod M R`, `threshold K`, `parity` or `table HEX`, bit m = the value on input m, x_i = bit i − 1 of m); a
 refusal names the first input where they differ. `inputs`, `gates` and `strict` (no unused gate) pin the size. A circuit
 is an upper bound; that no smaller one exists needs a refutation, which `proof_sha256` can name.
+
+**`data.circuit_refutation`** checks that refutation: an LRAT proof (as `data.refutation`) against a formula exactfig
+writes from `function`, `inputs` and `gates` = s, which says that some circuit of s two-input gates (any of the 16
+operations) has its last gate equal to the function on every input. Smaller circuits pad to s gates with gates that
+copy an argument, so the formula is satisfiable exactly when the size is at most s, and a checked proof shows it is at
+least s + 1. The variable and clause order are documented in the module, so any proof tool can target them.
 
 **`math.sandpile`** computes the identity of the sandpile group of an n × n grid (Creutz: e = stab(2·m − stab(2·m)),
 m = 3 everywhere) and checks e ⊕ e = e before drawing; a stated `order` (n ≤ 14) must equal the determinant of the

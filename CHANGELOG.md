@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.8.0 (2026-11-22)
+
+- **`data.circuit_refutation`**: the other half of a circuit size. An LRAT proof that no circuit of s two-input gates
+  computes a function (so its size is at least s + 1) is checked by reverse unit propagation against a formula exactfig
+  writes itself from the claim (`function`, `inputs`, `gates`): a choice of two earlier nodes, an operation of the 16
+  and a value on every input row for each gate, the last gate equal to the function. A smaller circuit pads to s gates
+  with gates that copy an argument, so the formula is satisfiable exactly when the size is at most s. Drawn as the
+  gates against proof order. Gallery: MOD_3 with residue 1 on 3 inputs, a 4-gate circuit and the CaDiCaL proof that 3
+  gates do not suffice (677 clauses), whose SHA-256 the circuit's recipe names: the size is exactly 4. Tested against
+  a DPLL solver and a brute-force enumeration of circuits on every function of 2 inputs and several of 3: the formula
+  is satisfiable exactly when a circuit of that size exists, and a solution reads back as a working circuit.
+
 ## 0.7.0 (2026-11-22)
 
 - **`data.circuit`**: a Boolean circuit of two-input gates (a straight-line program), drawn by depth with its value on

@@ -1,0 +1,9 @@
+# MOD_3 with residue 1 on 3 inputs (exactly one input is 1) in 4 gates: the parity of the three, and not both of
+# x1, x2 (with three ones the parity is 1 too). That 3 gates do not suffice is the proof in circuit-mod3-1-n3-s3.lrat,
+# so the size is exactly 4.
+inputs 3
+p = xor x1 x2
+q = xor p x3
+b = and x1 x2
+y = andnot q b
+output y
