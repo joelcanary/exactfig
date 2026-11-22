@@ -4,8 +4,8 @@
 
 [![tests](https://github.com/joelcanary/exactfig/actions/workflows/tests.yml/badge.svg)](https://github.com/joelcanary/exactfig/actions/workflows/tests.yml)
 [![release](https://img.shields.io/github/v/release/joelcanary/exactfig)](https://github.com/joelcanary/exactfig/releases)
-[![python](https://img.shields.io/badge/python-3.10%20%7C%203.12%20%7C%203.14-blue)](#quickstart)
-[![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](#architecture)
+[![python](https://img.shields.io/badge/python-3.10%E2%80%933.14-blue)](#inicio-rápido)
+[![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](#arquitectura)
 [![licence](https://img.shields.io/badge/licence-Apache--2.0-blue)](LICENSE)
 
 [Read in English](README.md)
@@ -113,6 +113,24 @@ Cada fichero sale de una receta de [`examples/recipes`](examples/recipes) y est�
 |---|---|---|
 | ![Conway](gallery/life-conway.gif) | ![B37/S2378](gallery/life-b37s2378.gif) | ![dos fuentes](gallery/wave-two-sources.gif) |
 | La Vida de Conway (B3/S23) desde una sopa aleatoria con semilla, células coloreadas por edad | La regla B37/S2378 desde la **misma** sopa (misma semilla): una comparación controlada de dos reglas | Dos fuentes puntuales coherentes: interferencia y líneas nodales |
+
+### Comprobadas antes de dibujarlas
+
+| | |
+|---|---|
+| ![vidas quietas](gallery/still-lifes-a175001.png) | `data.catalog`: las 49 vidas quietas estrictas de 14 células de la regla Move B368/S245, el término A175001(14) = 49 de la OEIS. Antes de dibujar, exactfig simula cada patrón y rechaza la figura si alguno no es una vida quieta, es una pseudo vida quieta, no tiene 14 células, repite otro salvo simetría, o si no son exactamente 49. La imagen no puede enseñar más de lo que prueban los datos. |
+| ![van der Waerden](gallery/vdw-2-3-3-3.png) | `data.coloring`: la coloración de 1..39 con 4 colores que halló un resolvedor SAT, el primero nunca usado dos veces y los otros tres sin progresión aritmética monocolor de 3 términos, así que w(4; 2,3,3,3) > 39. exactfig la comprueba antes de dibujar; la receta guarda además el SHA-256 de la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 no tiene coloración así: w(4; 2,3,3,3) = 40 (OEIS A217008). |
+| ![Schur](gallery/schur-3.png) | `data.coloring` con `check: "schur"`: 1..13 repartido en tres conjuntos sin sumas (ninguno contiene x, y y x + y), así que el número de Schur S(3) es al menos 13. |
+| ![refutación de Schur](gallery/schur-3-refutation.png) | `data.refutation`: la otra mitad, una prueba de CaDiCaL (311 cláusulas, LRAT) de que 1..14 no se puede repartir así, comprobada paso a paso contra la fórmula que exactfig escribe desde la afirmación. Con el testigo de arriba, cuya receta nombra esta prueba por su SHA-256: S(3) = 13. |
+| ![instancias](gallery/instances-truth.png) | `data.instances`, `mode: "instances"`: una escena de segmentación sintética, seis instancias con forma de filamento en COCO RLE comprimido, cada una en su tono. Se rechaza si una máscara está vacía o si dos instancias comparten un píxel. |
+| ![naves](gallery/conway-ships.png) | `data.catalog` con `check: "ship"`: las naves ligera, media y pesada de Conway, cada una comprobada: vuelve desplazada (−2, 0) tras exactamente 4 generaciones, y antes no es ninguna traslación de sí misma. |
+| ![congruentes](gallery/congruent-triangles.png) | `data.triangle`: triángulos rectángulos de lados racionales para los números congruentes 5, 6, 7 y 157; el último tiene lados con numeradores de hasta 48 cifras. a² + b² = c² y a·b/2 = n se comprueban con fracciones exactas antes de dibujar. |
+| ![Pratt](gallery/pratt-m127.png) | `data.pratt`: el certificado de Pratt de que 2^127 − 1 es primo, como árbol: bajo cada primo, los primos de p − 1, hasta llegar a 2; el disco crece con los bits. Cada una de las 19 líneas se comprueba antes de dibujar (p − 1 factorizado, un testigo de orden p − 1). Un número compuesto no tiene certificado, así que ningún fichero puede hacer que esta figura mienta. |
+| ![circuito MOD3](gallery/mod3-circuit.png) | `data.circuit`: un circuito de 9 puertas de dos entradas que da 1 exactamente cuando x1 + … + x5 deja resto 1 al dividir entre 3, el tamaño mínimo para esta función (Knuth, TAOCP 7.1.2). Las entradas arriba, cada puerta en la fila de su profundidad y con el color de su operación; abajo, la salida en cada una de las 32 entradas. Antes de dibujar, exactfig evalúa el circuito en las 32 y lo rechaza si alguna no coincide, si sobra una puerta o si no tiene 9 puertas. |
+| ![cota inferior MOD3](gallery/mod3-n3-refutation.png) | `data.circuit_refutation`: la prueba (CaDiCaL, LRAT, 677 cláusulas) de que ningún circuito de 3 puertas da 1 exactamente cuando una de x1, x2, x3 vale 1, comprobada contra la fórmula que exactfig escribe desde la afirmación; una fila por puerta, en el orden de la prueba. Con [el circuito de 4 puertas](gallery/mod3-n3-circuit.png), cuya receta nombra esta prueba por su SHA-256, el tamaño es exactamente 4. |
+| ![A175001](gallery/oeis-a175001.png) | `data.sequence`: el b-file de A175001 de la OEIS en escala logarítmica, con los términos desde n = 11 (6, 10, 18, 49, 103, 228, 376, 745) resaltados y comprobados contra el fichero. |
+| ![pila de arena](gallery/sandpile-identity.png) | `math.sandpile`: la identidad del grupo de la pila de arena de una rejilla de 96 × 96, calculada con la fórmula de Creutz y comprobada: estable, y e ⊕ e = e. Con n ≤ 14, un orden del grupo declarado se compara con el número de árboles generadores. |
+| ![comparación](gallery/instances-compare.png) | `mode: "compare"`: la misma verdad contra seis predicciones, emparejadas una a una por IoU > 1/2 y puntuadas de forma exacta: los píxeles en que coinciden, los que solo tiene un lado (gris), los falsos positivos (cálidos) y los falsos negativos (fríos). La receta declara TP 4, FP 2, FN 2 y PQ 0,4670; el PQ exacto es 21153891139/45297262530, y una receta que dijera otra cosa no se dibujaría. |
 
 ### Capas y Lean
 
@@ -346,7 +364,7 @@ cuya receta declara TP 4, FP 2, FN 2 y PQ 0,4670 (el PQ exacto es 21153891139/45
 en escala logarítmica o lineal, con los términos desde `new_from` en su propio color. Rechaza un fichero cuyos índices no
 sean consecutivos, y una receta cuyos `terms` (los términos nuevos, separados por comas), `first`, `last` o `count` no
 coincidan con el fichero: lo resaltado en la figura es exactamente lo que dice la contribución. Se leen términos de hasta
-4000 cifras (Python 3.11 y posteriores se niegan a convertir más largos); sus logaritmos salen de los propios enteros.
+4000 cifras (Python 3.10.7, 3.11 y posteriores se niegan a convertir más largos); sus logaritmos salen de los propios enteros.
 
 **`data.triangle`** lee triángulos rectángulos de lados racionales (`n a b c` por línea, enteros o fracciones p/q,
 `"format": "triangles"`), los certificados de los números congruentes, y comprueba a² + b² = c², a·b/2 = n, lados
@@ -386,7 +404,7 @@ de árboles generadores (teorema de la matriz-árbol).
 tras exactamente `period` generaciones, y no ser una traslación de sí mismo antes.
 
 Ejemplos en la galería: [las naves de Conway](gallery/conway-ships.png), [los triángulos de 5, 6, 7 y 157](gallery/congruent-triangles.png)
-(el de 157 con numeradores de hasta 48 cifras), [el b-file de A175001](gallery/oeis-a175001.png) con tus términos 11..18,
+(el de 157 con numeradores de hasta 48 cifras), [el b-file de A175001](gallery/oeis-a175001.png) con los términos desde n = 11,
 [la identidad de la pila de arena de 96 × 96](gallery/sandpile-identity.png), [el árbol de Pratt de 2^127 − 1](gallery/pratt-m127.png) y [un circuito de 9 puertas para MOD_3 con 5 entradas](gallery/mod3-circuit.png), el tamaño mínimo (Knuth, TAOCP 7.1.2).
 
 ## Animaciones y vídeo
@@ -469,7 +487,7 @@ una. Cada entrada es un generador o una receta de la galería.
 | Sistemas dinámicos y caos | bifurcaciones de la aplicación logística (`math.logistic`); atractor de Lorenz por RK4 (`anim.lorenz`); sensibilidad a las condiciones iniciales | [logística](gallery/logistic.png), [Lorenz](gallery/lorenz.gif) |
 | Teoría de números | espiral de Ulam de primos o restos (`math.ulam`); círculos de multiplicación modular (`math.modmult`); periodos de Pisano, Thue–Morse, ceros de zeta como sonido (`music.piece`) | [Ulam](gallery/ulam-primes.png), [cardioide](gallery/modmult-cardioid.png) |
 | Ecuaciones en derivadas parciales | Laplace (solución exacta de la placa), ecuación de ondas por leapfrog (`anim.wave`), ecuación del calor sobre datos (`anim.diffuse`) | [placa](gallery/plate-temperature.png), [doble rendija](gallery/wave-double-slit.gif), [difusión](gallery/dem-diffusion.gif) |
-| Análisis numérico | libm portable (`fmath`, ≤ 1 ulp), predicados de Delaunay exactos, interpolación O(h²), RK4 de orden 4, estabilidad CFL impuesta | [Franke](gallery/franke-linear.png) |
+| Análisis numérico | libm portable (`fmath`: ≤ 1 ulp de sin a log2, 2 ulp en cbrt), predicados de Delaunay exactos, interpolación O(h²), RK4 de orden 4, estabilidad CFL impuesta | [Franke](gallery/franke-linear.png) |
 | Geometría computacional | triangulación de Delaunay (giros de Lawson), celdas de Voronoi, campos de distancia con signo, curvas de Bézier, Bresenham | [Voronoi](gallery/stone-slabs.png), [vecino](gallery/franke-nearest.png) |
 | Combinatoria y matemática discreta | autómatas celulares tipo Vida con cualquier regla B/S (`anim.life`); catálogos de vidas quietas y osciladores comprobados antes de dibujarlos (`data.catalog`); coloraciones de van der Waerden y Schur, testigos SAT comprobados antes de dibujarlos (`data.coloring`); sistemas L; pilas de arena como sonido | [Vida](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [vidas quietas](gallery/still-lifes-a175001.png), [helecho](gallery/tree-fern.png) |
 | Probabilidad y procesos estocásticos | muestras cuasialeatorias de Halton, muestreo de disco de Poisson, sopas aleatorias con semilla, superficies brownianas fraccionarias (fBm) | [terreno](gallery/terrain-0-0.png) |
@@ -523,6 +541,7 @@ cuatro degradados y dos figuras con bordes suavizados.
 python -m exactfig verify --manifest gallery/manifest.json            # avisos si cambió el código o se recomprimió un fichero
 python -m exactfig verify --manifest gallery/manifest.json --strict   # …que entonces son fallos
 python -m exactfig verify --json                                       # un informe para máquinas
+python -m exactfig crate --manifest gallery/manifest.json --date 2026-11-22 --license CC-BY-4.0   # RO-Crate
 ```
 
 Para cada entrada, en orden: el hash y la forma normal de la receta, el generador y su versión, el hash del código, el hash de
@@ -531,6 +550,17 @@ fotograma en GIF/APNG, bytes en MIDI), el bloqueo de paleta, los bytes del fiche
 final, `manifest_sha256`. Un fallo dice qué difiere: cuántos píxeles y el primero, el primer fotograma distinto, el primer byte
 distinto o qué entrada cambió. Código de salida 0 si todo pasa. Especificación: [docs/MANIFEST.md](docs/MANIFEST.md); esquema
 JSON: [exactfig/provenance/manifest.schema.json](exactfig/provenance/manifest.schema.json).
+
+**Empaquetar para un repositorio (RO-Crate).** `exactfig crate` escribe `ro-crate-metadata.json` junto al manifiesto, y
+la carpeta pasa a ser un [RO-Crate 1.3](https://w3id.org/ro/crate/1.3) (el empaquetado que lee WorkflowHub y que Zenodo
+puede archivar), con el
+perfil [Process Run Crate](https://w3id.org/ro/wfrun/process/0.6) (procedencia alineada con W3C PROV): cada figura y cada
+fichero de entrada con su tamaño y su SHA-256, y cada figura como una `CreateAction` cuyo instrumento es su generador
+(nombre, versión, hash del código), cuyo objeto son sus entradas y los parámetros de la receta, y cuyo resultado es la
+figura; `--author` (un nombre o una URL de ORCID) queda como el agente. Antes se lee cada fichero, que tiene que tener
+el tamaño y el SHA-256 que apunta el manifiesto, así que el crate nunca describe un fichero que falta o que ha cambiado.
+Solo repite lo que dice el manifiesto, sin añadir nada; el mismo manifiesto y ficheros, fecha, licencia, autor y nombre
+dan los mismos bytes.
 
 ## API de Python
 
@@ -588,12 +618,12 @@ Lo que suele pasar y qué hacer:
 | `ffmpeg is not installed` | `video` necesita FFmpeg | instálalo, o comparte el GIF/APNG, que `verify` sí puede comprobar |
 
 **Dónde funciona.** Python 3.10 o posterior, solo la biblioteca estándar, en Linux, macOS y Windows (los tres en
-integración continua, con Python 3.10, 3.12 y 3.14), en x86-64 y ARM64 con los mismos bits; `exactfig selftest` comprueba
+integración continua, con Python 3.10 a 3.14), en x86-64 y ARM64 con los mismos bits; `exactfig selftest` comprueba
 una máquina en segundos. Las rutas con espacios y tildes funcionan; la consola de Windows se pasa a UTF-8 para los
 mensajes. exactfig nunca usa la red.
 
 **Cómo se prueba.** [`tests/misuse_bench.py`](tests/misuse_bench.py) lanza la línea de comandos, un proceso por caso, con
-más de 90 errores que un usuario puede cometer de verdad (codificaciones equivocadas, ficheros truncados y corruptos,
+más de 110 errores que un usuario puede cometer de verdad (codificaciones equivocadas, ficheros truncados y corruptos,
 tamaños absurdos, rutas que intentan salir de su carpeta, manifiestos rotos, FFmpeg ausente…) y falla si algún caso acaba
 en traceback, se cuelga, sale bien cuando no debía o se rechaza sin mensaje. Corre con la batería de tests.
 
@@ -612,15 +642,19 @@ en traceback, se cuelga, sale bien cuando no debía o se rechaza sin mensaje. Co
 ```
 exactfig/
   fmath.py       funciones trascendentes portables (algoritmos de fdlibm, solo operaciones básicas IEEE 754)
-  data/          io (lectores CSV, PGM, NPY, JSON), field (muestreo, sombreado, marching squares), scatter (Delaunay exacto)
+  data/          io (lectores de todos los formatos de entrada: rejillas, puntos, imágenes, catálogos, coloraciones,
+                 instancias, triángulos, b-files, certificados de Pratt, pruebas LRAT, circuitos), field (muestreo,
+                 sombreado, marching squares), scatter (Delaunay exacto)
   pixel/         pxmath (tramado, ruido, Worley, autómatas, fractales, Bézier, Bresenham, SDF, disco de Poisson), paletas
                  (OKLab), cuantización con paleta bloqueada, lienzo de índices, escritores y lectores PNG y GIF/APNG
-  forge/         generadores: datavis (data.*), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora,
-                 skies, icons, sprites
+  forge/         generadores: datavis (data.field, data.scatter, data.image), catalog, coloring, refutation, instances,
+                 sequence, triangle, pratt, circuit, circuit_refutation, sandpile (los data.* que comprueban antes de
+                 dibujar), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites
   music/         sucesiones, armonía (Viterbi), conducción de voces, compositor, escritor de MIDI estándar
-  provenance/    record, verify, esquema JSON del manifiesto
+  provenance/    record, verify, esquema JSON del manifiesto, crate (exportación a RO-Crate)
   registry.py    los generadores, sus versiones y sus esquemas cerrados de parámetros
   render.py      receta → forma normal → salida
+  cli.py         la línea de órdenes; selftest.py la prueba de la máquina; rng.py el generador con semilla
 lean/            demostraciones y programas Lean 4 cuyas salidas exactfig dibuja y contrasta
 examples/        recetas y el código que hace los conjuntos de datos de ejemplo
 gallery/         las salidas apuntadas, sus datos y manifest.json
@@ -641,4 +675,4 @@ versión: [CHANGELOG.md](CHANGELOG.md).
 
 ## Contribuir, seguridad, licencia
 
-Ver [CONTRIBUTING.md](CONTRIBUTING.md) y [SECURITY.md](SECURITY.md). Licencia: [Apache License 2.0](LICENSE).
+Ver [CONTRIBUTING.md](CONTRIBUTING.md) y [SECURITY.md](SECURITY.md). Licencia: [Apache License 2.0](LICENSE). Dos ficheros de datos de la galería vienen de otro repositorio con licencia MIT, como dicen sus cabeceras: `gallery/data/b175001.txt` y `gallery/data/A175001-n14.txt`.

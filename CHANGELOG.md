@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.9.0 (2026-11-22)
+
+- **`exactfig crate`**: writes `ro-crate-metadata.json` beside a manifest, so a gallery folder becomes an RO-Crate 1.3
+  in the Process Run Crate 0.6 profile (provenance aligned with W3C PROV), the packaging WorkflowHub reads and Zenodo
+  can archive: each file and input with its size and SHA-256, each recorded file as a `CreateAction` with its generator
+  (name, version, source hash) as instrument, its inputs and recipe parameters as object, the file as result and
+  `--author` (a name or an ORCID URL) as agent. Every file is read first and must match the manifest, so a missing or
+  changed file is refused. Deterministic for given files, date, licence, author and name; warns without `--license`.
+  Tested against every applicable MUST rule of both specifications and the SHOULD rules it can meet; not given: run
+  times, which the manifest does not record.
+- Documentation: the architecture trees, `docs/MANIFEST.md` (all 14 input formats, exit codes), CONTRIBUTING (where the
+  gallery's data come from), SECURITY.md and the Spanish README (gallery of checked figures, anchors) brought in line
+  with the code.
+
 ## 0.8.0 (2026-11-22)
 
 - **`data.circuit_refutation`**: the other half of a circuit size. An LRAT proof that no circuit of s two-input gates
@@ -97,7 +111,7 @@
 
 First complete release under the name **exactfig**.
 
-- **Reproducibility.** Portable transcendental functions (`fmath`, after fdlibm, ≤ 1 ulp) so a recipe gives the same bits
+- **Reproducibility.** Portable transcendental functions (`fmath`, after fdlibm, ≤ 1 ulp for sin…log2, 2 ulp for cbrt) so a recipe gives the same bits
   on every platform; checked on x86-64 and ARM64. `exactfig selftest` checks a machine in a few seconds.
 - **Data.** CSV, Netpbm PGM/PPM, NumPy `.npy`, JSON and PNG inputs, pinned by SHA-256 in the recipe. `data.field`
   (colour, hill-shading, iso-lines), `data.scatter` (exact Delaunay reconstruction), `data.image` (linear-light

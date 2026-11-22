@@ -9,7 +9,7 @@ Make the example datasets in gallery/data, deterministically, from published for
   dem-192.pgm             a synthetic elevation model: four Gaussian massifs and fractal (fBm) detail on a
                           192 × 192 grid of 60 m cells, as a 16-bit greymap: elevation in metres = value × 2000 / 65535
   instances-demo.json     a synthetic segmentation scene of 160 × 120 pixels: six thick curves (filament-like) as the
-                          ground truth and seven predicted instances (four close matches, one too short to reach
+                          ground truth and six predicted instances (four close matches, one too short to reach
                           IoU > 1/2, one with nothing under it, one curve missed), every mask in compressed COCO RLE;
                           integer geometry only, so every platform writes the same bytes
   testcard-480x320.png    a true-colour test card for image conversion: an OKLCh colour wheel (hue = angle, lightness

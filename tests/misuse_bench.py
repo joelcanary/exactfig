@@ -150,6 +150,8 @@ def cases():
     yield "circuit refutation of a true claim", {"r.json": j(crf), "p.lrat": "100 0 1 0\n"}, ["render", "r.json"]
     yield "circuit refutation without inputs", {"r.json": j(dict(crf, params={"function": "parity", "gates": 1})), "p.lrat": "100 0 1 0\n"}, ["render", "r.json"]
     yield "circuit refutation too large to write", {"r.json": j(dict(crf, params={"function": "parity", "inputs": 12, "gates": 64})), "p.lrat": "100 0 1 0\n"}, ["render", "r.json"]
+    yield "crate with a date that is not a date", {"m.json": j({"format": "exactfig.manifest/1", "assets": {}})}, ["crate", "--manifest", "m.json", "--date", "2026-02-30"]
+    yield "crate of a manifest that does not exist", {}, ["crate", "--manifest", "nope.json"]
     yield "sandpile order too large to check", {"r.json": j({"generator": "math.sandpile", "seed": "x", "palette": "sci", "size": [32, 32], "params": {"n": 32, "order": "5"}, "output": "s.png"})}, ["render", "r.json"]
     yield "ship with the wrong shift", {"r.json": j({"generator": "data.catalog", "seed": "x", "palette": "sci", "size": [32, 32], "input": {"path": "c.txt", "format": "catalog"}, "params": {"check": "ship", "period": 4, "shift": "2,0"}, "output": "c.png"}), "c.txt": "3x3: .O. ..O OOO\n"}, ["render", "r.json"]
     yield "animation too many pixels", {"r.json": j({"generator": "anim.life", "seed": "x", "palette": "sci", "size": [1024, 1024], "params": {"frames": 1000}, "output": "l.gif"})}, ["render", "r.json"]

@@ -16,8 +16,8 @@ Each property below is enforced by a test, not only described.
 
 ```
                 ┌──────────────────────────────────────────────────────────────┐
-  shell         │ cli.py · provenance/ (record, verify, manifest) · render.py │  reads and writes files
-                │ data/io.py (CSV, PGM, NPY, JSON readers) · registry.py        │
+  shell         │ cli.py · provenance/ (record, verify, manifest, crate)       │  reads and writes files
+                │ render.py · registry.py · selftest.py · data/io.py (readers)  │
                 └───────────────▲──────────────────────────────────────────────┘
                                 │ calls, never the other way round
                 ┌───────────────┴──────────────────────────────────────────────┐

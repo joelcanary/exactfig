@@ -5,10 +5,10 @@ Thanks for helping. The project has one rule that every change must keep: **ever
 ## Ground rules
 
 1. **No AI-generated content** in art, music, palettes or examples. Everything in `gallery/` comes from a recipe in
-   `examples/recipes/` through `exactfig record`, and every input file in `gallery/data/` (including the source picture
-   of the image-conversion examples) is made by code: `examples/data/make_data.py`, or the Lean programs in `lean/`.
-   Users may of course convert and plot their own data and pictures; the gallery only holds what this repository can
-   regenerate.
+   `examples/recipes/` through `exactfig record`, and every input file in `gallery/data/` is made by code: by
+   `examples/data/make_data.py` or the Lean programs in `lean/` (including the source picture of the image-conversion
+   examples), or by a named external tool or repository (a SAT solver's witness or proof, a published b-file), whose
+   origin and licence the file's own header states. Users may of course convert and plot their own data and pictures.
 2. **Determinism.** A generator must give the same output for the same recipe, in any process and on any platform. Use
    `exactfig.rng.Rng` (never `random`) and `exactfig.fmath` for `sin`, `cos`, `atan2`, `exp`, `log`, `pow`, `hypot` and
    distances (never `math.sin`… or `**` on floats: `tests/test_fmath.py` checks it), never iterate over sets or dicts of
@@ -20,7 +20,7 @@ Thanks for helping. The project has one rule that every change must keep: **ever
 5. **Palette lock.** Draw palette indices on a `Canvas`; never write RGB directly.
 6. No dependencies beyond the Python standard library.
 7. **Pure core.** Generators and everything they call do no I/O, read no clock or environment and never call `hash()`;
-   only the shell (`render`, `provenance`, `cli`, `registry`, `data/io`) touches files. `tests/test_architecture.py` checks
+   only the shell (`render`, `provenance`, `cli`, `registry`, `selftest`, `data/io`) touches files. `tests/test_architecture.py` checks
    it; [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) explains the layers and how to add a generator.
 8. **Documentation.** Every public function says what it returns, in which units, and what it guarantees or refuses;
    every generator's module docstring names its method and its source.
@@ -42,6 +42,6 @@ Comments may be in English or Spanish; public docs are bilingual (README.md and 
 
 ---
 
-**En español:** todo asset sale de código publicado (nada de IA, nada importado), los generadores son deterministas, los
+**En español:** todo asset sale de código publicado (nada de IA; los datos de terceros, con su origen y licencia en la cabecera), los generadores son deterministas, los
 parámetros tienen esquema cerrado, si cambias un píxel subes la versión del generador y vuelves a apuntar la galería, y sin
 dependencias fuera de la biblioteca estándar.

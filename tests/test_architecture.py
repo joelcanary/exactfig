@@ -3,7 +3,7 @@
 Core modules compute: given the same arguments they return the same value, on any machine, in any process. They may
 not read or write files, the clock, the environment or the network, nor draw from the system's randomness, nor call
 `hash()` (randomised per process for strings), nor print. Only the shell (`render`, `provenance`, `cli`, `registry`,
-`data/io`) does I/O, and core modules never import the shell. A registered generator must live in the core.
+`selftest`, `data/io`) does I/O, and core modules never import the shell. A registered generator must live in the core.
 """
 import ast
 import os
@@ -15,7 +15,7 @@ sys.path.insert(0, ROOT)
 from exactfig import registry  # noqa: E402
 
 PKG = os.path.join(os.path.abspath(ROOT), "exactfig")
-SHELL = {"__main__.py", "cli.py", "render.py", "registry.py", "provenance/__init__.py", "data/io.py", "selftest.py"}
+SHELL = {"__main__.py", "cli.py", "render.py", "registry.py", "provenance/__init__.py", "provenance/crate.py", "data/io.py", "selftest.py"}
 FORBIDDEN_MODULES = {"os", "sys", "io", "time", "datetime", "random", "secrets", "uuid", "socket", "subprocess", "threading",
                      "multiprocessing", "pathlib", "tempfile", "shutil", "glob", "urllib", "http", "asyncio", "signal",
                      "platform", "locale", "ctypes", "importlib"}

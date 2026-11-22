@@ -57,9 +57,11 @@ written as Python writes them (`225.0`).
 - Images only: `palette` (a built-in name or `{"name", "colors": [...], "ramps": {...}}`), `size` `[w, h]`, `scale` 1–16
   (nearest neighbour).
 - `output`: the file name, relative to the manifest folder (`record`) or to `--out-dir` (`render`). Not part of the identity.
-- Data generators only (`data.field`, `data.scatter`): `input` `{"path", "format", "sha256"}`. `path` is relative to the
-  manifest folder (`record`, `verify`) or to `--data-dir` (`render`), written with `/`, and may not leave it. `format` is
-  `csv`, `pgm`, `npy` or `json`, taken from the extension when omitted. `sha256` is the SHA-256 of the file's bytes: `record`
+- Generators that read data (`data.*`): `input` `{"path", "format", "sha256"}`. `path` is relative to the manifest
+  folder (`record`, `verify`) or to `--data-dir` (`render`), written with `/`, and may not leave it. `format` is one of
+  the formats in the schema's enum (`csv`, `pgm`, `npy`, `json`, `png`, `ppm`, `catalog`, `coloring`, `instances`,
+  `triangles`, `bfile`, `pratt`, `lrat`, `circuit`; which ones a generator accepts depends on the shape of data it
+  reads), taken from the extension when it has one and omitted. `sha256` is the SHA-256 of the file's bytes: `record`
   fills it in, so the normal form always pins the exact data; when it is given, the file must match it.
 
 ### Compositions
@@ -116,7 +118,7 @@ Limits: 64 MiB per file, 4096 × 4096 cells, 200 000 points (20 000 for the tria
 8. The file bytes equal `output.file_sha256` (else: warning, the PNG was re-encoded with the same pixels; failure with `--strict`).
 9. `manifest_sha256` matches the entries.
 
-Exit code 0 when everything passes, 1 otherwise; `--json` gives a machine report.
+Exit code 0 when everything passes, 1 when an entry fails, 2 when the manifest or an input is refused (named in one line), 3 for an internal error; `--json` gives a machine report.
 
 ## Threat model in short
 
@@ -138,5 +140,5 @@ Exit code 0 when everything passes, 1 otherwise; `--json` gives a machine report
 Cada entrada guarda la receta en forma normal (todos los parámetros), el generador con su versión y el hash de su código, la
 paleta y los hashes de la salida (píxeles canónicos y fichero). `verify` comprueba la receta, el generador, vuelve a ejecutarlo y
 compara con el fichero píxel a píxel (o byte a byte en MIDI), comprueba la paleta, la huella SHA-256 de cada fichero de datos
-de entrada (CSV, PGM, NPY o JSON; la receta lo fija por su hash) y el resumen `manifest_sha256` del conjunto,
+de entrada (en cualquiera de los formatos del esquema; la receta lo fija por su hash) y el resumen `manifest_sha256` del conjunto,
 que es el único valor que hace falta publicar o firmar.

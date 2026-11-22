@@ -88,6 +88,8 @@ everywhere.
 | Data versioning by content hash (e.g. DVC) | pin datasets by hash | do not tie a figure to the data and the code that drew it |
 | Replication journals (e.g. ReScience C) | publish independent replications of computational results | a social process, not a
   machine check of a file |
+| Provenance packaging: [RO-Crate](https://w3id.org/ro/crate/1.3) with the [Workflow Run Crate](https://w3id.org/ro/wfrun/process/0.6) profiles (Leo et al., PLOS ONE 2024); [yProv4DV](https://arxiv.org/abs/2603.20437) (W3C PROV for visualisation scripts) | describe which code and inputs produced which file, in a standard repositories can read | describe a run; they do not re-run it nor check that the file is what the code produces (exactfig's `crate` writes this description from a verified manifest) |
+| Figures that carry their data: [ReproFig](https://github.com/Jay2owe/ReproFig) (SVG with the plotted data and provenance embedded) | lets a reader extract and re-check the plotted numbers | checks the numbers it embeds, not that the picture was drawn from them by the stated code |
 
 exactfig's angle is narrower: a figure, an animation or a MIDI file is checked **exactly** (decoded pixels, every frame,
 every byte) against a re-run of the recorded recipe, with the input data pinned by SHA-256, and the arithmetic made

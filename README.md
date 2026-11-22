@@ -4,7 +4,7 @@
 
 [![tests](https://github.com/joelcanary/exactfig/actions/workflows/tests.yml/badge.svg)](https://github.com/joelcanary/exactfig/actions/workflows/tests.yml)
 [![release](https://img.shields.io/github/v/release/joelcanary/exactfig)](https://github.com/joelcanary/exactfig/releases)
-[![python](https://img.shields.io/badge/python-3.10%20%7C%203.12%20%7C%203.14-blue)](#quickstart)
+[![python](https://img.shields.io/badge/python-3.10%E2%80%933.14-blue)](#quickstart)
 [![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](#architecture)
 [![licence](https://img.shields.io/badge/licence-Apache--2.0-blue)](LICENSE)
 
@@ -72,7 +72,7 @@ checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
 | The whole set is pinned | `manifest_sha256` covers every entry; sign or publish that one value |
 | Recipes cannot smuggle a picture | closed parameter schemas: typed, ranged values, no pixel arrays; data enters only as a named, hashed file |
 | The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions, primality) and refuse to draw otherwise |
-| Mistakes end in a clear message | one line saying what and why, never a traceback; more than 90 real mistakes are tested, one process each |
+| Mistakes end in a clear message | one line saying what and why, never a traceback; more than 110 real mistakes are tested, one process each |
 
 What it does not prove: who wrote the code or chose the recipe (sign the manifest digest for that), or that a model or a
 dataset is right. It proves that *this output is what this code computes from these inputs*.
@@ -89,7 +89,7 @@ python -m exactfig render examples/recipes/franke-linear.json --data-dir gallery
 python -m unittest discover tests
 ```
 
-`pip install -e .` also provides a `exactfig` command.
+`pip install -e .` also provides an `exactfig` command.
 
 ## Gallery
 
@@ -128,7 +128,7 @@ Every file below comes from a recipe in [`examples/recipes`](examples/recipes) a
 | ![MOD3 lower bound](gallery/mod3-n3-refutation.png) | `data.circuit_refutation`: the proof (CaDiCaL, LRAT, 677 clauses) that no circuit of 3 gates outputs 1 exactly when one of x1, x2, x3 is 1, checked against the formula exactfig writes from the claim; one row per gate, in proof order. With [the 4-gate circuit](gallery/mod3-n3-circuit.png), whose recipe names this proof by its SHA-256, the size is exactly 4. |
 | ![A175001](gallery/oeis-a175001.png) | `data.sequence`: the OEIS b-file of A175001 on a logarithmic scale, the terms from n = 11 on (6, 10, 18, 49, 103, 228, 376, 745) highlighted and checked against the file. |
 | ![sandpile](gallery/sandpile-identity.png) | `math.sandpile`: the identity of the sandpile group of a 96 × 96 grid, computed with Creutz's formula and checked: stable, and e ⊕ e = e. For n ≤ 14 a stated group order is checked against the number of spanning trees. |
-| ![compare](gallery/instances-compare.png) | `mode: "compare"`: the same ground truth against seven predictions, matched one to one by IoU > 1/2 and scored exactly: the agreed pixels, the pixels only one side has (grey), false positives (warm) and false negatives (cool). The recipe states TP 4, FP 2, FN 2 and PQ 0.4670; the exact PQ is 21153891139/45297262530, and a recipe that said anything else would not render. |
+| ![compare](gallery/instances-compare.png) | `mode: "compare"`: the same ground truth against six predictions, matched one to one by IoU > 1/2 and scored exactly: the agreed pixels, the pixels only one side has (grey), false positives (warm) and false negatives (cool). The recipe states TP 4, FP 2, FN 2 and PQ 0.4670; the exact PQ is 21153891139/45297262530, and a recipe that said anything else would not render. |
 
 ### Layers and Lean
 
@@ -341,7 +341,7 @@ draws truth and prediction on one panel. `exactfig.data.io.rle_string_from_count
 logarithmic or a linear scale, the terms from `new_from` on in their own colour. It refuses a file whose indices are not
 consecutive, and a recipe whose `terms` (the new terms, comma-separated), `first`, `last` or `count` differ from the file:
 the highlighted part of the figure is exactly what the contribution says. Terms of up to 4000 digits are read (Python
-3.11 and later refuse to convert longer ones); their logarithms come from the integers themselves.
+3.10.7, 3.11 and later refuse to convert longer ones); their logarithms come from the integers themselves.
 
 **`data.triangle`** reads right triangles with rational sides (`n a b c` per line, integers or fractions p/q,
 `"format": "triangles"`), the certificates of congruent numbers, and checks a² + b² = c², a·b/2 = n, positive sides,
@@ -453,7 +453,7 @@ in each. Every entry is a generator or a recipe in the gallery.
 | Dynamical systems and chaos | logistic map bifurcations (`math.logistic`); Lorenz attractor by RK4 (`anim.lorenz`); sensitivity to initial conditions | [logistic](gallery/logistic.png), [Lorenz](gallery/lorenz.gif) |
 | Number theory | Ulam spiral of primes or residues (`math.ulam`); modular multiplication circles (`math.modmult`); Pisano periods, Thue–Morse, zeta zeros as sound (`music.piece`) | [Ulam](gallery/ulam-primes.png), [cardioid](gallery/modmult-cardioid.png) |
 | Partial differential equations | Laplace (exact plate solution), wave equation by leapfrog (`anim.wave`), heat equation on data (`anim.diffuse`) | [plate](gallery/plate-temperature.png), [double slit](gallery/wave-double-slit.gif), [diffusion](gallery/dem-diffusion.gif) |
-| Numerical analysis | portable libm (`fmath`, ≤ 1 ulp), exact Delaunay predicates, O(h²) interpolation, RK4 of order 4, CFL stability enforced | [Franke](gallery/franke-linear.png) |
+| Numerical analysis | portable libm (`fmath`: ≤ 1 ulp for sin…log2, 2 ulp for cbrt), exact Delaunay predicates, O(h²) interpolation, RK4 of order 4, CFL stability enforced | [Franke](gallery/franke-linear.png) |
 | Computational geometry | Delaunay triangulation (Lawson flips), Voronoi cells, signed distance fields, Bézier curves, Bresenham | [Voronoi](gallery/stone-slabs.png), [nearest](gallery/franke-nearest.png) |
 | Combinatorics and discrete mathematics | Life-like cellular automata with any B/S rule (`anim.life`); catalogues of still lifes and oscillators checked before they are drawn (`data.catalog`); van der Waerden and Schur colourings, SAT witnesses checked before they are drawn (`data.coloring`); L-systems; sandpiles as sound | [Life](gallery/life-conway.gif), [B37/S2378](gallery/life-b37s2378.gif), [still lifes](gallery/still-lifes-a175001.png), [fern](gallery/tree-fern.png) |
 | Probability and stochastic processes | quasi-random Halton samples, Poisson-disc sampling, seeded random soups, fractional Brownian surfaces (fBm) | [terrain](gallery/terrain-0-0.png) |
@@ -505,6 +505,7 @@ ramps and two anti-aliased shapes.
 python -m exactfig verify --manifest gallery/manifest.json            # warnings for changed source or re-encoded files
 python -m exactfig verify --manifest gallery/manifest.json --strict   # …which then fail
 python -m exactfig verify --json                                       # a machine-readable report
+python -m exactfig crate --manifest gallery/manifest.json --date 2026-11-22 --license CC-BY-4.0   # RO-Crate
 ```
 
 For each entry, in order: the recipe hash and normal form, the generator and its version, the source hash, every input
@@ -513,6 +514,16 @@ the palette lock, the file bytes (informative unless `--strict`), and finally `m
 differs: how many pixels and the first one, the first differing frame, the first differing byte, or which input changed.
 Exit code 0 when everything passes. Specification: [docs/MANIFEST.md](docs/MANIFEST.md); JSON Schema:
 [exactfig/provenance/manifest.schema.json](exactfig/provenance/manifest.schema.json).
+
+**Packaging for a repository (RO-Crate).** `python -m exactfig crate --manifest gallery/manifest.json --date 2026-11-22
+--license CC-BY-4.0` writes `ro-crate-metadata.json` beside the manifest, so the folder becomes an
+[RO-Crate 1.3](https://w3id.org/ro/crate/1.3) (the packaging WorkflowHub reads and Zenodo can archive), in the
+[Process Run Crate](https://w3id.org/ro/wfrun/process/0.6) profile (provenance terms aligned with W3C PROV): every figure
+and input file with its size and SHA-256, and every figure as a `CreateAction` whose instrument is its generator (name,
+version, source hash), whose object is its inputs and recipe parameters, and whose result is the figure; `--author`
+(a name or an ORCID URL) is recorded as the agent. Every file is read first and must have the size and SHA-256 the
+manifest records, so the crate never describes a missing or changed file. It restates the manifest and adds no claim of
+its own; the same manifest and files, date, licence, author and name give the same bytes.
 
 ## Python API
 
@@ -569,12 +580,12 @@ What usually happens, and what to do:
 | `ffmpeg is not installed` | `video` needs FFmpeg | install it, or share the GIF/APNG, which `verify` can check |
 
 **Where it runs.** Python 3.10 or newer, standard library only, on Linux, macOS and Windows (all three in continuous
-integration, with Python 3.10, 3.12 and 3.14), on x86-64 and ARM64 with the same bits; `exactfig selftest` checks a
+integration, with Python 3.10 to 3.14), on x86-64 and ARM64 with the same bits; `exactfig selftest` checks a
 machine in seconds. Paths with spaces and accents work; the Windows console is switched to UTF-8 for the messages.
 exactfig never touches the network.
 
 **How this is tested.** [`tests/misuse_bench.py`](tests/misuse_bench.py) runs the command line, one process per case, on
-more than 90 mistakes a user can actually make (wrong encodings, truncated and corrupted files, absurd sizes, paths that
+more than 110 mistakes a user can actually make (wrong encodings, truncated and corrupted files, absurd sizes, paths that
 try to leave their folder, broken manifests, a missing FFmpeg, …) and fails if any case ends in a traceback, a hang, a
 silent success, or a refusal without a message. It runs with the test suite.
 
@@ -592,15 +603,19 @@ silent success, or a refusal without a message. It runs with the test suite.
 ```
 exactfig/
   fmath.py       portable transcendental functions (fdlibm algorithms, basic IEEE 754 operations only)
-  data/          io (CSV, PGM, NPY, JSON readers), field (sampling, hill-shading, marching squares), scatter (exact Delaunay)
+  data/          io (readers of every input format: grids, points, images, catalogues, colourings, instances,
+                 triangles, b-files, Pratt certificates, LRAT proofs, circuits), field (sampling, hill-shading,
+                 marching squares), scatter (exact Delaunay)
   pixel/         pxmath (dithering, noise, Worley, automata, fractals, Bézier, Bresenham, SDFs, Poisson disc), palettes
                  (OKLab), palette-locked quantisation, Canvas of palette indices, PNG and GIF/APNG writers and readers
-  forge/         generators: datavis (data.*), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora,
-                 skies, icons, sprites
+  forge/         generators: datavis (data.field, data.scatter, data.image), catalog, coloring, refutation, instances,
+                 sequence, triangle, pratt, circuit, circuit_refutation, sandpile (the data.* that check before they
+                 draw), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites
   music/         sequences, harmony (Viterbi), voice leading, composer, Standard MIDI File writer
-  provenance/    record, verify, manifest JSON Schema
+  provenance/    record, verify, manifest JSON Schema, crate (RO-Crate export)
   registry.py    the generators, their versions and closed parameter schemas
   render.py      recipe → normal form → output
+  cli.py         the command line; selftest.py the machine check; rng.py the seeded generator
 lean/            Lean 4 proofs and programs whose outputs exactfig draws and cross-checks
 examples/        recipes and the code that makes the example datasets
 gallery/         the recorded outputs, their data and manifest.json
@@ -657,4 +672,4 @@ Changes by version: [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing, security, licence
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Licence: [Apache License 2.0](LICENSE).
+See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Licence: [Apache License 2.0](LICENSE). Two data files in the gallery come from another repository under the MIT licence, as their headers say: `gallery/data/b175001.txt` and `gallery/data/A175001-n14.txt`.

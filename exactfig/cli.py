@@ -5,6 +5,9 @@ exactfig command line / línea de órdenes.
   exactfig record RECIPE.json …  --manifest M.json        render, write next to the manifest and record provenance
   exactfig verify [--manifest M.json] [--strict] [--json] [PATH …]
                                                            re-run every recorded recipe and compare pixel/byte for byte
+  exactfig crate [--manifest M.json] [--date D] [--license SPDX] [--author A] [--name N]
+                                                           write ro-crate-metadata.json beside the manifest (RO-Crate
+                                                           1.3, Process Run Crate 0.6), files checked against it first
   exactfig video RECIPE.json --out FILE.mp4 [--scale K]   an animation as MP4 through ffmpeg (for sharing; not verifiable:
                                                            the codec is lossy; verify the GIF/APNG instead)
   exactfig edit RECIPE.json --set KEY=VALUE …  [--out NEW.json] [--data-dir DIR]
@@ -174,6 +177,13 @@ def main(argv=None) -> int:
     a.add_argument("--manifest", default="gallery/manifest.json")
     a.add_argument("--strict", action="store_true", help="also fail on changed generator source or re-encoded files")
     a.add_argument("--json", action="store_true")
+    a = sub.add_parser("crate", help="describe a manifest's folder as an RO-Crate (Process Run Crate, W3C PROV terms)")
+    a.add_argument("--manifest", default="gallery/manifest.json",
+                   help="the manifest; ro-crate-metadata.json is written beside it")
+    a.add_argument("--date", help="datePublished, YYYY-MM-DD (default: today)")
+    a.add_argument("--license", help="SPDX licence identifier of the files, e.g. CC-BY-4.0 (recommended)")
+    a.add_argument("--author", help="the person who recorded the files: a name or an ORCID URL")
+    a.add_argument("--name", help="name of the crate (default: the folder's name)")
     a = sub.add_parser("palette", help="derive a palette from a picture (median cut or k-means in OKLab)")
     a.add_argument("image")
     a.add_argument("--k", type=int, required=True, help="number of colours (2..256)")
@@ -204,6 +214,14 @@ def main(argv=None) -> int:
             return 0
         if args.cmd == "verify":
             return provenance.main_verify(args.manifest, args.strict, args.json, args.paths or None)
+        if args.cmd == "crate":
+            from .provenance import crate
+            print(crate.write(args.manifest, date=args.date, license_id=args.license, name=args.name,
+                              author=args.author))
+            if not args.license:
+                print("exactfig: note: no --license given; RO-Crate recommends one (e.g. --license CC-BY-4.0)",
+                      file=sys.stderr)
+            return 0
         if args.cmd == "palette":
             if not 2 <= args.k <= 256 or not 1 <= args.size <= 4096:
                 raise ValueError("--k must be 2..256 and --size 1..4096")
