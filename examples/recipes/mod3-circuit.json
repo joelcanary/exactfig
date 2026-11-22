@@ -1,1 +1,1 @@
-{"generator": "data.circuit", "seed": "circuit", "palette": "sci", "size": [560, 360], "input": {"path": "data/mod3-1-n5.circuit", "format": "circuit"}, "params": {"function": "mod 3 1", "inputs": 5, "gates": 9}, "output": "mod3-circuit.png"}
+{"generator": "data.circuit", "seed": "circuit", "palette": "sci", "size": [560, 360], "input": {"path": "data/mod3-1-n5.circuit", "format": "circuit"}, "params": {"function": "mod 3 1", "inputs": 5, "gates": 9, "ramp": "cat"}, "output": "mod3-circuit.png"}

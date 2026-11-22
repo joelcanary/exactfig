@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.12.0 (2026-11-22)
+
+- **Ramp `cat`** in the `sci` palette: the seven categorical colours of Okabe and Ito (2008), without black, added at
+  the end so that no earlier index changes; every pair stays at least 0.076 apart (OKLab) for normal vision,
+  protanopia, deuteranopia and tritanopia (`exactfig cvd`). For colours that carry different meanings. The ramp `all`
+  keeps the 46 colours it had, so image conversions (`data.image`) give the same pixels as before; the other images
+  change only their PNG palette table (53 entries), not their pixels.
+- **`data.circuit` version 2**: gates are coloured by the operations the circuit uses (in the order of their truth
+  tables, evenly round the ramp), so two operations never share a colour while the ramp has enough; the 0 cells of the
+  truth row, the wires and the inputs are drawn in greys that stay clear of the background and of `cat`.
+- Gallery: the van der Waerden witness, the instance masks and both circuits now use `cat`; none of their colour pairs
+  falls below 0.06 for any vision, and a test keeps it so.
+- Correction to 0.11.0's notes: the close pair in the circuit figures was the truth row's 0 cells against the
+  background, not two gate colours.
+
 ## 0.11.0 (2026-11-22)
 
 - **`exactfig cvd`**: a colour-blindness audit of every recorded image. It simulates protanopia, deuteranopia and

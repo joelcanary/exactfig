@@ -22,8 +22,10 @@ a different claim that needs a proof (a refutation of the smaller sizes); the re
 `proof_sha256`, which is kept in the manifest but not checked here.
 
 The picture: the inputs on the top row, each gate on the row of its depth (one more than its deeper argument), in file
-order within a row; a line from each argument to its gate; the gate's disc coloured by its operation (the 16 two-input
-functions taken evenly round the ramp), the output ringed. Along the bottom, the circuit's value on each input m, in
+order within a row; a line from each argument to its gate; the gate's disc coloured by its operation (the operations the
+circuit uses, in the order of their truth tables, taken evenly round the ramp, so two different operations never share
+a colour while the ramp has enough of them: `cat`, seven colours safe for colour-blind readers, is the one to choose),
+the output ringed. Along the bottom, the circuit's value on each input m, in
 order, one cell per input.
 """
 from __future__ import annotations
@@ -187,26 +189,28 @@ def circuit(seed, pal, w, h, p, data) -> Canvas:
         for name in names:
             pos[name] = (int(fm.floor(fx[name] + 0.5)), int(fm.floor(y + 0.5)))
     er = pal.ramp(p["edge_ramp"])
-    edge = er[len(er) // 2]                                          # a middle step: the first is the darkest
+    edge = er[len(er) * 3 // 8]                  # version 2: below the middle grey, which a deuteranope confuses with green
     for name, _, a, b in circ.gates:
         for arg in (a, b):
             (x0, y0), (x1, y1) = pos[arg], pos[name]
             cv.line(x0, y0, x1, y1, edge)
     ramp = pal.ramp(p["ramp"])
+    used = sorted(set(ops.values()), key=lambda t: int(t, 2)) or ["0000"]   # version 2: only the operations used
+    slot = {t: k for k, t in enumerate(used)}
     ir = pal.ramp(p["input_ramp"])
     mark = pal.ramp(p["mark_ramp"])
     for name, (x, y) in pos.items():
         if name in ops:
-            col = ramp[int(ops[name], 2) * len(ramp) // 16]
+            col = ramp[slot[ops[name]] * len(ramp) // len(used)]
         else:
-            col = ir[len(ir) // 2]
+            col = ir[len(ir) * 3 // 4]          # version 2: a light grey, clear of every colour of `cat` for all visions
         cv.disc(x, y, r, col)
     ox, oy = pos[circ.output]
     cv.circle(ox, oy, r + max(1, r // 3), mark[len(mark) // 2])
     out = evaluate(circ)[circ.output]
     cells = 1 << n
     span = w - 2 * pad
-    on, off = mark[len(mark) // 2], er[0]
+    on, off = mark[len(mark) // 2], er[len(er) // 4]    # version 2: the darkest step was nearly the background (0.027)
     for m in range(cells):
         x0 = pad + span * m // cells
         x1 = pad + span * (m + 1) // cells - 1

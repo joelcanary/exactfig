@@ -580,9 +580,12 @@ deuteranopia y la tritanopia (Machado, Oliveira y Fernandes 2009, severidad comp
 que de verdad usa cada imagen apuntada, y da para cada visión el par más cercano (distancia OKLab; unos 0,02 apenas se
 nota, 0,1 se ve claro) y cuántos pares quedan por debajo de `--min` (0,06 por defecto). Informa y no juzga: una rampa
 secuencial tiene vecinos cercanos a propósito, mientras que los colores que significan cosas distintas deberían quedar
-separados. En esta galería encuentra, por ejemplo, que dos de los cuatro colores del testigo de van der Waerden quedan a
-0,017 para una persona con deuteranopia, y que los colores de las puertas de las figuras de circuitos incluyen un par a
-0,028 para cualquier visión; las refutaciones, el árbol de Pratt y las vidas quietas quedan claros para las cuatro.
+separados. Pasado por esta galería encontró dos de los cuatro colores del testigo de van der Waerden a 0,017 para una
+persona con deuteranopia, máscaras de instancias a 0,008, y las celdas 0 de las figuras de circuitos casi del color del
+fondo (0,027 para cualquier visión). Desde la 0.12.0 esas figuras usan la rampa `cat` (los siete colores categóricos de
+Okabe e Ito, todos los pares a 0,076 o más en las cuatro visiones) y `data.circuit` 2 colorea las operaciones que usa
+el circuito y dibuja sus celdas 0, cables y entradas en grises que no chocan con `cat`: ningún par suyo baja de 0,06 en
+ninguna visión, y una prueba lo vigila.
 
 ## API de Python
 

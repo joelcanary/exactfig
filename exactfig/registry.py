@@ -141,7 +141,7 @@ class Generator:
 
 
 RAMPS = ("stone", "moss", "sea", "ember", "sun", "dusk", "ink", "bone", "grey", "all")
-DATA_RAMPS = RAMPS + ("seq", "div", "cyc", "paper", "mark")
+DATA_RAMPS = RAMPS + ("seq", "div", "cyc", "paper", "mark", "cat")
 
 
 def _data_params() -> dict:
@@ -393,7 +393,7 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/pratt.py"),
             "a Pratt certificate of primality as a tree, checked first: p − 1 factored, g of order p − 1, down to 2",
             (256, 160), 2048, data="primes"),
-        Generator("data.circuit", "1", "image", circuit.circuit, {
+        Generator("data.circuit", "2", "image", circuit.circuit, {
             "function": P("text", "", maxlen=400, doc="what the circuit computes: mod M R, threshold K, parity or "
                                                       "table HEX (bit m = the value on input m)"),
             "inputs": P("int", 0, 0, 20, doc="number of inputs; 0 = the file's"),
@@ -401,9 +401,9 @@ def _gens() -> dict[str, Generator]:
             "strict": P("bool", True, doc="every gate leads to the output"),
             "proof_sha256": P("text", "", maxlen=64, doc="SHA-256 of a proof that no smaller circuit exists; recorded, "
                                                          "not checked"),
-            "ramp": P("str", "cyc", choices=DATA_RAMPS, doc="gate colour by its operation, the 16 evenly round the ramp"),
+            "ramp": P("str", "cyc", choices=DATA_RAMPS, doc="gate colour by its operation: the operations used, evenly round the ramp (cat: safe for colour-blind readers)"),
             "input_ramp": P("str", "grey", choices=DATA_RAMPS),
-            "edge_ramp": P("str", "grey", choices=DATA_RAMPS, doc="wires (middle step) and the 0 cells (first step)"),
+            "edge_ramp": P("str", "grey", choices=DATA_RAMPS, doc="wires (middle step) and the 0 cells (a quarter of the way up)"),
             "mark_ramp": P("str", "paper", choices=DATA_RAMPS, doc="the ring of the output and the 1 cells"),
             "background": P("str", "ink", choices=("",) + DATA_RAMPS),
         }, pix + ("data", "forge/circuit.py"),

@@ -48,6 +48,32 @@ class TestCvd(unittest.TestCase):
         self.assertEqual([(p[1], p[2]) for p in a["below"]], [(1, 2)])
         self.assertEqual(cvd.audit([(0, 0, 0), (255, 255, 255)], minimum=0.05)["deutan"]["below"], [])
 
+    def test_gallery_figures_that_carry_meaning_in_colour(self):
+        """0.12.0 regression guard: the figures whose colours carry different meanings (the colouring, the instances,
+        the circuits) keep every pair of their colours at least 0.06 apart for all four visions."""
+        from exactfig.render import render
+        from exactfig.pixel import png
+        for name in ("vdw-2-3-3-3", "instances-truth", "mod3-circuit", "mod3-n3-circuit"):
+            with open(os.path.join(ROOT, "examples", "recipes", name + ".json"), encoding="utf-8") as fh:
+                out = render(json.load(fh), GALLERY)
+            w, h, rgba = png.decode(out.data)
+            counts = {}
+            for i in range(0, len(rgba), 4):
+                if rgba[i + 3]:
+                    counts[tuple(rgba[i:i + 3])] = counts.get(tuple(rgba[i:i + 3]), 0) + 1
+            total = sum(counts.values())
+            cols = sorted(c for c, n in counts.items() if n >= 0.005 * total)
+            for v, r in cvd.audit(cols, cvd.DEFAULT_MIN).items():
+                self.assertEqual(r["below"], [], (name, v))
+
+    def test_cat_ramp_is_safe(self):
+        from exactfig.pixel import palette
+        sci = palette.builtin("sci")
+        cat = [sci.rgb[i] for i in sci.ramps["cat"]]
+        self.assertEqual(len(cat), 7)
+        for v, r in cvd.audit(cat, 0.07).items():
+            self.assertEqual(r["below"], [], v)
+
     def test_cli_json(self):
         d = tempfile.mkdtemp(prefix="exactfig-cvd-")
         try:

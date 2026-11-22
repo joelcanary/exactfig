@@ -132,13 +132,16 @@ SCI_DIV_CHROMA = (0.124, 0.104, 0.078, 0.052, 0.026, 0.0, 0.026, 0.052, 0.078, 0
 
 
 def build_sci() -> tuple[list[str], dict[str, list[int]]]:
-    """Paleta para datos (34 colores).
+    """Paleta para datos (53 colores).
     seq   12 pasos de luz ESTRICTAMENTE creciente (OKLab L 0,22 → 0,93, lineal) con el matiz girando de violeta-azul a
           amarillo (285° → 100°): ordenada para la vista, legible en gris y sin el falso contraste de un arcoíris
     div   11 pasos divergentes: azul (255°) → gris claro neutro → rojo (30°), luz simétrica alrededor del centro
     grey  8 grises, L 0,15 → 0,97
     ink, paper, mark  líneas y curvas de nivel, fondo, y marcas de muestras (magenta, lejos de seq y div)
-    cyc   12 matices a igual luz (L 0,72): rampa cíclica para fases y ángulos (va al final: los índices de antes no cambian)"""
+    cyc   12 matices a igual luz (L 0,72): rampa cíclica para fases y ángulos (va al final: los índices de antes no cambian)
+    cat   7 colores categóricos de Okabe e Ito (2008, sin el negro), distinguibles con protanopia, deuteranopia y
+          tritanopia (exactfig cvd: todos los pares a 0,076 o más en OKLab); para colores que significan cosas
+          distintas (al final, como cyc: ningún índice anterior cambia)"""
     colors, ramps = [], {}
 
     def ramp(name, tones):
@@ -155,6 +158,9 @@ def build_sci() -> tuple[list[str], dict[str, list[int]]]:
     ramp("mark", [_oklch(0.62, 0.20, 350.0)])
     ramp("cyc", [_oklch(0.72, 0.10, 30.0 * k) for k in range(12)])   # cyclic: 12 hues at equal lightness (phase)
     ramps["all"] = list(range(len(colors)))
+    # cat goes after "all" on purpose: "all" is what data.image converts to, and it must keep the 46 colours it had
+    # before 0.12.0, or every conversion recorded with this palette would change its pixels.
+    ramp("cat", ['#e69f00', '#56b4e9', '#009e73', '#f0e442', '#0072b2', '#d55e00', '#cc79a7'])   # Okabe & Ito: categorical, safe for colour-blind readers
     return colors, ramps
 
 
@@ -165,7 +171,7 @@ MF32 = ['#120f1d', '#362b26', '#605249', '#8c7d72', '#b8ab9f', '#e6dcd1', '#0239
         '#f4cffe', '#f7f1e7']
 MONO4 = ['#1a260d', '#4d5b37', '#88956e', '#cad3b2']
 
-SCI = ['#1a084a', '#14225f', '#0a3b69', '#13526f', '#1a677a', '#217e83', '#279589', '#44ab88', '#74bd85', '#a1ce84', '#cedc87', '#f9ea92', '#124c8e', '#3d6ba4', '#678ab6', '#91a9c7', '#bcc8d8', '#e8e8e8', '#d7c1bd', '#c59b93', '#b2756b', '#9c5045', '#832b20', '#0b0b0b', '#262626', '#434343', '#636363', '#868686', '#a9a9a9', '#cecece', '#f5f5f5', '#060606', '#fdfdfd', '#d84497', '#d88aa2', '#dc8c7f', '#d39562', '#bda257', '#9cae65', '#75b683', '#52b9a7', '#4ab6c7', '#67addd', '#8ca2e4', '#ae96da', '#c88ec3']
+SCI = ['#1a084a', '#14225f', '#0a3b69', '#13526f', '#1a677a', '#217e83', '#279589', '#44ab88', '#74bd85', '#a1ce84', '#cedc87', '#f9ea92', '#124c8e', '#3d6ba4', '#678ab6', '#91a9c7', '#bcc8d8', '#e8e8e8', '#d7c1bd', '#c59b93', '#b2756b', '#9c5045', '#832b20', '#0b0b0b', '#262626', '#434343', '#636363', '#868686', '#a9a9a9', '#cecece', '#f5f5f5', '#060606', '#fdfdfd', '#d84497', '#d88aa2', '#dc8c7f', '#d39562', '#bda257', '#9cae65', '#75b683', '#52b9a7', '#4ab6c7', '#67addd', '#8ca2e4', '#ae96da', '#c88ec3', '#e69f00', '#56b4e9', '#009e73', '#f0e442', '#0072b2', '#d55e00', '#cc79a7']
 
 _BUILDERS = {"mf32": build_mf32, "mono4": build_mono4, "sci": build_sci}
 _FROZEN = {"mf32": MF32, "mono4": MONO4, "sci": SCI}

@@ -543,10 +543,12 @@ description.
 and tritanopia (Machado, Oliveira and Fernandes 2009, full severity, in linear sRGB) on the colours each recorded image
 actually uses, and reports for each vision the closest pair (OKLab distance; about 0.02 is barely visible, 0.1 clear)
 and how many pairs fall below `--min` (0.06 by default). It informs and does not judge: a sequential ramp has close
-neighbours by design, while colours that carry different meanings should stay apart. On this gallery it finds, for
-instance, that two of the four colours of the van der Waerden witness come within 0.017 for a deuteranope, and that the
-gate colours of the circuit figures include a pair at 0.028 for every vision; the refutations, the Pratt tree and the
-still lifes stay clear for all four.
+neighbours by design, while colours that carry different meanings should stay apart. Run on this gallery it found two
+of the four colours of the van der Waerden witness within 0.017 for a deuteranope, instance masks within 0.008, and the
+0 cells of the circuit figures almost the colour of the background (0.027 for every vision). Since 0.12.0 those figures
+use the ramp `cat` (the seven categorical colours of Okabe and Ito, every pair at least 0.076 apart for all four
+visions) and `data.circuit` 2 colours the operations a circuit uses and draws its 0 cells, wires and inputs in greys
+clear of `cat`: no pair of theirs falls below 0.06 for any vision, and a test keeps it so.
 
 ## Python API
 
