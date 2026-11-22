@@ -84,6 +84,8 @@ def entry_for(recipe: dict, out, base: str | None = None) -> dict:
     if out.inputs:
         e["inputs"] = out.inputs
         e["budget"]["input_bytes"] = sum(i["bytes"] for i in out.inputs)
+    if out.alt:
+        e["alt"] = out.alt
     return e
 
 
@@ -177,6 +179,9 @@ def verify_entry(rel: str, e: dict, base: str, strict: bool = False) -> Check:
         c.fail(str(ex)); return c
     if again.content_sha256 != out["content_sha256"]:
         c.fail(f"re-running {now['name']} gives different content ({again.content_sha256[:16]} ≠ {out['content_sha256'][:16]})")
+    if "alt" in e and e["alt"] != again.alt:          # entries recorded before 0.10.0 have no alternative text
+        (c.fail if strict else c.warnings.append)("the alternative text this version writes differs from the recorded "
+                                                  "one; record again")
     path = os.path.join(base, rel)
     if not os.path.exists(path):
         c.fail("file missing"); return c

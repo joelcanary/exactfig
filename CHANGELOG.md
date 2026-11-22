@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.10.0 (2026-11-22)
+
+- **Alternative text, exact.** Every recorded file now carries an `alt` text in the manifest (schema: `alt`, at most
+  1000 characters), written by `forge/describe.py` after the generator has drawn, and so after its data passed their
+  checks: the checked generators state the checked numbers (a circuit's gates, inputs, depth, function and how many
+  inputs give 1; a refutation's claim, the size it proves and its clauses; TP, FP, FN and the exact PQ; the patterns,
+  cells and rule of a catalogue; the prime and lines of a Pratt certificate; …), the others their own summary, name and
+  size. `exactfig alt` lists the texts (`--json`); `verify` warns, and fails with `--strict`, when the text differs
+  from the recorded one; `exactfig crate` uses it as each file's description. No pixel changes. Tested against
+  independent facts (2^127 − 1 and its 19 lines, 1 on C(5,1) + C(5,4) = 10 of 32 inputs, clause counts read from the
+  proof files, the README's exact PQ).
+
 ## 0.9.0 (2026-11-22)
 
 - **`exactfig crate`**: writes `ro-crate-metadata.json` beside a manifest, so a gallery folder becomes an RO-Crate 1.3

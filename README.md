@@ -72,6 +72,7 @@ checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
 | The whole set is pinned | `manifest_sha256` covers every entry; sign or publish that one value |
 | Recipes cannot smuggle a picture | closed parameter schemas: typed, ranged values, no pixel arrays; data enters only as a named, hashed file |
 | The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions, primality) and refuse to draw otherwise |
+| The description says what was checked | every recorded file carries an alternative text written after its data passed their checks, from the checked numbers themselves (counts, sizes, the function a circuit computes, the exact panoptic quality); `verify` notices a text that no longer matches |
 | Mistakes end in a clear message | one line saying what and why, never a traceback; more than 110 real mistakes are tested, one process each |
 
 What it does not prove: who wrote the code or chose the recipe (sign the manifest digest for that), or that a model or a
@@ -506,6 +507,7 @@ python -m exactfig verify --manifest gallery/manifest.json            # warnings
 python -m exactfig verify --manifest gallery/manifest.json --strict   # …which then fail
 python -m exactfig verify --json                                       # a machine-readable report
 python -m exactfig crate --manifest gallery/manifest.json --date 2026-11-22 --license CC-BY-4.0   # RO-Crate
+python -m exactfig alt --manifest gallery/manifest.json               # the exact alternative text of every file
 ```
 
 For each entry, in order: the recipe hash and normal form, the generator and its version, the source hash, every input
@@ -524,6 +526,17 @@ version, source hash), whose object is its inputs and recipe parameters, and who
 (a name or an ORCID URL) is recorded as the agent. Every file is read first and must have the size and SHA-256 the
 manifest records, so the crate never describes a missing or changed file. It restates the manifest and adds no claim of
 its own; the same manifest and files, date, licence, author and name give the same bytes.
+
+**Alternative text, exact.** Every recorded file carries an `alt` text in the manifest, for screen readers, the `alt`
+of a web page or a journal's figure description. Tools that add it afterwards can only guess what a picture shows;
+exactfig writes it after the data have passed the checks the recipe states, from the checked numbers. For the gallery's
+circuit: *"A Boolean circuit of 9 two-input gates on 5 inputs that outputs 1 exactly when x1 + … + x5 leaves remainder 1
+on division by 3, checked on all 32 inputs; every gate leads to the output. […] 1 on 10 of the 32."* For the segmentation
+comparison: *"[…] 4 true positives, 2 false positives, 2 false negatives, panoptic quality 0.4670 (exactly
+21153891139/45297262530)."* Generators that check nothing get their own summary, name and size, and claim nothing more.
+`python -m exactfig alt --manifest gallery/manifest.json` lists them (`--json` for a page); `verify` warns, and with
+`--strict` fails, when the text this version writes differs from the recorded one; the RO-Crate uses it as each file's
+description.
 
 ## Python API
 
@@ -610,7 +623,8 @@ exactfig/
                  (OKLab), palette-locked quantisation, Canvas of palette indices, PNG and GIF/APNG writers and readers
   forge/         generators: datavis (data.field, data.scatter, data.image), catalog, coloring, refutation, instances,
                  sequence, triangle, pratt, circuit, circuit_refutation, sandpile (the data.* that check before they
-                 draw), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites
+                 draw), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites;
+                 describe (the exact alternative text of each figure)
   music/         sequences, harmony (Viterbi), voice leading, composer, Standard MIDI File writer
   provenance/    record, verify, manifest JSON Schema, crate (RO-Crate export)
   registry.py    the generators, their versions and closed parameter schemas

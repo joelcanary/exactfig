@@ -34,6 +34,7 @@ from dataclasses import dataclass
 
 from . import registry
 from .data import io as dataio
+from .forge import describe
 from .pixel import anim
 from .pixel import palette as palettes
 from .pixel import png
@@ -178,22 +179,29 @@ def _load(gen, inp, base):
 
 # ------------------------------------------------------------------------------------------------ 3. draw
 
-def _draw(body: dict, pal, w: int, h: int, base: str, inputs: list):
+def _draw(body: dict, pal, w: int, h: int, base: str, inputs: list, alts: list | None = None):
+    """Draw one generator; append its input's description to `inputs` and, after it has drawn (and so after its data
+    have passed their checks), its alternative text to `alts`."""
     gen = registry.get(body["generator"])
+    data = None
     if gen.data:
         data, info = _load(gen, body["input"], base)
         inputs.append(info)
-        return gen.fn(str(body["seed"]), pal, w, h, body["params"], data)
-    return gen.fn(str(body["seed"]), pal, w, h, body["params"])
+        out = gen.fn(str(body["seed"]), pal, w, h, body["params"], data)
+    else:
+        out = gen.fn(str(body["seed"]), pal, w, h, body["params"])
+    if alts is not None:
+        alts.append(describe.text(gen, body["params"], data, w, h))
+    return out
 
 
-def _compose(r, pal, w, h, base, inputs):
+def _compose(r, pal, w, h, base, inputs, alts=None):
     """Stack the layers in order. `over`: the layer's opaque pixels cover what is below; `under`: they only fill what is
     still transparent; `mask`: what is below survives only where the layer is opaque."""
     from .pixel.canvas import Canvas
     out = Canvas(w, h, pal)
     for layer in r["layers"]:
-        cv = _draw(layer, pal, w, h, base, inputs)
+        cv = _draw(layer, pal, w, h, base, inputs, alts)
         if (cv.w, cv.h) != (w, h):
             raise AssertionError(f"{layer['generator']} drew {cv.w}x{cv.h}, asked {w}x{h}")
         for y in range(h):
@@ -225,6 +233,7 @@ class Rendered:
     inputs: list | None = None
     frames: int = 0
     duration_ms: int = 0
+    alt: str = ""             # alternative text, exact (forge/describe.py)
 
 
 MAX_SIMULATION_WORK = 400_000_000      # cells × generations a simulation may compute (a few minutes in pure Python)
@@ -290,20 +299,25 @@ def render(recipe: dict, base: str = ".", container: str | None = None) -> Rende
     gen = registry.get(r["generator"])
     if gen.kind == "midi":
         data = gen.fn(str(r["seed"]), r["params"])
-        return Rendered("midi", data, sha256(data))
+        return Rendered("midi", data, sha256(data), alt=describe.text(gen, r["params"], None, 0, 0))
     pal = palettes.get(r["palette"])
     w, h = r["size"]
     _budget(gen, r, w, h)
     inputs: list = []
-    out = _compose(r, pal, w, h, base, inputs) if gen.name == "compose" else _draw(r, pal, w, h, base, inputs)
+    alts: list = []
+    out = _compose(r, pal, w, h, base, inputs, alts) if gen.name == "compose" else _draw(r, pal, w, h, base, inputs, alts)
     inputs = inputs or None
+    alt = alts[0] if len(alts) == 1 else " ".join(f"Layer {i}: {a}" for i, a in enumerate(alts, 1))
     if gen.kind == "animation":
-        return _animation(gen, r, out, pal, w, h, inputs, container or container_of(recipe.get("output")))
+        ren = _animation(gen, r, out, pal, w, h, inputs, container or container_of(recipe.get("output")))
+        ren.alt = alt
+        return ren
     if (out.w, out.h) != (w, h):
         raise AssertionError(f"{gen.name} drew {out.w}x{out.h}, asked {w}x{h}")
     cv = out.scaled(r["scale"])
     rgba = cv.to_rgba()
-    return Rendered("image", cv.to_png(), png.pixels_sha256(cv.w, cv.h, rgba), cv.w, cv.h, list(pal.hex), inputs)
+    return Rendered("image", cv.to_png(), png.pixels_sha256(cv.w, cv.h, rgba), cv.w, cv.h, list(pal.hex), inputs,
+                    alt=alt)
 
 
 def _animation(gen, r, frames, pal, w, h, inputs, container) -> Rendered:

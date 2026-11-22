@@ -117,6 +117,9 @@ Limits: 64 MiB per file, 4096 × 4096 cells, 200 000 points (20 000 for the tria
 7. Images: every opaque pixel is a palette colour, and there are no semi-transparent pixels.
 8. The file bytes equal `output.file_sha256` (else: warning, the PNG was re-encoded with the same pixels; failure with `--strict`).
 9. `manifest_sha256` matches the entries.
+10. `alt` (entries recorded from 0.10.0 on): the alternative text the re-run writes equals the recorded one (else:
+    warning; failure with `--strict`). It is written by `exactfig/forge/describe.py` after the generator has drawn, so
+    for a data generator it states only what its checks established.
 
 Exit code 0 when everything passes, 1 when an entry fails, 2 when the manifest or an input is refused (named in one line), 3 for an internal error; `--json` gives a machine report.
 

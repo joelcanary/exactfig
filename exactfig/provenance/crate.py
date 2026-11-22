@@ -10,7 +10,8 @@ provenance terms align with W3C PROV:
   root "./"          a Dataset: name (default: the folder's), description, datePublished (given, or today), license
                      (an SPDX id; recommended, the command warns without it), author (optional), conformsTo the
                      profile, hasPart every file, mentions every run
-  each output        a File with its encodingFormat, contentSize and sha256 (the workflow-run term)
+  each output        a File with its encodingFormat, contentSize, sha256 (the workflow-run term) and, as its
+                     description, the exact alternative text the manifest records
   each input         a File with its format, size and sha256
   each run           a CreateAction "exactfig record <file>": instrument = the generator (name, version and the SHA-256
                      of its source code), object = the input files and the recipe's parameters as PropertyValues,
@@ -112,8 +113,11 @@ def build(manifest_path: str, date: str | None = None, license_id: str | None = 
              "description": f"source code SHA-256 {g['code_sha256']}"})
         out = e["output"]
         _on_disk(base, rel, out["bytes"], out["file_sha256"], "the output")
-        add({"@id": _id(rel), "@type": "File", "name": rel, "encodingFormat": _mime(rel),
-             "contentSize": str(out["bytes"]), "sha256": out["file_sha256"]})
+        fig = {"@id": _id(rel), "@type": "File", "name": rel, "encodingFormat": _mime(rel),
+               "contentSize": str(out["bytes"]), "sha256": out["file_sha256"]}
+        if e.get("alt"):
+            fig["description"] = e["alt"]                # the exact alternative text (forge/describe.py)
+        add(fig)
         files.append(_id(rel))
         objects = []
         for inp in e.get("inputs", []):

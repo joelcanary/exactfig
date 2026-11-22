@@ -63,6 +63,7 @@
      }
     },
     "recipe_sha256": {"$ref": "#/$defs/sha256", "description": "SHA-256 of the canonical JSON of `recipe`"},
+    "alt": {"type": "string", "maxLength": 1000, "description": "alternative text, exact: what the figure shows, stated from the checks its data passed (forge/describe.py)"},
     "output": {
      "type": "object",
      "required": ["file_sha256", "content_sha256", "bytes"],

@@ -73,6 +73,7 @@ receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 
 | Los mismos bits en cualquier plataforma | las funciones trascendentes salen de `exactfig.fmath` (solo aritmética básica IEEE 754); comprobado en x86-64 y ARM64 |
 | El conjunto entero queda fijado | `manifest_sha256` cubre todas las entradas: basta con firmar o publicar ese valor |
 | Una receta no puede colar una imagen | esquemas de parámetros cerrados (valores con tipo y rango, nada de matrices de píxeles); los datos solo entran como un fichero con nombre y hash |
+| La descripción dice lo que se comprobó | cada fichero apuntado lleva un texto alternativo escrito después de que sus datos pasaran las comprobaciones, con las propias cifras comprobadas (recuentos, tamaños, la función que calcula un circuito, la calidad panóptica exacta); `verify` avisa si un texto ya no coincide |
 | La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad) y si no, no dibujan |
 | Los errores acaban en un mensaje claro | una línea que dice qué y por qué, nunca un traceback; se prueban más de 90 errores reales, un proceso cada uno |
 
@@ -542,6 +543,7 @@ python -m exactfig verify --manifest gallery/manifest.json            # avisos s
 python -m exactfig verify --manifest gallery/manifest.json --strict   # …que entonces son fallos
 python -m exactfig verify --json                                       # un informe para máquinas
 python -m exactfig crate --manifest gallery/manifest.json --date 2026-11-22 --license CC-BY-4.0   # RO-Crate
+python -m exactfig alt --manifest gallery/manifest.json               # el texto alternativo exacto de cada fichero
 ```
 
 Para cada entrada, en orden: el hash y la forma normal de la receta, el generador y su versión, el hash del código, el hash de
@@ -561,6 +563,16 @@ figura; `--author` (un nombre o una URL de ORCID) queda como el agente. Antes se
 el tamaño y el SHA-256 que apunta el manifiesto, así que el crate nunca describe un fichero que falta o que ha cambiado.
 Solo repite lo que dice el manifiesto, sin añadir nada; el mismo manifiesto y ficheros, fecha, licencia, autor y nombre
 dan los mismos bytes.
+
+**Texto alternativo, exacto.** Cada fichero apuntado lleva un texto `alt` en el manifiesto, para lectores de pantalla,
+el `alt` de una página web o la descripción de figura de una revista. Las herramientas que lo añaden después solo pueden
+adivinar qué enseña una imagen; exactfig lo escribe cuando los datos ya han pasado las comprobaciones que declara la
+receta, con las propias cifras comprobadas (el texto va en inglés, como los nombres de los generadores). Para el circuito
+de la galería: *"A Boolean circuit of 9 two-input gates on 5 inputs that outputs 1 exactly when x1 + … + x5 leaves
+remainder 1 on division by 3, checked on all 32 inputs […] 1 on 10 of the 32."* Los generadores que no comprueban nada
+llevan su propio resumen, su nombre y su tamaño, y no afirman nada más. `python -m exactfig alt --manifest
+gallery/manifest.json` los lista (`--json` para una página); `verify` avisa, y con `--strict` falla, si el texto que
+escribe esta versión no coincide con el apuntado; el RO-Crate lo usa como descripción de cada fichero.
 
 ## API de Python
 
@@ -649,7 +661,8 @@ exactfig/
                  (OKLab), cuantización con paleta bloqueada, lienzo de índices, escritores y lectores PNG y GIF/APNG
   forge/         generadores: datavis (data.field, data.scatter, data.image), catalog, coloring, refutation, instances,
                  sequence, triangle, pratt, circuit, circuit_refutation, sandpile (los data.* que comprueban antes de
-                 dibujar), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites
+                 dibujar), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites;
+                 describe (el texto alternativo exacto de cada figura)
   music/         sucesiones, armonía (Viterbi), conducción de voces, compositor, escritor de MIDI estándar
   provenance/    record, verify, esquema JSON del manifiesto, crate (exportación a RO-Crate)
   registry.py    los generadores, sus versiones y sus esquemas cerrados de parámetros

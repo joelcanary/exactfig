@@ -5,6 +5,7 @@ exactfig command line / línea de órdenes.
   exactfig record RECIPE.json …  --manifest M.json        render, write next to the manifest and record provenance
   exactfig verify [--manifest M.json] [--strict] [--json] [PATH …]
                                                            re-run every recorded recipe and compare pixel/byte for byte
+  exactfig alt [--manifest M.json] [--json]               the alternative text of every recorded file (exact)
   exactfig crate [--manifest M.json] [--date D] [--license SPDX] [--author A] [--name N]
                                                            write ro-crate-metadata.json beside the manifest (RO-Crate
                                                            1.3, Process Run Crate 0.6), files checked against it first
@@ -177,6 +178,9 @@ def main(argv=None) -> int:
     a.add_argument("--manifest", default="gallery/manifest.json")
     a.add_argument("--strict", action="store_true", help="also fail on changed generator source or re-encoded files")
     a.add_argument("--json", action="store_true")
+    a = sub.add_parser("alt", help="the alternative text of every recorded file (exact: stated from the checks)")
+    a.add_argument("--manifest", default="gallery/manifest.json")
+    a.add_argument("--json", action="store_true", help="a JSON object {file: text}")
     a = sub.add_parser("crate", help="describe a manifest's folder as an RO-Crate (Process Run Crate, W3C PROV terms)")
     a.add_argument("--manifest", default="gallery/manifest.json",
                    help="the manifest; ro-crate-metadata.json is written beside it")
@@ -214,6 +218,15 @@ def main(argv=None) -> int:
             return 0
         if args.cmd == "verify":
             return provenance.main_verify(args.manifest, args.strict, args.json, args.paths or None)
+        if args.cmd == "alt":
+            assets = provenance.load(args.manifest)["assets"]
+            texts = {rel: e.get("alt", "") for rel, e in sorted(assets.items())}
+            if args.json:
+                print(json.dumps(texts, ensure_ascii=False, indent=1))
+            else:
+                for rel, t in texts.items():
+                    print(f"{rel}	{t or '(no alternative text: recorded before 0.10.0; record again)'}")
+            return 0
         if args.cmd == "crate":
             from .provenance import crate
             print(crate.write(args.manifest, date=args.date, license_id=args.license, name=args.name,
