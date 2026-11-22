@@ -575,6 +575,17 @@ llevan su propio resumen, su nombre y su tamaño, y no afirman nada más. `pytho
 gallery/manifest.json` los lista (`--json` para una página); `verify` avisa, y con `--strict` falla, si el texto que
 escribe esta versión no coincide con el apuntado; el RO-Crate lo usa como descripción de cada fichero.
 
+**SVG, con la procedencia dentro.** Una receta cuyo `output` acaba en `.svg` se escribe en SVG en vez de PNG: los
+mismos píxeles (cada color un `<path>` de rectángulos, `crispEdges`, escalado por el `viewBox`, así que sigue nítido a
+cualquier tamaño y decodifica a exactamente los píxeles y el `content_sha256` del PNG), con el texto alternativo exacto
+como `<title>` y `<desc>`, y en `<metadata>` la receta en forma normal y su SHA-256, el nombre, la versión y el hash del
+código del generador, la versión de exactfig y el SHA-256 de cada fichero de entrada. Quien solo tenga el fichero tiene
+lo necesario para volver a hacerlo. `verify` lo decodifica, compara los píxeles y rechaza un SVG cuya procedencia
+incrustada no sea la del manifiesto; el decodificador solo acepta lo que escribe exactfig, así que un elemento añadido a
+mano o un color cambiado falla. El [`mod3-circuit.svg`](gallery/mod3-circuit.svg) de la galería es el circuito de
+arriba, en SVG. El SVG de una figura de píxeles pesa más que su PNG (de diez a veinte veces): es para imprimir, para
+diapositivas y para páginas que se amplían, no para ahorrar bytes.
+
 **Lectores daltónicos.** `python -m exactfig cvd --manifest gallery/manifest.json` simula la protanopia, la
 deuteranopia y la tritanopia (Machado, Oliveira y Fernandes 2009, severidad completa, en sRGB lineal) sobre los colores
 que de verdad usa cada imagen apuntada, y da para cada visión el par más cercano (distancia OKLab; unos 0,02 apenas se
@@ -671,7 +682,7 @@ exactfig/
                  instancias, triángulos, b-files, certificados de Pratt, pruebas LRAT, circuitos), field (muestreo,
                  sombreado, marching squares), scatter (Delaunay exacto)
   pixel/         pxmath (tramado, ruido, Worley, autómatas, fractales, Bézier, Bresenham, SDF, disco de Poisson), paletas
-                 (OKLab), cuantización con paleta bloqueada, lienzo de índices, escritores y lectores PNG y GIF/APNG
+                 (OKLab), cuantización con paleta bloqueada, lienzo de índices, escritores y lectores PNG, SVG y GIF/APNG
   forge/         generadores: datavis (data.field, data.scatter, data.image), catalog, coloring, refutation, instances,
                  sequence, triangle, pratt, circuit, circuit_refutation, sandpile (los data.* que comprueban antes de
                  dibujar), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites;

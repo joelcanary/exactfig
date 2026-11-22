@@ -21,7 +21,9 @@ from dataclasses import dataclass, field
 from .. import __version__, registry
 from ..pixel import anim, png
 from ..data import io as dataio
-from ..render import canonical, container_of, identity, load_recipe, normalize, output_name, render, sha256
+from ..render import (canonical, container_of, identity, image_container, load_recipe, normalize, output_name,
+                      render, sha256)
+from ..pixel import svg as svgmod
 
 MAX_HISTORY = 20
 
@@ -174,7 +176,7 @@ def verify_entry(rel: str, e: dict, base: str, strict: bool = False) -> Check:
         (c.fail if strict else c.warnings.append)(f"generator source changed since recording ({g.get('code_sha256', '')[:12]} → {now['code_sha256'][:12]})")
     out = e["output"]
     try:
-        again = render(r, base, container_of(rel) if e.get("kind") == "animation" else None)
+        again = render(r, base, container_of(rel) if e.get("kind") == "animation" else image_container(rel))
     except ValueError as ex:                          # an input file missing or changed
         c.fail(str(ex)); return c
     if again.content_sha256 != out["content_sha256"]:
@@ -190,14 +192,23 @@ def verify_entry(rel: str, e: dict, base: str, strict: bool = False) -> Check:
     if e["kind"] == "animation":
         _verify_animation(c, e, out, data, again)
     elif e["kind"] == "image":
+        is_svg = image_container(rel) == "svg"
         try:
-            w, h, rgba = png.decode(data)
+            if is_svg:
+                w, h, rgba, meta, _ = svgmod.decode(data)
+            else:
+                w, h, rgba = png.decode(data)
         except Exception as ex:   # noqa: BLE001  (un fichero ajeno o roto: es un fallo, no un error del programa)
-            c.fail(f"cannot read the PNG: {ex}"); return c
+            c.fail(f"cannot read the {'SVG' if is_svg else 'PNG'}: {ex}"); return c
+        if is_svg:                                   # the provenance inside the file must be the manifest's
+            if meta.get("recipe_sha256") != e["recipe_sha256"] or meta.get("generator") != e["generator"]:
+                c.fail("the provenance inside the SVG is not this manifest entry's (recipe or generator differ)")
+            if meta.get("content_sha256") != out["content_sha256"]:
+                c.fail("the SVG's embedded content hash is not the recorded one")
         if (w, h) != (out["width"], out["height"]):
             c.fail(f"size {w}x{h}, recorded {out['width']}x{out['height']}"); return c
         if png.pixels_sha256(w, h, rgba) != out["content_sha256"]:
-            _, _, mine = png.decode(again.data)
+            mine = svgmod.decode(again.data)[2] if is_svg else png.decode(again.data)[2]
             n, first = _pixel_diff(w, h, mine, rgba)
             c.fail(f"{n} pixel(s) differ from what the recipe produces (first at x={first[0]}, y={first[1]})" if n else "pixel hash mismatch")
         allowed = {tuple(int(e["palette"][i][k:k + 2], 16) for k in (1, 3, 5)) for i in range(len(e["palette"]))}

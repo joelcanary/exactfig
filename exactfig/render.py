@@ -38,6 +38,7 @@ from .forge import describe
 from .pixel import anim
 from .pixel import palette as palettes
 from .pixel import png
+from .pixel import svg as svgmod
 
 RECIPE_KEYS = {"generator", "seed", "palette", "size", "scale", "params", "output", "input", "layers"}
 LAYER_KEYS = {"generator", "seed", "params", "input", "blend"}
@@ -237,7 +238,7 @@ class Rendered:
 
 
 MAX_SIMULATION_WORK = 400_000_000      # cells × generations a simulation may compute (a few minutes in pure Python)
-OUTPUT_EXTENSIONS = {"image": (".png",), "animation": (".gif", ".png", ".apng"), "midi": (".mid", ".midi")}
+OUTPUT_EXTENSIONS = {"image": (".png", ".svg"), "animation": (".gif", ".png", ".apng"), "midi": (".mid", ".midi")}
 
 
 def load_recipe(path: str) -> dict:
@@ -293,6 +294,11 @@ def container_of(output: str | None) -> str:
     raise ValueError(f"an animation is written as .gif or .png (APNG), not {ext}")
 
 
+def image_container(output: str | None) -> str:
+    """Image container from the output name: .png (default) or .svg (the same pixels, with the provenance inside)."""
+    return "svg" if os.path.splitext(output or "")[1].lower() == ".svg" else "png"
+
+
 def render(recipe: dict, base: str = ".", container: str | None = None) -> Rendered:
     """Run a recipe. Input files are read from `base` (the manifest folder when recording) and must match their sha256."""
     r = normalize(recipe, base)
@@ -316,8 +322,15 @@ def render(recipe: dict, base: str = ".", container: str | None = None) -> Rende
         raise AssertionError(f"{gen.name} drew {out.w}x{out.h}, asked {w}x{h}")
     cv = out.scaled(r["scale"])
     rgba = cv.to_rgba()
-    return Rendered("image", cv.to_png(), png.pixels_sha256(cv.w, cv.h, rgba), cv.w, cv.h, list(pal.hex), inputs,
-                    alt=alt)
+    content = png.pixels_sha256(cv.w, cv.h, rgba)
+    if (container or image_container(recipe.get("output"))) == "svg":
+        from . import __version__
+        meta = {"recipe": r, "recipe_sha256": sha256(canonical(r)), "generator": identity(r),
+                "tool": {"name": "exactfig", "version": __version__}, "content_sha256": content,
+                "inputs": [{"path": i["path"], "sha256": i["sha256"]} for i in (inputs or [])]}
+        data = svgmod.encode(out.w, out.h, out.px, list(pal.hex), r["scale"], alt, meta)
+        return Rendered("image", data, content, cv.w, cv.h, list(pal.hex), inputs, alt=alt)
+    return Rendered("image", cv.to_png(), content, cv.w, cv.h, list(pal.hex), inputs, alt=alt)
 
 
 def _animation(gen, r, frames, pal, w, h, inputs, container) -> Rendered:

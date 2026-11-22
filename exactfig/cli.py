@@ -287,7 +287,12 @@ def _cvd(manifest: str, minimum: float, share: float, as_json: bool) -> int:
         if e.get("kind") != "image":
             continue
         with open(os.path.join(base, rel), "rb") as fh:
-            w, h, rgba = pngmod.decode(fh.read())
+            raw = fh.read()
+        if rel.lower().endswith(".svg"):
+            from .pixel import svg as svgmod
+            w, h, rgba = svgmod.decode(raw)[:3]
+        else:
+            w, h, rgba = pngmod.decode(raw)
         counts = {}
         for i in range(0, len(rgba), 4):
             if rgba[i + 3]:

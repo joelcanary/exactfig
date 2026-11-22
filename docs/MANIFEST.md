@@ -120,6 +120,9 @@ Limits: 64 MiB per file, 4096 × 4096 cells, 200 000 points (20 000 for the tria
 10. `alt` (entries recorded from 0.10.0 on): the alternative text the re-run writes equals the recorded one (else:
     warning; failure with `--strict`). It is written by `exactfig/forge/describe.py` after the generator has drawn, so
     for a data generator it states only what its checks established.
+11. SVG outputs (from 0.13.0): the file decodes under the strict exactfig SVG reader (anything it did not write is
+    refused), its pixels are compared as for a PNG, and the provenance in its `<metadata>` must carry this entry's
+    `recipe_sha256`, generator identity and `content_sha256`.
 
 Exit code 0 when everything passes, 1 when an entry fails, 2 when the manifest or an input is refused (named in one line), 3 for an internal error; `--json` gives a machine report.
 

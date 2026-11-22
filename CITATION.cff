@@ -6,7 +6,7 @@ authors:
   - family-names: "Cruz Cabrera"
     given-names: "Joel"
     alias: "joelcanary"
-version: "0.12.0"
+version: "0.13.0"
 license: Apache-2.0
 date-released: "2026-11-22"
 repository-code: "https://github.com/joelcanary/exactfig"

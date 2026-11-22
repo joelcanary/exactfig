@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.13.0 (2026-11-22)
+
+- **SVG output, with the provenance inside.** An image recipe whose `output` ends in `.svg` is written as SVG: the same
+  pixels as the PNG (one `<path>` of merged rectangles per colour, `crispEdges`, the scale in the `viewBox`), so it
+  decodes to exactly the PNG's RGBA and `content_sha256`; the exact alternative text as `<title>` and `<desc>`; and in
+  `<metadata>` (`exactfig.svg/1`) the normal-form recipe and its SHA-256, the generator identity, the exactfig version,
+  every input's SHA-256 and the content hash. `verify` decodes it with a strict reader that accepts only what exactfig
+  writes and refuses an SVG whose embedded provenance is not the manifest's; `exactfig cvd` and `exactfig crate`
+  read SVG too (`image/svg+xml`). Gallery: `mod3-circuit.svg`. Tested: the same pixels as the PNG for five gallery
+  recipes (data, fractal, transparency, scale > 1), well-formed XML, record and `verify --strict`, and refusal of a
+  changed colour, a changed recipe hash, an added element, overlapping and out-of-bounds rectangles.
+
 ## 0.12.0 (2026-11-22)
 
 - **Ramp `cat`** in the `sci` palette: the seven categorical colours of Okabe and Ito (2008), without black, added at

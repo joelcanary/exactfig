@@ -539,6 +539,16 @@ comparison: *"[…] 4 true positives, 2 false positives, 2 false negatives, pano
 `--strict` fails, when the text this version writes differs from the recorded one; the RO-Crate uses it as each file's
 description.
 
+**SVG, with the provenance inside.** A recipe whose `output` ends in `.svg` is written as SVG instead of PNG: the same
+pixels (each colour one `<path>` of rectangles, `crispEdges`, scaled by the `viewBox`, so it stays sharp at any size and
+decodes to exactly the PNG's pixels and `content_sha256`), with the exact alternative text as `<title>` and `<desc>`, and
+in `<metadata>` the normal-form recipe and its SHA-256, the generator's name, version and source hash, the exactfig
+version and every input file's SHA-256. A reader who has only the file has what it takes to re-make it. `verify`
+decodes it, compares the pixels and refuses an SVG whose embedded provenance is not the manifest's; the decoder accepts
+only what exactfig writes, so an element added by hand or a changed colour fails. The gallery's
+[`mod3-circuit.svg`](gallery/mod3-circuit.svg) is the circuit above, as SVG. An SVG of a raster figure is larger than its
+PNG (about ten to twenty times): it is for print, slides and pages that zoom, not for saving bytes.
+
 **Colour-blind readers.** `python -m exactfig cvd --manifest gallery/manifest.json` simulates protanopia, deuteranopia
 and tritanopia (Machado, Oliveira and Fernandes 2009, full severity, in linear sRGB) on the colours each recorded image
 actually uses, and reports for each vision the closest pair (OKLab distance; about 0.02 is barely visible, 0.1 clear)
@@ -632,7 +642,7 @@ exactfig/
                  triangles, b-files, Pratt certificates, LRAT proofs, circuits), field (sampling, hill-shading,
                  marching squares), scatter (exact Delaunay)
   pixel/         pxmath (dithering, noise, Worley, automata, fractals, Bézier, Bresenham, SDFs, Poisson disc), palettes
-                 (OKLab), palette-locked quantisation, Canvas of palette indices, PNG and GIF/APNG writers and readers
+                 (OKLab), palette-locked quantisation, Canvas of palette indices, PNG, SVG and GIF/APNG writers and readers
   forge/         generators: datavis (data.field, data.scatter, data.image), catalog, coloring, refutation, instances,
                  sequence, triangle, pratt, circuit, circuit_refutation, sandpile (the data.* that check before they
                  draw), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites;

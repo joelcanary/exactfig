@@ -41,7 +41,7 @@ PROFILE = "https://w3id.org/ro/wfrun/process/0.6"
 CONTEXT = [RO_CRATE + "/context", "https://w3id.org/ro/terms/workflow-run/context"]
 HOME = "https://github.com/joelcanary/exactfig"
 METADATA = "ro-crate-metadata.json"
-MIME = {".png": "image/png", ".gif": "image/gif", ".apng": "image/apng", ".mid": "audio/midi", ".json": "application/json",
+MIME = {".png": "image/png", ".svg": "image/svg+xml", ".gif": "image/gif", ".apng": "image/apng", ".mid": "audio/midi", ".json": "application/json",
         ".csv": "text/csv", ".npy": "application/octet-stream", ".pgm": "image/x-portable-graymap",
         ".ppm": "image/x-portable-pixmap"}
 SPDX = re.compile(r"[A-Za-z0-9][A-Za-z0-9.+-]{0,63}\Z")
