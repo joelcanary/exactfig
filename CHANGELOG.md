@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.14.1 (2026-11-23)
+
+- **Security: animations from outside are read defensively.** Found by fuzzing the decoders (random mutations of the
+  gallery's files). The GIF reader allocated the canvas its header declared before checking anything (65535 × 65535
+  pixels: 17 GB), and neither the GIF nor the APNG reader checked that a frame lies inside the canvas, that a colour
+  table exists and covers the indices used, or that the data is not truncated; the APNG reader inflated frame data
+  without a limit (a "zip bomb" of a few kilobytes could inflate to gigabytes). `verify` reads files it did not write,
+  so a crafted GIF or APNG could exhaust the memory of the machine checking it. Now the readers refuse, with a
+  ValueError and before allocating, a canvas or a total (canvas × frames) above the renderer's own cap of 64 million
+  pixels, more than 1000 frames, a frame outside the canvas, a missing or short colour table, data that inflates past
+  its frame and any truncated structure; and `verify` decodes PNG and animations with the size the manifest recorded as
+  the limit. No output changes; generator code hashes do, so the gallery is recorded again. Tests: a 65535 × 65535 GIF
+  refused in under a second, a frame outside the canvas, a GIF without colour table, every truncation of a GIF and an
+  APNG, an APNG zip bomb and a huge APNG canvas, the caller's limit, and the decoder's cap equal to the renderer's.
+
 ## 0.14.0 (2026-11-22)
 
 - **`data.bounds`: tables of exact values and bounds, checked.** A new data format (`bounds`: labelled rows of cells,

@@ -197,7 +197,7 @@ def verify_entry(rel: str, e: dict, base: str, strict: bool = False) -> Check:
             if is_svg:
                 w, h, rgba, meta, _ = svgmod.decode(data)
             else:
-                w, h, rgba = png.decode(data)
+                w, h, rgba = png.decode(data, out["width"] * out["height"])   # never more than recorded
         except Exception as ex:   # noqa: BLE001  (un fichero ajeno o roto: es un fallo, no un error del programa)
             c.fail(f"cannot read the {'SVG' if is_svg else 'PNG'}: {ex}"); return c
         if is_svg:                                   # the provenance inside the file must be the manifest's
@@ -240,7 +240,7 @@ def _palette_problems(e, rgba) -> list:
 
 def _verify_animation(c, e, out, data, again):
     try:
-        w, h, frames = anim.decode(data)
+        w, h, frames = anim.decode(data, out["width"] * out["height"])   # never more than recorded
     except Exception as ex:   # noqa: BLE001  (un fichero ajeno o roto: es un fallo, no un error del programa)
         c.fail(f"cannot read the animation: {ex}"); return
     if (w, h, len(frames)) != (out["width"], out["height"], out["frames"]):

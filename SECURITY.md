@@ -21,7 +21,8 @@ image data past the parameter schemas, a manifest edit that goes undetected, a p
 `data.circuit_refutation`, `data.pratt`) accepted for a claim it does not prove, or an RO-Crate (`exactfig crate`) that
 describes files other than the recorded ones; crashes, hangs or resource exhaustion when reading untrusted recipes,
 manifests or input files (CSV, NPY, PGM/PPM, PNG, JSON, catalogues, colourings, instance masks, triangles, b-files,
-Pratt certificates, LRAT proofs, circuits).
+Pratt certificates, LRAT proofs, circuits, tables of bounds), or the recorded outputs `verify` reads (PNG, SVG, GIF,
+APNG; the decoders refuse sizes above the manifest's and the renderer's limits, see 0.14.1).
 
 `verify` reads files from the manifest folder only and never executes code from recipes, manifests or data: generators
 are looked up in the built-in registry by name, and input files are parsed as data, never evaluated.

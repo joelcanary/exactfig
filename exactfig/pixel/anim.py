@@ -12,6 +12,11 @@ table; PNG PLTE). Frames are full-size and replace the previous one, so any view
                 depend on the container: the same frames give the same hash as GIF or as APNG.
 
 As with still images, `verify` compares decoded pixels; the file hash is informative unless --strict.
+
+Reading is defensive: a file from outside may declare any size. `decode` refuses, with a ValueError and before allocating,
+a canvas or a total (canvas × frames) above `MAX_PIXELS` (the renderer's own cap) or above the `max_pixels` the caller
+expects, more than `MAX_FRAMES` frames, a frame rectangle outside the canvas, a missing or short colour table, compressed
+data that inflates past the frame it belongs to, and any truncated structure.
 """
 from __future__ import annotations
 
@@ -22,6 +27,23 @@ import zlib
 from . import png
 
 MAX_FRAMES = 1000
+MAX_PIXELS = 64_000_000       # canvas pixels × frames; the same cap as render.MAX_ANIMATION_PIXELS
+
+
+def _check_canvas(w, h, max_pixels):
+    if not w or not h:
+        raise ValueError("an animation of zero width or height")
+    cap = MAX_PIXELS if max_pixels is None else min(max_pixels, MAX_PIXELS)
+    if w * h > cap:
+        raise ValueError(f"an animation of {w}x{h} pixels is more than the {cap}-pixel limit")
+
+
+def _check_frame(k, x0, y0, fw, fh, w, h):
+    """Frame k (from 0) must lie inside the canvas, and k + 1 frames must stay within MAX_FRAMES and MAX_PIXELS."""
+    if not fw or not fh or x0 + fw > w or y0 + fh > h:
+        raise ValueError(f"frame {k}: a {fw}x{fh} rectangle at ({x0}, {y0}) is not inside the {w}x{h} canvas")
+    if k + 1 > MAX_FRAMES or (k + 1) * w * h > MAX_PIXELS:
+        raise ValueError(f"more than {MAX_FRAMES} frames or {MAX_PIXELS} pixels in all")
 
 
 # ------------------------------------------------------------------------------------------------ canonical hash
@@ -168,10 +190,11 @@ def encode_gif(w: int, h: int, frames: list[tuple[int, list[int | None]]], palet
     return bytes(out)
 
 
-def _decode_gif(data: bytes):
+def _decode_gif(data: bytes, max_pixels=None):
     if data[:6] not in (b"GIF87a", b"GIF89a"):
         raise ValueError("not a GIF file")
     w, h, flags, bg, _ = struct.unpack("<HHBBB", data[6:13])
+    _check_canvas(w, h, max_pixels)
     p = 13
     gct = None
     if flags & 0x80:
@@ -202,11 +225,14 @@ def _decode_gif(data: bytes):
             raise ValueError("GIF: unexpected block")
         x0, y0, fw, fh, fl = struct.unpack("<HHHHB", data[p + 1:p + 10])
         p += 10
+        _check_frame(len(frames), x0, y0, fw, fh, w, h)
         ct = gct
         if fl & 0x80:
             n = 2 << (fl & 7)
             ct = data[p:p + 3 * n]
             p += 3 * n
+        if ct is None or len(ct) % 3 or not ct:
+            raise ValueError("GIF: a frame without a colour table")
         if fl & 0x40:
             raise ValueError("GIF: interlaced frames are not supported")
         min_size = data[p]
@@ -217,6 +243,8 @@ def _decode_gif(data: bytes):
             p += 1 + data[p]
         p += 1
         idx = _lzw_decode(bytes(body), min_size, fw * fh)
+        if len(idx) < fw * fh or max(idx, default=0) * 3 + 3 > len(ct):
+            raise ValueError("GIF: frame data shorter than the frame, or a colour index beyond its table")
         before = bytes(canvas)
         for j in range(fh):
             for i in range(fw):
@@ -273,7 +301,7 @@ def encode_apng(w: int, h: int, frames: list[tuple[int, list[int | None]]], pale
     return out + png._chunk(b"IEND", b"")
 
 
-def _decode_apng(data: bytes):
+def _decode_apng(data: bytes, max_pixels=None):
     if data[:8] != png.SIG:
         raise ValueError("not a PNG file")
     p = 8
@@ -290,6 +318,7 @@ def _decode_apng(data: bytes):
             w, h, depth, ctype, _, _, inter = struct.unpack(">IIBBBBB", body)
             if depth != 8 or ctype != 3 or inter:
                 raise ValueError("APNG: only 8-bit indexed, non-interlaced frames are read")
+            _check_canvas(w, h, max_pixels)
         elif kind == b"acTL":
             actl = True
         elif kind == b"PLTE":
@@ -307,11 +336,19 @@ def _decode_apng(data: bytes):
             break
     if not actl or not frames_meta:
         raise ValueError("not an animated PNG (no acTL / fcTL)")
+    if w is None or plte is None or not plte or len(plte) % 3:
+        raise ValueError("APNG: no IHDR or no valid PLTE")
     canvas = bytearray(w * h * 4)
     out = []
-    for (seq, fw, fh, x0, y0, dn, dd, dispose, blend), z in frames_meta:
-        raw = zlib.decompress(bytes(z))
+    for k, ((seq, fw, fh, x0, y0, dn, dd, dispose, blend), z) in enumerate(frames_meta):
+        _check_frame(k, x0, y0, fw, fh, w, h)
+        need = fh * (fw + 1)
+        raw = zlib.decompressobj().decompress(bytes(z), need + 1)     # never inflate past the frame
+        if len(raw) != need:
+            raise ValueError(f"APNG: frame {k} has {len(raw)} bytes of image data, {need} expected")
         rows = png._unfilter(raw, fw, fh, 1)
+        if max((max(line, default=0) for line in rows), default=0) * 3 + 3 > len(plte):
+            raise ValueError(f"APNG: frame {k} uses a colour index beyond its {len(plte) // 3}-colour palette")
         before = bytes(canvas)
         for j, line in enumerate(rows):
             for i, c in enumerate(line):
@@ -331,8 +368,14 @@ def _decode_apng(data: bytes):
     return w, h, out
 
 
-def decode(data: bytes):
-    """GIF or APNG bytes → (w, h, [(delay_ms, RGBA8), …])."""
-    if data[:3] == b"GIF":
-        return _decode_gif(data)
-    return _decode_apng(data)
+def decode(data: bytes, max_pixels: int | None = None):
+    """GIF or APNG bytes → (w, h, [(delay_ms, RGBA8), …]). `max_pixels` caps the canvas (e.g. the size a manifest
+    recorded); a damaged, truncated or oversized file raises ValueError, never another exception."""
+    try:
+        if data[:3] == b"GIF":
+            return _decode_gif(data, max_pixels)
+        return _decode_apng(data, max_pixels)
+    except ValueError:
+        raise
+    except (IndexError, KeyError, TypeError, struct.error, zlib.error) as ex:
+        raise ValueError(f"damaged animation ({type(ex).__name__}: {ex})") from None
