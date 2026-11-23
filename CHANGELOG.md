@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.15.0 (2026-11-23)
+
+- **New generator `data.enclosures`: certified enclosures, checked exactly.** A computer-assisted proof often knows a
+  number only inside a ball |z − c| ≤ r (a Krawczyk test, a validated quadrature) and needs only that the ball misses 0.
+  The new format `enclosures` gives one ball per line (`label, re, im, radius`, exact decimals read as fractions, never
+  rounded; exponents beyond ±1000 and numbers of more than 4000 digits are refused). Before drawing, exactfig refuses a
+  ball that contains 0, a ball that misses 0 by fewer than `min_digits` digits, a bound on |z| that a caption quotes
+  (`claims`) and that some value in the ball breaks, and a ball that is not within a tolerance of a published value
+  (`agrees`). The figure draws each ball as a bar on a log10 axis from its radius to the distance of its centre from 0,
+  with the number of digits it misses 0 by.
+- **Gallery:** the residue functionals of six families of curves from two unrefereed preprints on the Hodge conjecture
+  for Fermat varieties (Peterson, degree 35; Bhattacharjee, degrees 44, 51 and 52), recomputed independently with
+  interval arithmetic, with the lower bounds and published values they are quoted with. Tests: decimals read exactly,
+  the digits by brute force, the gallery against the papers recomputed with the decimal module, every refusal; five new
+  misuse cases.
+
 ## 0.14.2 (2026-11-23)
 
 Quality release, driven by a line-coverage run (the test suite and the misuse bench in one process: 91.8 % of the

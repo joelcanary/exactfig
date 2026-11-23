@@ -56,6 +56,8 @@ SMALL = {
                       "params": {"new_from": 11}},
     "data.bounds": {"palette": "sci", "size": [170, 64], "input": {"path": "data/vdw-numbers.bounds", "format": "bounds"},
                     "params": {"exact": 7, "monotone": "both", "text_size": 1}},
+    "data.enclosures": {"palette": "sci", "size": [200, 84], "input": {"path": "data/hodge-residues.enclosures",
+                        "format": "enclosures"}, "params": {"rows": 6, "text_size": 1}},
     "math.sandpile": {"palette": "sci", "size": [16, 16], "params": {"n": 8}},
     "data.pratt": {"palette": "sci", "size": [40, 20], "input": {"path": "data/pratt-m127.txt", "format": "pratt"},
                    "params": {"primes": 19}},
@@ -74,7 +76,7 @@ DATA = os.path.join(os.path.abspath(ROOT), "gallery")   # input paths of the dat
 SEEDLESS = ("forge.icon.gem", "forge.fractal.julia", "data.field", "data.scatter", "anim.wave", "anim.lorenz", "anim.diffuse",
             "anim.frames", "compose", "draw.annotate", "math.domain", "math.logistic", "math.ulam", "math.modmult",
             "data.image", "math.fourier", "anim.epicycles", "data.catalog", "data.coloring", "data.instances",
-            "data.triangle", "data.sequence", "data.bounds", "math.sandpile", "data.pratt", "data.refutation",
+            "data.triangle", "data.sequence", "data.bounds", "data.enclosures", "math.sandpile", "data.pratt", "data.refutation",
             "data.circuit", "data.circuit_refutation")   # the output does not depend on the seed
 
 

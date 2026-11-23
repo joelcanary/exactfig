@@ -135,6 +135,12 @@ def cases():
     yield "bounds caption the table contradicts", {"r.json": j(dict(bnd, params={"claims": "3,3:10"})), "t.txt": "R,3\n3,9\n"}, ["render", "r.json"]
     yield "bounds table not symmetric", {"r.json": j(dict(bnd, params={"symmetric": True})), "t.txt": "R,3,4\n3,6,9\n4,8,18\n"}, ["render", "r.json"]
     yield "bounds table too large for the picture", {"r.json": j(dict(bnd, size=[8, 8])), "t.txt": "R,3\n3,9\n"}, ["render", "r.json"]
+    enc = {"generator": "data.enclosures", "seed": "x", "palette": "sci", "size": [200, 60], "input": {"path": "e.txt", "format": "enclosures"}, "params": {"legend": False}, "output": "e.png"}
+    yield "enclosure that contains 0", {"r.json": j(enc), "e.txt": "A, 1e-3, 0, 2e-3\n"}, ["render", "r.json"]
+    yield "enclosure bound the ball does not prove", {"r.json": j(dict(enc, params={"legend": False, "claims": "A:>=5"})), "e.txt": "A, 3, 4, 1e-6\n"}, ["render", "r.json"]
+    yield "enclosure far from the published value", {"r.json": j(dict(enc, params={"legend": False, "agrees": "A:3,4.1,1e-3"})), "e.txt": "A, 3, 4, 1e-6\n"}, ["render", "r.json"]
+    yield "enclosure with a zero radius", {"r.json": j(enc), "e.txt": "A, 3, 4, 0\n"}, ["render", "r.json"]
+    yield "enclosure with a huge exponent", {"r.json": j(enc), "e.txt": "A, 3, 4, 1e-99999999\n"}, ["render", "r.json"]
     trir = {"generator": "data.triangle", "seed": "x", "palette": "sci", "size": [40, 20], "input": {"path": "t.txt", "format": "triangles"}, "output": "t.png"}
     yield "triangle that is not right", {"r.json": j(trir), "t.txt": "6 3 4 6\n"}, ["render", "r.json"]
     yield "triangle with decimals", {"r.json": j(trir), "t.txt": "5 1.5 6.666 6.833\n"}, ["render", "r.json"]

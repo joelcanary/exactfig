@@ -56,6 +56,10 @@ Two shapes of data, each from several standard formats, all read with the standa
                                  first row is a corner label and the column labels, every other row a row label and its
                                  cells; a cell is an integer `9`, a bound `>170`, `>=171`, `<46`, `<=45` (`≥`, `≤` too), a
                                  range `43..46`, `?` (unknown) or `-` / empty (no such entry); `#` starts a comment
+  enclosures  certified balls |z − c| ≤ r around values computed with interval arithmetic
+            enclosures (any extension, `format` must say so)  one ball per line, `label, re, im, radius`, separated by
+                                 commas, semicolons or tabs; the numbers are exact decimals (`-6.7688`, `3.88e-46`), read
+                                 as fractions; the radius is positive; `#` starts a comment
 
 The reader is chosen by `format` or else by the file extension. A file is data, never code: nothing is evaluated, object
 arrays are refused, and sizes are capped (`MAX_CELLS`, `MAX_POINTS`, `MAX_BYTES`).
@@ -75,6 +79,7 @@ import struct
 from dataclasses import dataclass
 
 from ..forge import bounds as _bounds
+from ..forge import enclosures as _enclosures
 
 MAX_BYTES = 64 * 1024 * 1024
 MAX_CELLS = 4096 * 4096
@@ -93,6 +98,8 @@ PRIME_FORMATS = ("pratt",)
 PROOF_FORMATS = ("lrat",)
 CIRCUIT_FORMATS = ("circuit",)
 BOUNDS_FORMATS = ("bounds",)
+ENCLOSURE_FORMATS = ("enclosures",)
+MAX_ENCLOSURES = 256
 MAX_TABLE_SIDE = 64
 MAX_LABEL = 16
 MAX_GATES = 100_000
@@ -106,7 +113,7 @@ FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMAT
            "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS, "instances": INSTANCE_FORMATS,
            "triangles": TRIANGLE_FORMATS, "sequence": SEQUENCE_FORMATS, "primes": PRIME_FORMATS,
            "proof": PROOF_FORMATS, "circuit": CIRCUIT_FORMATS,
-           "bounds": BOUNDS_FORMATS}
+           "bounds": BOUNDS_FORMATS, "enclosures": ENCLOSURE_FORMATS}
 MAX_INSTANCE_PIXELS = 2048 * 2048
 MAX_INSTANCES = 10_000
 MAX_COLORING = 5000
@@ -1079,6 +1086,46 @@ def read_bounds(path: str) -> Bounds:
     return Bounds(corner, cols, out)
 
 
+@dataclass
+class Enclosures:
+    """Certified balls: rows (label, re, im, radius) of exact fractions; the true value lies within radius of re + im·i."""
+    rows: list
+
+    def __len__(self):
+        return len(self.rows)
+
+    def describe(self) -> dict:
+        return {"enclosures": len(self.rows)}
+
+
+def read_enclosures(path: str) -> Enclosures:
+    """Certified balls (see the module): `label, re, im, radius` per line, exact decimals, a positive radius."""
+    rows = _table(read_text(path))
+    if not rows:
+        raise DataError(f"{path}: no enclosures")
+    if len(rows) > MAX_ENCLOSURES:
+        raise DataError(f"{path}: more than {MAX_ENCLOSURES} enclosures")
+    out = []
+    for n, toks in rows:
+        where = f"{path}, line {n}"
+        if len(toks) != 4:
+            raise DataError(f"{where}: {len(toks)} fields; write label, re, im, radius")
+        lab = toks[0]
+        if not lab or len(lab) > MAX_LABEL or ":" in lab:
+            raise DataError(f"{where}: the label must have 1 to {MAX_LABEL} characters and no ':'")
+        try:
+            re_, im, r = (_enclosures.parse_decimal(t) for t in toks[1:])
+        except ValueError as e:
+            raise DataError(f"{where}: {e}") from None
+        if r <= 0:
+            raise DataError(f"{where}: the radius must be positive (an exact value is a ball of positive radius too)")
+        out.append((lab, re_, im, r))
+    labels = [r[0] for r in out]
+    if len(set(labels)) != len(labels):
+        raise DataError(f"{path}: two enclosures have the same label")
+    return Enclosures(out)
+
+
 def load(path: str, shape: str, fmt: str | None = None):
     """Read `path` as a `grid`, `points`, `frames`, an `image` or `patterns`."""
     f = format_of(path, fmt)
@@ -1108,6 +1155,8 @@ def load(path: str, shape: str, fmt: str | None = None):
         readers = {"circuit": read_circuit}
     elif shape == "bounds":
         readers = {"bounds": read_bounds}
+    elif shape == "enclosures":
+        readers = {"enclosures": read_enclosures}
     else:
         raise AssertionError(shape)
     if f not in readers:

@@ -15,6 +15,7 @@ those checks as facts. `text` is called after the generator has drawn; it never 
   data.instances           the masks; in compare mode TP, FP, FN and the exact panoptic quality
   data.sequence            the indices, the scale, the largest term, the new terms checked
   data.bounds              the shape, the cells by kind, what was checked (order, symmetry, the stated cells)
+  data.enclosures          the number of balls, the digits by which they miss 0, what was checked
   data.triangle            the areas, squarefree or not, a² + b² = c² and a·b/2 = n checked
   math.sandpile            the grid, the checks on the identity, the group order if stated
   anything else            the generator's own summary, its name and the picture's size
@@ -194,7 +195,26 @@ def _bounds(p, data, w, h):
             f"cell shows its value and is coloured by its kind. Checked before drawing: {', '.join(checks)}.")
 
 
-DESCRIBE = {"data.bounds": _bounds, "data.catalog": _catalog, "data.instances": _instances, "data.sequence": _sequence,
+def _enclosures(p, data, w, h):
+    from .enclosures import check, parse_agrees, parse_claims
+    rows = check(data.rows, p)
+    lo = min(rows, key=lambda r: r[3])
+    checks = ["every ball excludes 0"]
+    if p["min_digits"]:
+        checks.append(f"by at least {p['min_digits']} digits")
+    claims = parse_claims(p["claims"])
+    if claims:
+        checks.append(f"{len(claims)} stated bound{'s' if len(claims) != 1 else ''} on |z|, for every value in the ball")
+    agrees = parse_agrees(p["agrees"])
+    if agrees:
+        checks.append(f"agreement with {len(agrees)} published value{'s' if len(agrees) != 1 else ''} within the stated "
+                      f"tolerance")
+    return (f"{len(rows)} certified enclosures |z − c| ≤ r on a logarithmic axis: for each, a bar from the radius r to "
+            f"the distance |c| of the centre from 0, and the number of decimal digits by which the ball misses 0 (from "
+            f"{lo[3]} for {lo[0]} to {max(r[3] for r in rows)}). Checked exactly before drawing: {', '.join(checks)}.")
+
+
+DESCRIBE = {"data.bounds": _bounds, "data.enclosures": _enclosures, "data.catalog": _catalog, "data.instances": _instances, "data.sequence": _sequence,
             "data.triangle": _triangles, "math.sandpile": _sandpile, "data.pratt": _pratt, "data.circuit": _circuit, "data.circuit_refutation": _circuit_refutation,
             "data.refutation": _refutation, "data.coloring": _coloring}
 

@@ -166,7 +166,7 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import (annotate, bounds, catalog, circuit, circuit_refutation, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
+    from .forge import (annotate, bounds, catalog, enclosures, circuit, circuit_refutation, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
                         refutation, sandpile, sequence, skies, sprites, tiles, triangle)
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
@@ -473,6 +473,23 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/bounds.py", "forge/annotate.py"),
             "a table of exact values and bounds (Ramsey, van der Waerden numbers…), checked first: ranges non-empty, "
             "stated cells, order and symmetry", (320, 200), 2048, data="bounds"),
+        Generator("data.enclosures", "1", "image", enclosures.enclosures, {
+            "rows": P("int", 0, 0, 256, doc="number of enclosures; 0 = any"),
+            "min_digits": P("int", 0, 0, 10000, doc="every ball misses 0 by at least this many decimal digits: "
+                                                   "|c| ≥ 10^d · r"),
+            "claims": P("text", "", maxlen=4000, doc="bounds on |z| the caption quotes, label:>=v or label:<=v separated "
+                                                     "by ';', each checked for every z in the ball"),
+            "agrees": P("text", "", maxlen=4000, doc="published values each ball must lie near, label:re,im,tol "
+                                                     "separated by ';' (|z − ref| ≤ tol for every z in the ball)"),
+            "text_size": P("int", 2, 1, 4, doc="pixel scale of the 3×5 font"),
+            "legend": P("bool", True, doc="a legend of the two marks under the axis"),
+            "ramp": P("str", "seq", choices=DATA_RAMPS, doc="the bar (middle step) and the centre mark (last step)"),
+            "grid_ramp": P("str", "grey", choices=DATA_RAMPS, doc="the powers of ten (the middle step)"),
+            "label_ramp": P("str", "paper", choices=DATA_RAMPS, doc="labels, the radius mark and the legend"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/enclosures.py", "forge/annotate.py", "forge/sequence.py"),
+            "certified enclosures (interval arithmetic) on a log10 axis, each ball checked exactly to exclude 0, "
+            "with the bounds and published values it is quoted with", (360, 120), 2048, data="enclosures"),
         Generator("math.sandpile", "1", "image", sandpile.sandpile, {
             "n": P("int", 64, 1, 160, doc="side of the grid; the border leaks to a sink"),
             "order": P("text", "", maxlen=400, doc="stated order of the sandpile group (checked for n ≤ 14)"),
