@@ -114,6 +114,34 @@ class ExactFacts(unittest.TestCase):
         self.assertEqual(F.atan2(1.0, 0.0), math.pi / 2)
         self.assertEqual(F.atan2(-1.0, 0.0), -math.pi / 2)
 
+    def test_special_values(self):
+        """NaN, infinities, signed zeros, overflow and underflow: the values C99 Annex F fixes."""
+        nan, inf = math.nan, math.inf
+        self.assertTrue(math.isnan(F.atan(nan)) and math.isnan(F.exp(nan)))
+        self.assertTrue(math.isnan(F.atan2(nan, 1.0)) and math.isnan(F.atan2(1.0, nan)))
+        for x in (0.0, -0.0, 1e-300, -1e-300):              # atan x = x for tiny x, the sign of zero kept
+            self.assertEqual(F.atan(x), x)
+            self.assertEqual(math.copysign(1.0, F.atan(x)), math.copysign(1.0, x))
+        for x in (1e30, -1e30, inf, -inf):                  # beyond 2^66 atan is ±π/2 to the last bit
+            self.assertEqual(F.atan(x), math.copysign(math.pi / 2, x))
+        for y, x in ((inf, inf), (inf, -inf), (-inf, inf), (-inf, -inf), (1.0, inf), (1.0, -inf), (-1.0, -inf),
+                     (inf, 1.0), (-inf, -1.0)):
+            self.assertEqual(F.atan2(y, x), math.atan2(y, x), (y, x))
+        self.assertEqual(F.exp(710.0), inf)
+        self.assertEqual(F.exp(-746.0), 0.0)
+        self.assertEqual(F.exp(1e-30), 1.0)
+        self.assertEqual(F.pow(0.0, 2.5), 0.0)
+        self.assertEqual(F.pow(0.0, -2.5), inf)
+        self.assertEqual(F.pow(5.0, 0.0), 1.0)
+        self.assertEqual(F.pow(1.0, 123.456), 1.0)
+        # integer exponents that end in a zero denominator: ±inf as C99 says, never a ZeroDivisionError
+        self.assertEqual(F.pow(0.0, -1.0), inf)
+        self.assertEqual(F.pow(-0.0, -1.0), -inf)
+        self.assertEqual(F.pow(-0.0, -2.0), inf)
+        self.assertEqual(F.pow(1e-200, -2.0), inf)              # 1e-400 underflows to 0 before the division
+        self.assertEqual(F.pow(-1e-200, -3.0), -inf)
+        self.assertEqual(F.pow(1e200, -2.0), 0.0)
+
     def test_domain_errors_are_explicit(self):
         with self.assertRaises(ValueError):
             F.log(0.0)

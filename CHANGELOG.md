@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.14.2 (2026-11-23)
+
+Quality release, driven by a line-coverage run (the test suite and the misuse bench in one process: 91.8 % of the
+package's lines) and by fuzzing.
+
+- **Fixed: `fmath.pow` with a negative integer exponent and a zero (or underflowing) power** raised ZeroDivisionError
+  (`pow(0.0, -1)`, `pow(1e-200, -2)`); it now returns ±inf, as C99 Annex F says and as the non-integer branch already
+  did. New test of the special values of `atan`, `atan2`, `exp` and `pow` (NaN, infinities, signed zeros, overflow,
+  underflow), which failed before the fix.
+- **Removed dead code:** six `Canvas` methods carried over from the first port (`star`, `mirror_x`, `mirror_y`,
+  `radial`, `clean_orphans`, `ascii`) that no generator and no test used. `polygon` now documents that the polygon is
+  closed (a pixel whose centre lies on an edge is filled).
+- **New tests:** `Canvas.polygon` and `ellipse` against cell counts computed independently (a square, a right triangle
+  with its hypotenuse, a concave L); `verify` refusing a broken palette lock (a foreign colour, a semi-transparent pixel)
+  and an unreadable animation, and its JSON report; the commands `list`, `palettes`, `alt`, `cvd`, `edit` and `palette`
+  when they succeed; the readers refusing malformed PGM, PPM, NPY and JSON files, and reading a .npy file of format
+  2.0 written byte by byte from the NumPy specification. Fuzzing `data.bounds` with 4000 random tables raised nothing
+  but the intended refusals. No output changes; the gallery is recorded again for the new code hashes.
+
 ## 0.14.1 (2026-11-23)
 
 - **Security: animations from outside are read defensively.** Found by fuzzing the decoders (random mutations of the

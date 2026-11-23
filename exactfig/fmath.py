@@ -302,7 +302,9 @@ def log2(x: float) -> float:
 
 
 def pow(x: float, y: float) -> float:
-    """x ** y for x > 0 (or any x with an integer y). Integer exponents up to 64 by repeated squaring."""
+    """x ** y for x > 0 (or any x with an integer y). Integer exponents up to 64 by repeated squaring. Special values
+    as C99 Annex F: x ** 0 = 1; 0 ** y = 0 for y > 0 and inf for y < 0; a negative exponent whose power underflows to
+    ±0 gives ±inf; a negative x with a non-integer y is a ValueError (not real)."""
     if y == 0.0:
         return 1.0
     if y == 0.5:
@@ -315,7 +317,10 @@ def pow(x: float, y: float) -> float:
                 acc *= b
             b *= b
             n >>= 1
-        return 1.0 / acc if y < 0 else acc
+        if y > 0:
+            return acc
+        # 0 ** −n (or an |x|^n that underflowed to ±0) is ±inf, as C99 says; 1.0 / 0.0 would raise in Python
+        return 1.0 / acc if acc != 0.0 else math.copysign(math.inf, acc)
     if x == 0.0:
         return 0.0 if y > 0 else math.inf
     if x < 0.0:

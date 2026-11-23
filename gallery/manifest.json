@@ -6,11 +6,11 @@
    "generator": {
     "name": "forge.tile.cave",
     "version": "1",
-    "code_sha256": "6d5aee3103176c0eb4e07153996b66809b0a244ce169f372638df1885a74a6c5"
+    "code_sha256": "517cfd890a998afa44fca232f43ac2be04a6780244e940330971d921635e5198"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.tile.cave",
@@ -92,11 +92,11 @@
    "generator": {
     "name": "data.triangle",
     "version": "1",
-    "code_sha256": "787e3c6c9f8d40c8d5a4b4ee109491f8ffc1e5910e81fb0f6539cf2b68df3e1a"
+    "code_sha256": "61dec69e3e996cfae8c41f9052a7e45dee02ea83ef61b1486f46c85741c27b4a"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.triangle",
@@ -212,11 +212,11 @@
    "generator": {
     "name": "data.image",
     "version": "1",
-    "code_sha256": "3c9ff4007604f76b319e53b12bf0c9abe2e3d60481cdcf2266de3dac19017074"
+    "code_sha256": "0c682ab61e922dea4518ef3d723cdd788363e8d73bf7e4bd43957f200a1960a1"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.image",
@@ -349,11 +349,11 @@
    "generator": {
     "name": "data.image",
     "version": "1",
-    "code_sha256": "3c9ff4007604f76b319e53b12bf0c9abe2e3d60481cdcf2266de3dac19017074"
+    "code_sha256": "0c682ab61e922dea4518ef3d723cdd788363e8d73bf7e4bd43957f200a1960a1"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.image",
@@ -428,11 +428,11 @@
    "generator": {
     "name": "data.image",
     "version": "1",
-    "code_sha256": "3c9ff4007604f76b319e53b12bf0c9abe2e3d60481cdcf2266de3dac19017074"
+    "code_sha256": "0c682ab61e922dea4518ef3d723cdd788363e8d73bf7e4bd43957f200a1960a1"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.image",
@@ -572,11 +572,11 @@
    "generator": {
     "name": "data.catalog",
     "version": "1",
-    "code_sha256": "cb101859ff8b6228d70038fb4398d7ff8c6d2bbe057d109f882d68832ea6c4c4"
+    "code_sha256": "fa833cd56cf7c16c1a4dac51abcd8294b2a8ac0e60698ba8bfb8d9d84170f067"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.catalog",
@@ -698,11 +698,11 @@
    "generator": {
     "name": "forge.sprite.critters",
     "version": "1",
-    "code_sha256": "2070a78a803701dcafee1ee9f3cac0d9c663b5bb896bd9c75b3b66416a212640"
+    "code_sha256": "ffeb3332db2d17be14163c9abdd5b2181fb381f9870ec2dee69c4852fa1a7cc4"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.sprite.critters",
@@ -790,11 +790,11 @@
    "generator": {
     "name": "anim.diffuse",
     "version": "1",
-    "code_sha256": "a5d4ee4d078c7957388718159115a535e27462c0a80b170d3b8599e01f6129f3"
+    "code_sha256": "01af1413caa84d01cae610fc24b9f61268c802bc9cf474a0f352ce0438a5e29a"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "anim.diffuse",
@@ -921,11 +921,11 @@
    "generator": {
     "name": "data.field",
     "version": "1",
-    "code_sha256": "3c9ff4007604f76b319e53b12bf0c9abe2e3d60481cdcf2266de3dac19017074"
+    "code_sha256": "0c682ab61e922dea4518ef3d723cdd788363e8d73bf7e4bd43957f200a1960a1"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.field",
@@ -1058,11 +1058,11 @@
    "generator": {
     "name": "data.field",
     "version": "1",
-    "code_sha256": "3c9ff4007604f76b319e53b12bf0c9abe2e3d60481cdcf2266de3dac19017074"
+    "code_sha256": "0c682ab61e922dea4518ef3d723cdd788363e8d73bf7e4bd43957f200a1960a1"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.field",
@@ -1195,11 +1195,11 @@
    "generator": {
     "name": "math.domain",
     "version": "1",
-    "code_sha256": "7454962940061a308532154e85e76aa798bf041057d1b2a4678c6aef30d68777"
+    "code_sha256": "77a772cba24e627bc68dcd22900fdfe2f40ca900a6b989622c8e75801bea9326"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "math.domain",
@@ -1306,11 +1306,11 @@
    "generator": {
     "name": "math.domain",
     "version": "1",
-    "code_sha256": "7454962940061a308532154e85e76aa798bf041057d1b2a4678c6aef30d68777"
+    "code_sha256": "77a772cba24e627bc68dcd22900fdfe2f40ca900a6b989622c8e75801bea9326"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "math.domain",
@@ -1417,11 +1417,11 @@
    "generator": {
     "name": "anim.epicycles",
     "version": "1",
-    "code_sha256": "3cc6f66f5803f30401bb36515e667696fa1698d69ce285be0f3824ec9f73d18a"
+    "code_sha256": "e84f0d553d500eb3bb000b6b49524c056c7bc78216aea7d6cf4e13e93077f029"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "anim.epicycles",
@@ -1530,11 +1530,11 @@
    "generator": {
     "name": "anim.epicycles",
     "version": "1",
-    "code_sha256": "3cc6f66f5803f30401bb36515e667696fa1698d69ce285be0f3824ec9f73d18a"
+    "code_sha256": "e84f0d553d500eb3bb000b6b49524c056c7bc78216aea7d6cf4e13e93077f029"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "anim.epicycles",
@@ -1643,11 +1643,11 @@
    "generator": {
     "name": "compose",
     "version": "1+data.scatter@1+draw.annotate@1",
-    "code_sha256": "595bf37720dc379a055a1270a1ae816fdf2f2db69c242c968773de7e1b592195"
+    "code_sha256": "844bcdc9eb432ced359ed33fcd5d64ee0d1d2dbdbe8d903b83e6deb7f7c30ecf"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "compose",
@@ -1851,11 +1851,11 @@
    "generator": {
     "name": "compose",
     "version": "1+data.field@1+draw.annotate@1",
-    "code_sha256": "595bf37720dc379a055a1270a1ae816fdf2f2db69c242c968773de7e1b592195"
+    "code_sha256": "844bcdc9eb432ced359ed33fcd5d64ee0d1d2dbdbe8d903b83e6deb7f7c30ecf"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "compose",
@@ -2070,11 +2070,11 @@
    "generator": {
     "name": "math.fourier",
     "version": "1",
-    "code_sha256": "91ee995893f64caef11c53abf9bcda54cc4f6ef150fd6dcdb1c6c58264438e6f"
+    "code_sha256": "10322049433d271eb860da7df0f75bf3ea45d43c304afa5879bb3cf56519e971"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "math.fourier",
@@ -2177,11 +2177,11 @@
    "generator": {
     "name": "math.fourier",
     "version": "1",
-    "code_sha256": "91ee995893f64caef11c53abf9bcda54cc4f6ef150fd6dcdb1c6c58264438e6f"
+    "code_sha256": "10322049433d271eb860da7df0f75bf3ea45d43c304afa5879bb3cf56519e971"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "math.fourier",
@@ -2284,11 +2284,11 @@
    "generator": {
     "name": "data.scatter",
     "version": "1",
-    "code_sha256": "3c9ff4007604f76b319e53b12bf0c9abe2e3d60481cdcf2266de3dac19017074"
+    "code_sha256": "0c682ab61e922dea4518ef3d723cdd788363e8d73bf7e4bd43957f200a1960a1"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.scatter",
@@ -2427,11 +2427,11 @@
    "generator": {
     "name": "data.scatter",
     "version": "1",
-    "code_sha256": "3c9ff4007604f76b319e53b12bf0c9abe2e3d60481cdcf2266de3dac19017074"
+    "code_sha256": "0c682ab61e922dea4518ef3d723cdd788363e8d73bf7e4bd43957f200a1960a1"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.scatter",
@@ -2570,11 +2570,11 @@
    "generator": {
     "name": "forge.icon.gem",
     "version": "1",
-    "code_sha256": "9c1409611b2babf1cacb42c3862231f7a557b3335f98e48cb2bbed3dd971a671"
+    "code_sha256": "a6316cb5cb69c601078906634cbe82290a66c54ee88f1a180a936581739f797d"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.icon.gem",
@@ -2656,11 +2656,11 @@
    "generator": {
     "name": "forge.icon.gem",
     "version": "1",
-    "code_sha256": "9c1409611b2babf1cacb42c3862231f7a557b3335f98e48cb2bbed3dd971a671"
+    "code_sha256": "a6316cb5cb69c601078906634cbe82290a66c54ee88f1a180a936581739f797d"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.icon.gem",
@@ -2742,11 +2742,11 @@
    "generator": {
     "name": "forge.icon.gem",
     "version": "1",
-    "code_sha256": "9c1409611b2babf1cacb42c3862231f7a557b3335f98e48cb2bbed3dd971a671"
+    "code_sha256": "a6316cb5cb69c601078906634cbe82290a66c54ee88f1a180a936581739f797d"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.icon.gem",
@@ -2828,11 +2828,11 @@
    "generator": {
     "name": "data.instances",
     "version": "1",
-    "code_sha256": "dc8a055ff67cca6cfc154bb5d0d7d86751ccc421452a12837db5993f7e05cdd3"
+    "code_sha256": "b211cc4f0e79e0bbecc735a0a96840a1917d318b5101c34ca0a4bd5ef353d430"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.instances",
@@ -2950,11 +2950,11 @@
    "generator": {
     "name": "data.instances",
     "version": "1",
-    "code_sha256": "dc8a055ff67cca6cfc154bb5d0d7d86751ccc421452a12837db5993f7e05cdd3"
+    "code_sha256": "b211cc4f0e79e0bbecc735a0a96840a1917d318b5101c34ca0a4bd5ef353d430"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.instances",
@@ -3082,11 +3082,11 @@
    "generator": {
     "name": "forge.fractal.julia",
     "version": "1",
-    "code_sha256": "722a0a6ff5c81aae0091a9cac7f49627d2de919b383ed20f60d26ab19b2efb66"
+    "code_sha256": "812c05fb716c608cb0efd398a68dc4787be67ce9acf19b2bb1be55dd11ac2dcb"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.fractal.julia",
@@ -3168,11 +3168,11 @@
    "generator": {
     "name": "anim.frames",
     "version": "1",
-    "code_sha256": "a5d4ee4d078c7957388718159115a535e27462c0a80b170d3b8599e01f6129f3"
+    "code_sha256": "01af1413caa84d01cae610fc24b9f61268c802bc9cf474a0f352ce0438a5e29a"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "anim.frames",
@@ -3296,11 +3296,11 @@
    "generator": {
     "name": "anim.life",
     "version": "1",
-    "code_sha256": "a5d4ee4d078c7957388718159115a535e27462c0a80b170d3b8599e01f6129f3"
+    "code_sha256": "01af1413caa84d01cae610fc24b9f61268c802bc9cf474a0f352ce0438a5e29a"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "anim.life",
@@ -3411,11 +3411,11 @@
    "generator": {
     "name": "anim.life",
     "version": "1",
-    "code_sha256": "a5d4ee4d078c7957388718159115a535e27462c0a80b170d3b8599e01f6129f3"
+    "code_sha256": "01af1413caa84d01cae610fc24b9f61268c802bc9cf474a0f352ce0438a5e29a"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "anim.life",
@@ -3526,11 +3526,11 @@
    "generator": {
     "name": "math.logistic",
     "version": "1",
-    "code_sha256": "7454962940061a308532154e85e76aa798bf041057d1b2a4678c6aef30d68777"
+    "code_sha256": "77a772cba24e627bc68dcd22900fdfe2f40ca900a6b989622c8e75801bea9326"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "math.logistic",
@@ -3641,11 +3641,11 @@
    "generator": {
     "name": "anim.lorenz",
     "version": "1",
-    "code_sha256": "a5d4ee4d078c7957388718159115a535e27462c0a80b170d3b8599e01f6129f3"
+    "code_sha256": "01af1413caa84d01cae610fc24b9f61268c802bc9cf474a0f352ce0438a5e29a"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "anim.lorenz",
@@ -3763,11 +3763,11 @@
    "generator": {
     "name": "data.circuit",
     "version": "2",
-    "code_sha256": "f5a76348ea2994192ab627bf4ef1da00530e78a41386743d65955635d4110624"
+    "code_sha256": "70d9b930571a07ef5ed8c94c72c2cc6318a27e83a4e48a2dd513ab295cd19aef"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.circuit",
@@ -3892,11 +3892,11 @@
    "generator": {
     "name": "data.circuit",
     "version": "2",
-    "code_sha256": "f5a76348ea2994192ab627bf4ef1da00530e78a41386743d65955635d4110624"
+    "code_sha256": "70d9b930571a07ef5ed8c94c72c2cc6318a27e83a4e48a2dd513ab295cd19aef"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.circuit",
@@ -3927,7 +3927,7 @@
    },
    "recipe_sha256": "239aab690866ae100eeca9f282e678d3a5b2953bb7aab9240492341fdb9ce8ff",
    "output": {
-    "file_sha256": "199e387a74b0a57bf8be0f0951e8da9daaa6a449076d0ea9741eff7f93df6056",
+    "file_sha256": "8e716f5c1a9bc371c3d9cdd41f02beb2c85bb4c88796972e7c186d2331c8a512",
     "content_sha256": "c316723c5604b77683a3536969b6150b41e16867f70c6487f066dd4cab3f2f04",
     "bytes": 34562,
     "width": 560,
@@ -4011,11 +4011,11 @@
    "generator": {
     "name": "data.circuit",
     "version": "2",
-    "code_sha256": "f5a76348ea2994192ab627bf4ef1da00530e78a41386743d65955635d4110624"
+    "code_sha256": "70d9b930571a07ef5ed8c94c72c2cc6318a27e83a4e48a2dd513ab295cd19aef"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.circuit",
@@ -4140,11 +4140,11 @@
    "generator": {
     "name": "data.circuit_refutation",
     "version": "1",
-    "code_sha256": "25e85f6f518407170c3035e5df8dc66aaf62a64e6c5501c36e4beba62eac3ba8"
+    "code_sha256": "93d1fd7adcf8a66b7f6cd3d43527d88a50c1ecab70bee94dfddd5831500dc045"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.circuit_refutation",
@@ -4256,11 +4256,11 @@
    "generator": {
     "name": "math.modmult",
     "version": "1",
-    "code_sha256": "91ee995893f64caef11c53abf9bcda54cc4f6ef150fd6dcdb1c6c58264438e6f"
+    "code_sha256": "10322049433d271eb860da7df0f75bf3ea45d43c304afa5879bb3cf56519e971"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "math.modmult",
@@ -4363,11 +4363,11 @@
    "generator": {
     "name": "math.modmult",
     "version": "1",
-    "code_sha256": "91ee995893f64caef11c53abf9bcda54cc4f6ef150fd6dcdb1c6c58264438e6f"
+    "code_sha256": "10322049433d271eb860da7df0f75bf3ea45d43c304afa5879bb3cf56519e971"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "math.modmult",
@@ -4470,11 +4470,11 @@
    "generator": {
     "name": "music.piece",
     "version": "1",
-    "code_sha256": "2466f977e478e06f832687787b866bb955f74b6354a0ff5694aa7e75da1a23bb"
+    "code_sha256": "d5c57e20da0d53ef7ccbbaeffcf415b9ac985ab0a7275b399aa07ea0e4db5828"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "music.piece",
@@ -4513,11 +4513,11 @@
    "generator": {
     "name": "music.piece",
     "version": "1",
-    "code_sha256": "2466f977e478e06f832687787b866bb955f74b6354a0ff5694aa7e75da1a23bb"
+    "code_sha256": "d5c57e20da0d53ef7ccbbaeffcf415b9ac985ab0a7275b399aa07ea0e4db5828"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "music.piece",
@@ -4556,11 +4556,11 @@
    "generator": {
     "name": "music.piece",
     "version": "1",
-    "code_sha256": "2466f977e478e06f832687787b866bb955f74b6354a0ff5694aa7e75da1a23bb"
+    "code_sha256": "d5c57e20da0d53ef7ccbbaeffcf415b9ac985ab0a7275b399aa07ea0e4db5828"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "music.piece",
@@ -4599,11 +4599,11 @@
    "generator": {
     "name": "music.piece",
     "version": "1",
-    "code_sha256": "2466f977e478e06f832687787b866bb955f74b6354a0ff5694aa7e75da1a23bb"
+    "code_sha256": "d5c57e20da0d53ef7ccbbaeffcf415b9ac985ab0a7275b399aa07ea0e4db5828"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "music.piece",
@@ -4642,11 +4642,11 @@
    "generator": {
     "name": "data.sequence",
     "version": "1",
-    "code_sha256": "907d9547ab797bebb9dff28fa7bcb4c54f4362cc915aabc9e592a007d9b9cd87"
+    "code_sha256": "3ada94bfeff5722f3ad9791f3027203161f05244c56b3a8a31f5765af9c8178e"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.sequence",
@@ -4764,11 +4764,11 @@
    "generator": {
     "name": "data.field",
     "version": "1",
-    "code_sha256": "3c9ff4007604f76b319e53b12bf0c9abe2e3d60481cdcf2266de3dac19017074"
+    "code_sha256": "0c682ab61e922dea4518ef3d723cdd788363e8d73bf7e4bd43957f200a1960a1"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.field",
@@ -4901,11 +4901,11 @@
    "generator": {
     "name": "data.pratt",
     "version": "1",
-    "code_sha256": "23e0d24d3a399f19b61b115f168be1422a497a05086675dfa6383764c891d21c"
+    "code_sha256": "86ddc2bb93de5d9a4ce0bab92d314ab18db0dfaf59a9c648a609be2a23f32000"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.pratt",
@@ -5015,11 +5015,11 @@
    "generator": {
     "name": "math.sandpile",
     "version": "1",
-    "code_sha256": "18a0994ab3d44d593d5525e233cf75b2b22dafe6cdea06b1eb3c5138d66435cc"
+    "code_sha256": "65be69f0de93f37c38cbfe5da29a04831ff3e8aec30d1f4b89d87817c0cc896f"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "math.sandpile",
@@ -5111,11 +5111,11 @@
    "generator": {
     "name": "data.refutation",
     "version": "1",
-    "code_sha256": "59ef96f45347c3aac0504a0b6ab2fae2c0c08ec5726100aaa1fe8acbf9798aee"
+    "code_sha256": "5d8a3bc41245974215a584f6633b0b428c84666f759171dfb9f1314a84d05e75"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.refutation",
@@ -5229,11 +5229,11 @@
    "generator": {
     "name": "data.coloring",
     "version": "1",
-    "code_sha256": "637a90628b33d6e6989ce5d06e4eda2af41e1e98e09a31120319a8ce1703fc60"
+    "code_sha256": "7613bf522a8a7f760ea756f3b8e04b9fb0303fde502e0cf6055a65acf19b14c3"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.coloring",
@@ -5362,11 +5362,11 @@
    "generator": {
     "name": "forge.sky.gradient",
     "version": "1",
-    "code_sha256": "722a0a6ff5c81aae0091a9cac7f49627d2de919b383ed20f60d26ab19b2efb66"
+    "code_sha256": "812c05fb716c608cb0efd398a68dc4787be67ce9acf19b2bb1be55dd11ac2dcb"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.sky.gradient",
@@ -5452,11 +5452,11 @@
    "generator": {
     "name": "forge.sky.gradient",
     "version": "1",
-    "code_sha256": "722a0a6ff5c81aae0091a9cac7f49627d2de919b383ed20f60d26ab19b2efb66"
+    "code_sha256": "812c05fb716c608cb0efd398a68dc4787be67ce9acf19b2bb1be55dd11ac2dcb"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.sky.gradient",
@@ -5513,11 +5513,11 @@
    "generator": {
     "name": "data.catalog",
     "version": "1",
-    "code_sha256": "cb101859ff8b6228d70038fb4398d7ff8c6d2bbe057d109f882d68832ea6c4c4"
+    "code_sha256": "fa833cd56cf7c16c1a4dac51abcd8294b2a8ac0e60698ba8bfb8d9d84170f067"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.catalog",
@@ -5649,11 +5649,11 @@
    "generator": {
     "name": "forge.tile.stone",
     "version": "1",
-    "code_sha256": "6d5aee3103176c0eb4e07153996b66809b0a244ce169f372638df1885a74a6c5"
+    "code_sha256": "517cfd890a998afa44fca232f43ac2be04a6780244e940330971d921635e5198"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.tile.stone",
@@ -5736,11 +5736,11 @@
    "generator": {
     "name": "forge.tile.stone",
     "version": "1",
-    "code_sha256": "6d5aee3103176c0eb4e07153996b66809b0a244ce169f372638df1885a74a6c5"
+    "code_sha256": "517cfd890a998afa44fca232f43ac2be04a6780244e940330971d921635e5198"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.tile.stone",
@@ -5823,11 +5823,11 @@
    "generator": {
     "name": "forge.tile.terrain",
     "version": "1",
-    "code_sha256": "6d5aee3103176c0eb4e07153996b66809b0a244ce169f372638df1885a74a6c5"
+    "code_sha256": "517cfd890a998afa44fca232f43ac2be04a6780244e940330971d921635e5198"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.tile.terrain",
@@ -5911,11 +5911,11 @@
    "generator": {
     "name": "forge.tile.terrain",
     "version": "1",
-    "code_sha256": "6d5aee3103176c0eb4e07153996b66809b0a244ce169f372638df1885a74a6c5"
+    "code_sha256": "517cfd890a998afa44fca232f43ac2be04a6780244e940330971d921635e5198"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.tile.terrain",
@@ -5999,11 +5999,11 @@
    "generator": {
     "name": "forge.flora.tree",
     "version": "1",
-    "code_sha256": "b5d34d305e6418ef39f43839f2d16c86cc97ed8eb2245fbf309afde4270c2c18"
+    "code_sha256": "94ecaf2a4eacae20d03515d98b6b3c5e1f88c263cb56ea3fefb0c7003fde8161"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.flora.tree",
@@ -6088,11 +6088,11 @@
    "generator": {
     "name": "forge.flora.tree",
     "version": "1",
-    "code_sha256": "b5d34d305e6418ef39f43839f2d16c86cc97ed8eb2245fbf309afde4270c2c18"
+    "code_sha256": "94ecaf2a4eacae20d03515d98b6b3c5e1f88c263cb56ea3fefb0c7003fde8161"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.flora.tree",
@@ -6177,11 +6177,11 @@
    "generator": {
     "name": "forge.flora.tree",
     "version": "1",
-    "code_sha256": "b5d34d305e6418ef39f43839f2d16c86cc97ed8eb2245fbf309afde4270c2c18"
+    "code_sha256": "94ecaf2a4eacae20d03515d98b6b3c5e1f88c263cb56ea3fefb0c7003fde8161"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "forge.flora.tree",
@@ -6266,11 +6266,11 @@
    "generator": {
     "name": "math.ulam",
     "version": "1",
-    "code_sha256": "91ee995893f64caef11c53abf9bcda54cc4f6ef150fd6dcdb1c6c58264438e6f"
+    "code_sha256": "10322049433d271eb860da7df0f75bf3ea45d43c304afa5879bb3cf56519e971"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "math.ulam",
@@ -6372,11 +6372,11 @@
    "generator": {
     "name": "data.coloring",
     "version": "1",
-    "code_sha256": "637a90628b33d6e6989ce5d06e4eda2af41e1e98e09a31120319a8ce1703fc60"
+    "code_sha256": "7613bf522a8a7f760ea756f3b8e04b9fb0303fde502e0cf6055a65acf19b14c3"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.coloring",
@@ -6505,11 +6505,11 @@
    "generator": {
     "name": "data.bounds",
     "version": "1",
-    "code_sha256": "12e2ecc6fbd934e665aab67e71ad4008242cfe7d930dd6367eb76fa11c60dfa4"
+    "code_sha256": "7d7fb06fe5ada15ff310a9dc1dfa3652443a0205b6f5edf65bef4580e1f5c1c8"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "data.bounds",
@@ -6628,11 +6628,11 @@
    "generator": {
     "name": "anim.wave",
     "version": "1",
-    "code_sha256": "a5d4ee4d078c7957388718159115a535e27462c0a80b170d3b8599e01f6129f3"
+    "code_sha256": "01af1413caa84d01cae610fc24b9f61268c802bc9cf474a0f352ce0438a5e29a"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "anim.wave",
@@ -6744,11 +6744,11 @@
    "generator": {
     "name": "anim.wave",
     "version": "1",
-    "code_sha256": "a5d4ee4d078c7957388718159115a535e27462c0a80b170d3b8599e01f6129f3"
+    "code_sha256": "01af1413caa84d01cae610fc24b9f61268c802bc9cf474a0f352ce0438a5e29a"
    },
    "tool": {
     "name": "exactfig",
-    "version": "0.14.1"
+    "version": "0.14.2"
    },
    "recipe": {
     "generator": "anim.wave",
@@ -6856,5 +6856,5 @@
    ]
   }
  },
- "manifest_sha256": "6d8a7aa7b75e2c18c9c660201d19b38d5592836b0f2182bc3095234954260458"
+ "manifest_sha256": "bd2db66043931532e8c38e2ec8b17817914ef86619513554985ccba511e19340"
 }

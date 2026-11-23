@@ -4,10 +4,11 @@ Canvas: an integer grid of PALETTE INDICES / lienzo de índices de la paleta (po
 None = transparent. Nothing ever blends: every pixel is decided by a rule (discrete geometry, symmetry, ramps, noise, automata).
 Ningún píxel sale de una mezcla suave; cada punto lo decide una regla.
 
-  Primitivas   line (Bresenham), circle/disc (punto medio), ellipse, rect, polygon (relleno por barrido), star
-  Simetría     mirror_x / mirror_y / radial (n ejes por rotación discreta)
-  Volumen      shade_by_light (tono según la normal aproximada y la luz), outline (contorno selectivo), clean_orphans
-  Salida       to_rgba, to_png (PNG indexado, escala entera), ascii (para pruebas)
+  Primitivas   line (Bresenham), circle/disc (punto medio), ellipse, rect, polygon (relleno por barrido), paste
+  Volumen      shade_by_light (tono según la normal aproximada y la luz), outline (contorno selectivo)
+  Salida       scaled (escala entera), to_rgba, to_png (PNG indexado)
+(star, mirror_x/mirror_y, radial, clean_orphans y ascii, que venían del port de pxkit, se quitaron en 0.14.2: ningún
+generador ni test los usaba.)
 """
 from __future__ import annotations
 
@@ -107,7 +108,8 @@ class Canvas:
         return pts
 
     def polygon(self, pts_in, c=None) -> set:
-        """Relleno por barrido (regla par-impar) muestreando el centro de cada píxel."""
+        """Relleno por barrido (regla par-impar) muestreando el centro de cada píxel. El polígono es cerrado: un
+        píxel cuyo centro cae justo sobre una arista se rellena."""
         pts = set()
         if len(pts_in) < 3: return pts
         ys = [p[1] for p in pts_in]
@@ -123,48 +125,6 @@ class Canvas:
                     pts.add((x, y))
         if c is not None: self.fill_mask(pts, c)
         return pts
-
-    @staticmethod
-    def star(cx, cy, r_out, r_in, n, rot=0.0):
-        """Vértices de una estrella (o de un polígono regular si r_in = r_out)."""
-        out = []
-        for k in range(2 * n):
-            r = r_out if k % 2 == 0 else r_in
-            a = rot - math.pi / 2 + k * math.pi / n
-            out.append((cx + fm.cos(a) * r, cy + fm.sin(a) * r))
-        return out
-
-    # -- simetría
-    def mirror_x(self, axis: float | None = None, from_left=True):
-        """Refleja la mitad izquierda sobre la derecha (o al revés). Con w par, el eje está entre dos columnas."""
-        axis = (self.w - 1) / 2 if axis is None else axis
-        for y in range(self.h):
-            for x in range(self.w):
-                mx = int(round(2 * axis - x))
-                if self.inside(mx, y) and ((from_left and x < axis) or (not from_left and x > axis)):
-                    self.px[y][mx] = self.px[y][x]
-
-    def mirror_y(self, axis: float | None = None):
-        """Copy the rows above a horizontal axis (default: the middle) onto the rows below it."""
-        axis = (self.h - 1) / 2 if axis is None else axis
-        for y in range(self.h):
-            my = int(round(2 * axis - y))
-            if y < axis and self.inside(0, my):
-                self.px[my] = self.px[y][:]
-
-    def radial(self, n: int, cx=None, cy=None):
-        """Simetría radial de orden n: copia el sector [0, 360/n) en los demás (muestreo inverso, sin huecos)."""
-        cx = (self.w - 1) / 2 if cx is None else cx
-        cy = (self.h - 1) / 2 if cy is None else cy
-        src = self.copy()
-        sector = 2 * math.pi / n
-        for y in range(self.h):
-            for x in range(self.w):
-                dx, dy = x - cx, y - cy
-                k = int((fm.atan2(dy, dx) % (2 * math.pi)) // sector)
-                if k == 0: continue
-                ca, sa = fm.cos(-k * sector), fm.sin(-k * sector)
-                self.px[y][x] = src.get(int(round(cx + dx * ca - dy * sa)), int(round(cy + dx * sa + dy * ca)))
 
     def paste(self, other: "Canvas", ox: int, oy: int):
         """Copy another canvas's opaque pixels at offset (ox, oy)."""
@@ -199,14 +159,6 @@ class Canvas:
         for (x, y) in sorted(ring):
             self.set(x, y, color)
 
-    def clean_orphans(self):
-        """Quita píxeles sueltos (sin ningún vecino pintado en 4 direcciones)."""
-        out = [row[:] for row in self.px]
-        for x, y, c in self.cells():
-            if c is not None and all(self.get(x + dx, y + dy) is None for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
-                out[y][x] = None
-        self.px = out
-
     # -- salida
     def scaled(self, k: int) -> "Canvas":
         """Escala entera por vecino más cercano (nunca suavizado)."""
@@ -234,11 +186,6 @@ class Canvas:
             t = len(pal); pal.append((0, 0, 0))
         idx = [t if c is None else c for _, _, c in self.cells()]
         return png.encode_indexed(self.w, self.h, idx, pal, t)
-
-    def ascii(self) -> str:
-        """A text picture of the canvas (one character per index), for tests and debugging."""
-        chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return "\n".join("".join("." if c is None else chars[c % len(chars)] for c in row) for row in self.px)
 
 
 def distance_to_edge(mask: set) -> dict:
