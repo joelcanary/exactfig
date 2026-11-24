@@ -14,6 +14,7 @@ those checks as facts. `text` is called after the generator has drawn; it never 
   data.catalog             the patterns, their cells, the rule, what each was checked to be, distinct or not
   data.instances           the masks; in compare mode TP, FP, FN and the exact panoptic quality
   data.sequence            the indices, the scale, the largest term, the new terms checked
+  data.bits                the indices, the lengths in bits, the combs and numbers of ones checked
   data.bounds              the shape, the cells by kind, what was checked (order, symmetry, the stated cells)
   data.enclosures          the number of balls, the digits by which they miss 0, what was checked
   data.triangle            the areas, squarefree or not, a² + b² = c² and a·b/2 = n checked
@@ -214,7 +215,28 @@ def _enclosures(p, data, w, h):
             f"{lo[3]} for {lo[0]} to {max(r[3] for r in rows)}). Checked exactly before drawing: {', '.join(checks)}.")
 
 
-DESCRIBE = {"data.bounds": _bounds, "data.enclosures": _enclosures, "data.catalog": _catalog, "data.instances": _instances, "data.sequence": _sequence,
+def _bits(p, data, w, h):
+    from .bits import check, parse_combs, parse_ones
+    rows = check(data, p)
+    nb = [u[-1] + 1 for _, _, u in rows]
+    combs, counts = parse_combs(p["combs"]), parse_ones(p["ones"])
+    done = []
+    if combs:
+        done.append(f"the positions of all the ones of {len(combs)} term{'s' if len(combs) != 1 else ''}, at equal steps "
+                    f"("
+                    + "; ".join(f"a({n}): {a}" if k == 1 else f"a({n}): {a}, {a + st}" + (", …" if k > 3 else "")
+                                + (f", {a + (k - 1) * st}" if k > 2 else "") for n, a, st, k in combs[:12])
+                    + (f" and {len(combs) - 12} more)" if len(combs) > 12 else ")"))
+    if counts:
+        done.append(f"the number of ones of {len(counts)} term{'s' if len(counts) != 1 else ''}")
+    span = f"a({rows[0][0]})" if len(rows) == 1 else f"The terms a({rows[0][0]}) to a({rows[-1][0]})"
+    size = f"{nb[0]} bits" if len(set(nb)) == 1 else f"{min(nb)} to {max(nb)} bits"
+    return (f"{span} of an integer sequence in binary, one per row with the units on the right, {size} long"
+            f"{', each row to its own width' if p['scale'] == 'each' else ', all on one scale'}."
+            + (f" Checked exactly before drawing: {'; '.join(done)}." if done else ""))
+
+
+DESCRIBE = {"data.bits": _bits, "data.bounds": _bounds, "data.enclosures": _enclosures, "data.catalog": _catalog, "data.instances": _instances, "data.sequence": _sequence,
             "data.triangle": _triangles, "math.sandpile": _sandpile, "data.pratt": _pratt, "data.circuit": _circuit, "data.circuit_refutation": _circuit_refutation,
             "data.refutation": _refutation, "data.coloring": _coloring}
 

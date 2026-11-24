@@ -166,7 +166,7 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import (annotate, bounds, catalog, enclosures, circuit, circuit_refutation, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
+    from .forge import (annotate, bits, bounds, catalog, enclosures, circuit, circuit_refutation, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
                         refutation, sandpile, sequence, skies, sprites, tiles, triangle)
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
@@ -451,6 +451,23 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/sequence.py"),
             "the terms of an integer sequence (OEIS b-file) as bars, the new terms highlighted and checked",
             (480, 200), 2048, data="sequence"),
+        Generator("data.bits", "1", "image", bits.bits, {
+            "combs": P("text", "", maxlen=4000, doc="where the ones are, n:start,step,count separated by ';', each "
+                                                    "checked bit for bit"),
+            "complete": P("bool", True, doc="with combs: every drawn term has one"),
+            "ones": P("text", "", maxlen=4000, doc="number of ones of a term, n:k separated by ';'"),
+            "first": P("int", -1, -1, 10 ** 9, doc="first index drawn; -1 = the first of the file"),
+            "last": P("int", -1, -1, 10 ** 9, doc="last index drawn; -1 = the last of the file"),
+            "count": P("int", 0, 0, 256, doc="number of drawn terms; 0 = any"),
+            "scale": P("str", "each", choices=("each", "common"), doc="each row to its own width, or one scale for all"),
+            "text_size": P("int", 2, 1, 4, doc="pixel scale of the 3×5 font"),
+            "ramp": P("str", "seq", choices=DATA_RAMPS, doc="the ones"),
+            "zero_ramp": P("str", "grey", choices=DATA_RAMPS, doc="the line of zeros (the middle step)"),
+            "label_ramp": P("str", "paper", choices=DATA_RAMPS, doc="labels"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/bits.py", "forge/annotate.py"),
+            "the binary expansions of exact integers (OEIS b-file), the positions of their ones checked bit for bit",
+            (480, 160), 2048, data="sequence"),
         Generator("data.bounds", "1", "image", bounds.bounds, {
             "rows": P("int", 0, 0, 64, doc="number of rows of the table; 0 = any"),
             "columns": P("int", 0, 0, 64, doc="number of columns; 0 = any"),

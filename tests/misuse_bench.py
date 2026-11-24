@@ -129,6 +129,13 @@ def cases():
     yield "b-file with a gap", {"r.json": j(seqr), "b.txt": "1 0\n3 1\n"}, ["render", "r.json"]
     yield "b-file with a term of 5000 digits", {"r.json": j(seqr), "b.txt": "1 " + "9" * 5000 + "\n"}, ["render", "r.json"]
     yield "b-file new terms that differ", {"r.json": j(dict(seqr, params={"new_from": 2, "terms": "5"})), "b.txt": "1 0\n2 4\n"}, ["render", "r.json"]
+    bitr = {"generator": "data.bits", "seed": "x", "palette": "sci", "size": [120, 20], "input": {"path": "b.txt", "format": "bfile"}, "params": {"text_size": 1}, "output": "q.png"}
+    yield "bits of zero", {"r.json": j(bitr), "b.txt": "0 0\n1 3\n"}, ["render", "r.json"]
+    yield "bits comb the term contradicts", {"r.json": j(dict(bitr, params={"text_size": 1, "combs": "1:0,2,2"})), "b.txt": "1 3\n"}, ["render", "r.json"]
+    yield "bits comb with the wrong number of ones", {"r.json": j(dict(bitr, params={"text_size": 1, "combs": "1:0,1,999999999999"})), "b.txt": "1 3\n"}, ["render", "r.json"]
+    yield "bits comb that is not numbers", {"r.json": j(dict(bitr, params={"text_size": 1, "combs": "1:a,b,c"})), "b.txt": "1 3\n"}, ["render", "r.json"]
+    yield "bits term without its comb", {"r.json": j(dict(bitr, params={"text_size": 1, "combs": "1:0,1,2"})), "b.txt": "1 3\n2 5\n"}, ["render", "r.json"]
+    yield "bits too narrow", {"r.json": j(dict(bitr, size=[20, 20])), "b.txt": "1 3\n"}, ["render", "r.json"]
     bnd = {"generator": "data.bounds", "seed": "x", "palette": "sci", "size": [120, 60], "input": {"path": "t.txt", "format": "bounds"}, "output": "b.png"}
     yield "bounds table with an empty range", {"r.json": j(bnd), "t.txt": "R,3\n3,9..8\n"}, ["render", "r.json"]
     yield "bounds table that decreases", {"r.json": j(dict(bnd, params={"monotone": "rows"})), "t.txt": "R,3,4\n3,9,>50\n4,60,49\n"}, ["render", "r.json"]

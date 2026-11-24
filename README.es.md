@@ -74,7 +74,7 @@ receta nombra la prueba DRAT, comprobada por drat-trim y cake_lpr, de que 1..40 
 | El conjunto entero queda fijado | `manifest_sha256` cubre todas las entradas: basta con firmar o publicar ese valor |
 | Una receta no puede colar una imagen | esquemas de parámetros cerrados (valores con tipo y rango, nada de matrices de píxeles); los datos solo entran como un fichero con nombre y hash |
 | La descripción dice lo que se comprobó | cada fichero apuntado lleva un texto alternativo escrito después de que sus datos pasaran las comprobaciones, con las propias cifras comprobadas (recuentos, tamaños, la función que calcula un circuito, la calidad panóptica exacta); `verify` avisa si un texto ya no coincide |
-| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation`, `data.bounds`, `data.enclosures` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad, las casillas de una tabla de cotas, que una bola certificada deja fuera el 0) y si no, no dibujan |
+| La figura solo enseña lo que prueban los datos | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.bits`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation`, `data.bounds`, `data.enclosures` y `math.sandpile` comprueban los datos contra lo que dice la receta (regla, tamaño, término de la secuencia, progresiones, sumas, solapes, puntuaciones exactas, pies, primalidad, las casillas de una tabla de cotas, que una bola certificada deja fuera el 0) y si no, no dibujan |
 | Los errores acaban en un mensaje claro | una línea que dice qué y por qué, nunca un traceback; se prueban más de 90 errores reales, un proceso cada uno |
 
 Lo que no prueba: quién escribió el código o eligió la receta (para eso, firma el resumen del manifiesto), ni que un modelo o
@@ -132,6 +132,7 @@ Cada fichero sale de una receta de [`examples/recipes`](examples/recipes) y est�
 | ![números de van der Waerden](gallery/vdw-numbers.png) | `data.bounds`: lo que se sabe de los números de van der Waerden W(r, k) (filas k = 3–6, columnas r = 2–6 colores): 7 valores exactos y 13 cotas inferiores, tal como los da la literatura (las fuentes, en la cabecera del fichero de datos). Antes de dibujar, exactfig comprueba que los valores no bajan a lo largo de una fila ni de una columna, que la tabla tiene 7 casillas exactas y 13 cotas, y que los siete valores exactos son los que dice la receta; los tests recalculan W(2, 3) = 9 por fuerza bruta. |
 | ![residuos certificados](gallery/hodge-residues.png) | `data.enclosures`: seis encierros certificados de dos preprints sin arbitrar sobre la conjetura de Hodge para variedades de Fermat (los funcionales de residuo de la familia de Peterson en grado 35 y de las cinco de Bhattacharjee en grados 44, 51 y 52), recalculados por separado con aritmética de intervalos. Cada barra va, en escala log10, del radio de la bola a la distancia de su centro al 0; el número del final dice por cuántas cifras decimales se libra del 0 (de 9 a 69). Antes de dibujar, exactfig comprueba de forma exacta que ninguna bola contiene el 0, que las cotas inferiores que dan los artículos valen para todo valor de la bola y que cada bola queda dentro de las cifras impresas de los valores publicados. |
 | ![A175001](gallery/oeis-a175001.png) | `data.sequence`: el b-file de A175001 de la OEIS en escala logarítmica, con los términos desde n = 11 (6, 10, 18, 49, 103, 228, 376, 745) resaltados y comprobados contra el fichero. |
+| ![peines binarios](gallery/oeis-a402278-bits.png) | `data.bits`: los cocientes parciales a(2) a a(8) de A402278 de la OEIS en binario, las unidades a la derecha. En decimal parecen ruido (a(7) tiene 121 cifras); en binario cada uno es un peine, con los unos a pasos iguales, por un teorema de Adams y Davison (1977). La receta dice el principio, el paso y el número de unos de cada uno, y exactfig comprueba todos los bits. |
 | ![pila de arena](gallery/sandpile-identity.png) | `math.sandpile`: la identidad del grupo de la pila de arena de una rejilla de 96 × 96, calculada con la fórmula de Creutz y comprobada: estable, y e ⊕ e = e. Con n ≤ 14, un orden del grupo declarado se compara con el número de árboles generadores. |
 | ![comparación](gallery/instances-compare.png) | `mode: "compare"`: la misma verdad contra seis predicciones, emparejadas una a una por IoU > 1/2 y puntuadas de forma exacta: los píxeles en que coinciden, los que solo tiene un lado (gris), los falsos positivos (cálidos) y los falsos negativos (fríos). La receta declara TP 4, FP 2, FN 2 y PQ 0,4670; el PQ exacto es 21153891139/45297262530, y una receta que dijera otra cosa no se dibujaría. |
 
@@ -368,6 +369,12 @@ en escala logarítmica o lineal, con los términos desde `new_from` en su propio
 sean consecutivos, y una receta cuyos `terms` (los términos nuevos, separados por comas), `first`, `last` o `count` no
 coincidan con el fichero: lo resaltado en la figura es exactamente lo que dice la contribución. Se leen términos de hasta
 4000 cifras (Python 3.10.7, 3.11 y posteriores se niegan a convertir más largos); sus logaritmos salen de los propios enteros.
+
+**`data.bits`** dibuja los términos de un b-file en binario, uno por fila, con las unidades a la derecha. `combs`
+(`n:principio,paso,cuántos; …`) dice que los unos de a(n) están exactamente en principio, principio + paso, …, y cuántos son, y
+`ones` (`n:k; …`) que hay k; se comprueban todos los bits con enteros exactos antes de dibujar nada. Un término dibujado sin su
+peine se rechaza, salvo con `complete` en false. `scale` es `each` (cada fila a su ancho) o `common`; si una columna de píxeles
+lleva varios bits, es un uno cuando lo es alguno.
 
 **`data.triangle`** lee triángulos rectángulos de lados racionales (`n a b c` por línea, enteros o fracciones p/q,
 `"format": "triangles"`), los certificados de los números congruentes, y comprueba a² + b² = c², a·b/2 = n, lados
@@ -704,7 +711,7 @@ exactfig/
   pixel/         pxmath (tramado, ruido, Worley, autómatas, fractales, Bézier, Bresenham, SDF, disco de Poisson), paletas
                  (OKLab), cuantización con paleta bloqueada, lienzo de índices, escritores y lectores PNG, SVG y GIF/APNG
   forge/         generadores: datavis (data.field, data.scatter, data.image), catalog, coloring, refutation, instances,
-                 sequence, triangle, pratt, circuit, circuit_refutation, sandpile (los data.* que comprueban antes de
+                 sequence, bits, triangle, pratt, circuit, circuit_refutation, sandpile (los data.* que comprueban antes de
                  dibujar), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites;
                  describe (el texto alternativo exacto de cada figura)
   music/         sucesiones, armonía (Viterbi), conducción de voces, compositor, escritor de MIDI estándar

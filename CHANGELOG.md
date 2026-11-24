@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.16.0 (2026-11-24)
+
+- **New generator `data.bits`: exact integers in binary, their ones checked.** The terms of an OEIS b-file are drawn one per
+  row, each bit at its place value with the units on the right. The recipe states where the ones are (`combs`,
+  `n:start,step,count; …`) and how many there are (`ones`), and exactfig refuses to draw a term whose ones are anywhere
+  else, a drawn term without its comb (`complete`), or a term that is not positive. Rows have their own width (`each`) or
+  one scale (`common`).
+- **Gallery:** the partial quotients a(2) to a(8) of OEIS A402278, whose ones come at equal steps by Adams and Davison
+  (1977). Tests: the positions by repeated division, the combs recomputed from the closed form with the convergents to
+  log2 3 found by comparing powers of 2 and 3, the marks of the picture counted, every refusal; six new misuse cases.
+
 ## 0.15.0 (2026-11-23)
 
 - **New generator `data.enclosures`: certified enclosures, checked exactly.** A computer-assisted proof often knows a

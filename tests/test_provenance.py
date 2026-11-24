@@ -54,6 +54,8 @@ SMALL = {
                       "params": {"count": 4, "columns": 4}},
     "data.sequence": {"palette": "sci", "size": [36, 16], "input": {"path": "data/b175001.txt", "format": "bfile"},
                       "params": {"new_from": 11}},
+    "data.bits": {"palette": "sci", "size": [90, 64], "input": {"path": "data/b402278.txt", "format": "bfile"},
+                  "params": {"first": 2, "last": 6, "text_size": 1}},
     "data.bounds": {"palette": "sci", "size": [170, 64], "input": {"path": "data/vdw-numbers.bounds", "format": "bounds"},
                     "params": {"exact": 7, "monotone": "both", "text_size": 1}},
     "data.enclosures": {"palette": "sci", "size": [200, 84], "input": {"path": "data/hodge-residues.enclosures",
@@ -76,7 +78,7 @@ DATA = os.path.join(os.path.abspath(ROOT), "gallery")   # input paths of the dat
 SEEDLESS = ("forge.icon.gem", "forge.fractal.julia", "data.field", "data.scatter", "anim.wave", "anim.lorenz", "anim.diffuse",
             "anim.frames", "compose", "draw.annotate", "math.domain", "math.logistic", "math.ulam", "math.modmult",
             "data.image", "math.fourier", "anim.epicycles", "data.catalog", "data.coloring", "data.instances",
-            "data.triangle", "data.sequence", "data.bounds", "data.enclosures", "math.sandpile", "data.pratt", "data.refutation",
+            "data.triangle", "data.sequence", "data.bits", "data.bounds", "data.enclosures", "math.sandpile", "data.pratt", "data.refutation",
             "data.circuit", "data.circuit_refutation")   # the output does not depend on the seed
 
 

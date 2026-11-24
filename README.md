@@ -71,7 +71,7 @@ checked by drat-trim and cake_lpr, that 1..40 has none: w(4; 2,3,3,3) = 40.
 | The same bits on every platform | transcendental functions come from `exactfig.fmath` (basic IEEE 754 arithmetic only); checked on x86-64 and ARM64 |
 | The whole set is pinned | `manifest_sha256` covers every entry; sign or publish that one value |
 | Recipes cannot smuggle a picture | closed parameter schemas: typed, ranged values, no pixel arrays; data enters only as a named, hashed file |
-| The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation`, `data.bounds`, `data.enclosures` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions, primality, the cells of a table of bounds, that a certified ball excludes 0) and refuse to draw otherwise |
+| The figure shows only what the data proves | `data.catalog`, `data.coloring`, `data.refutation`, `data.instances`, `data.sequence`, `data.bits`, `data.triangle`, `data.pratt`, `data.circuit`, `data.circuit_refutation`, `data.bounds`, `data.enclosures` and `math.sandpile` check the data against what the recipe states (rule, size, sequence term, progressions, sums, overlaps, exact scores, captions, primality, the cells of a table of bounds, that a certified ball excludes 0) and refuse to draw otherwise |
 | The description says what was checked | every recorded file carries an alternative text written after its data passed their checks, from the checked numbers themselves (counts, sizes, the function a circuit computes, the exact panoptic quality); `verify` notices a text that no longer matches |
 | Mistakes end in a clear message | one line saying what and why, never a traceback; more than 110 real mistakes are tested, one process each |
 
@@ -130,6 +130,7 @@ Every file below comes from a recipe in [`examples/recipes`](examples/recipes) a
 | ![van der Waerden numbers](gallery/vdw-numbers.png) | `data.bounds`: what is known about the van der Waerden numbers W(r, k) (rows k = 3–6, columns r = 2–6 colours): 7 exact values and 13 lower bounds, as printed in the literature (sources in the data file's header). Before drawing, exactfig checks that the values never decrease along a row or down a column, that the table has 7 exact cells and 13 bounds, and that the seven exact values are the ones the recipe states; the test suite recomputes W(2, 3) = 9 by brute force. |
 | ![certified residues](gallery/hodge-residues.png) | `data.enclosures`: six certified enclosures from two unrefereed preprints on the Hodge conjecture for Fermat varieties (the residue functionals of Peterson's family in degree 35 and of Bhattacharjee's five families in degrees 44, 51 and 52), recomputed independently with interval arithmetic. Each bar runs, on a log10 axis, from the radius of the ball to the distance of its centre from 0; the number at the end is how many decimal digits the ball misses 0 by (9 to 69). Before drawing, exactfig checks exactly that every ball excludes 0, that the lower bounds the papers quote hold for every value in the ball, and that each ball lies within the papers' printed digits of their published values. |
 | ![A175001](gallery/oeis-a175001.png) | `data.sequence`: the OEIS b-file of A175001 on a logarithmic scale, the terms from n = 11 on (6, 10, 18, 49, 103, 228, 376, 745) highlighted and checked against the file. |
+| ![binary combs](gallery/oeis-a402278-bits.png) | `data.bits`: the partial quotients a(2) to a(8) of OEIS A402278 in binary, the units on the right. In decimal they look like noise (a(7) has 121 digits); in binary each is a comb, with its ones at equal steps, by a theorem of Adams and Davison (1977). The recipe states the start, the step and the number of ones of each, and exactfig checks every bit. |
 | ![sandpile](gallery/sandpile-identity.png) | `math.sandpile`: the identity of the sandpile group of a 96 × 96 grid, computed with Creutz's formula and checked: stable, and e ⊕ e = e. For n ≤ 14 a stated group order is checked against the number of spanning trees. |
 | ![compare](gallery/instances-compare.png) | `mode: "compare"`: the same ground truth against six predictions, matched one to one by IoU > 1/2 and scored exactly: the agreed pixels, the pixels only one side has (grey), false positives (warm) and false negatives (cool). The recipe states TP 4, FP 2, FN 2 and PQ 0.4670; the exact PQ is 21153891139/45297262530, and a recipe that said anything else would not render. |
 
@@ -345,6 +346,12 @@ logarithmic or a linear scale, the terms from `new_from` on in their own colour.
 consecutive, and a recipe whose `terms` (the new terms, comma-separated), `first`, `last` or `count` differ from the file:
 the highlighted part of the figure is exactly what the contribution says. Terms of up to 4000 digits are read (Python
 3.10.7, 3.11 and later refuse to convert longer ones); their logarithms come from the integers themselves.
+
+**`data.bits`** draws the terms of a b-file in binary, one per row, the units on the right. `combs`
+(`n:start,step,count; …`) states that the ones of a(n) are exactly at start, start + step, …, count of them, and `ones`
+(`n:k; …`) that there are k; every bit is checked on exact integers before anything is drawn. A drawn term without a comb is
+refused unless `complete` is false. `scale` is `each` (every row to its own width) or `common`; when a pixel column holds
+several bits it is a one if any of them is.
 
 **`data.triangle`** reads right triangles with rational sides (`n a b c` per line, integers or fractions p/q,
 `"format": "triangles"`), the certificates of congruent numbers, and checks a² + b² = c², a·b/2 = n, positive sides,
@@ -663,7 +670,7 @@ exactfig/
   pixel/         pxmath (dithering, noise, Worley, automata, fractals, Bézier, Bresenham, SDFs, Poisson disc), palettes
                  (OKLab), palette-locked quantisation, Canvas of palette indices, PNG, SVG and GIF/APNG writers and readers
   forge/         generators: datavis (data.field, data.scatter, data.image), catalog, coloring, refutation, instances,
-                 sequence, triangle, pratt, circuit, circuit_refutation, sandpile (the data.* that check before they
+                 sequence, bits, triangle, pratt, circuit, circuit_refutation, sandpile (the data.* that check before they
                  draw), motion (anim.*), mathviz (math.*), annotate (draw.annotate), tiles, flora, skies, icons, sprites;
                  describe (the exact alternative text of each figure)
   music/         sequences, harmony (Viterbi), voice leading, composer, Standard MIDI File writer
