@@ -546,7 +546,7 @@ Exit code 0 when everything passes. Specification: [docs/MANIFEST.md](docs/MANIF
 
 **Packaging for a repository (RO-Crate).** `python -m exactfig crate --manifest gallery/manifest.json --date 2026-11-22
 --license CC-BY-4.0` writes `ro-crate-metadata.json` beside the manifest, so the folder becomes an
-[RO-Crate 1.3](https://w3id.org/ro/crate/1.3) (the packaging WorkflowHub reads and Zenodo can archive), in the
+[RO-Crate 1.3](https://www.researchobject.org/ro-crate/specification/1.3/) (the packaging WorkflowHub reads and Zenodo can archive), in the
 [Process Run Crate](https://w3id.org/ro/wfrun/process/0.6) profile (provenance terms aligned with W3C PROV): every figure
 and input file with its size and SHA-256, and every figure as a `CreateAction` whose instrument is its generator (name,
 version, source hash), whose object is its inputs and recipe parameters, and whose result is the figure; `--author`

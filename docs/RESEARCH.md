@@ -24,7 +24,7 @@ Survey made in October 2026 by reading project pages, specifications and papers.
 |---|---|---|
 | [music21](https://github.com/cuthbertLab/music21) | Musicology toolkit: analysis, notation, MIDI I/O | Not a generator; no provenance |
 | [isobar](https://github.com/ideoforms/isobar) | Pattern library for algorithmic composition, MIDI out | You write the maths; no record/verify |
-| [athenaCL](https://github.com/ariza/athenaCL) | Classic algorithmic composition: Markov, cellular automata, L-systems | No harmonisation by optimisation, no output identity |
+| [athenaCL](https://pypi.org/project/athenaCL/) | Classic algorithmic composition: Markov, cellular automata, L-systems | No harmonisation by optimisation, no output identity |
 | [aldakit](https://pypi.org/project/aldakit/) | Alda language + Markov, L-system, CA, Euclidean rhythms | Same gap |
 | [Wolfram Tones](https://tones.wolfram.com/) | Cellular-automaton music in the browser (historic) | Closed; no recipes to re-run |
 | [Magenta](https://github.com/magenta/magenta) | Machine-learning music | The opposite of this project |
@@ -88,7 +88,7 @@ everywhere.
 | Data versioning by content hash (e.g. DVC) | pin datasets by hash | do not tie a figure to the data and the code that drew it |
 | Replication journals (e.g. ReScience C) | publish independent replications of computational results | a social process, not a
   machine check of a file |
-| Provenance packaging: [RO-Crate](https://w3id.org/ro/crate/1.3) with the [Workflow Run Crate](https://w3id.org/ro/wfrun/process/0.6) profiles (Leo et al., PLOS ONE 2024); [yProv4DV](https://arxiv.org/abs/2603.20437) (W3C PROV for visualisation scripts) | describe which code and inputs produced which file, in a standard repositories can read | describe a run; they do not re-run it nor check that the file is what the code produces (exactfig's `crate` writes this description from a verified manifest) |
+| Provenance packaging: [RO-Crate](https://www.researchobject.org/ro-crate/specification/1.3/) with the [Workflow Run Crate](https://w3id.org/ro/wfrun/process/0.6) profiles (Leo et al., PLOS ONE 2024); [yProv4DV](https://arxiv.org/abs/2603.20437) (W3C PROV for visualisation scripts) | describe which code and inputs produced which file, in a standard repositories can read | describe a run; they do not re-run it nor check that the file is what the code produces (exactfig's `crate` writes this description from a verified manifest) |
 | Figures that carry their data: [ReproFig](https://github.com/Jay2owe/ReproFig) (SVG with the plotted data and provenance embedded) | lets a reader extract and re-check the plotted numbers | checks the numbers it embeds, not that the picture was drawn from them by the stated code (exactfig's SVG, since 0.13.0, carries the recipe and hashes inside, and `verify` re-makes the picture from them) |
 
 exactfig's angle is narrower: a figure, an animation or a MIDI file is checked **exactly** (decoded pixels, every frame,

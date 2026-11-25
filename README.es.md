@@ -582,7 +582,7 @@ distinto o qué entrada cambió. Código de salida 0 si todo pasa. Especificaci�
 JSON: [exactfig/provenance/manifest.schema.json](exactfig/provenance/manifest.schema.json).
 
 **Empaquetar para un repositorio (RO-Crate).** `exactfig crate` escribe `ro-crate-metadata.json` junto al manifiesto, y
-la carpeta pasa a ser un [RO-Crate 1.3](https://w3id.org/ro/crate/1.3) (el empaquetado que lee WorkflowHub y que Zenodo
+la carpeta pasa a ser un [RO-Crate 1.3](https://www.researchobject.org/ro-crate/specification/1.3/) (el empaquetado que lee WorkflowHub y que Zenodo
 puede archivar), con el
 perfil [Process Run Crate](https://w3id.org/ro/wfrun/process/0.6) (procedencia alineada con W3C PROV): cada figura y cada
 fichero de entrada con su tamaño y su SHA-256, y cada figura como una `CreateAction` cuyo instrumento es su generador
