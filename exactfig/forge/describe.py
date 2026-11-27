@@ -12,6 +12,7 @@ those checks as facts. `text` is called after the generator has drawn; it never 
   data.refutation          the colouring claim refuted, n, the colours, the number of clauses
   data.coloring            the colourings, n, the colours, the rule each colour obeys
   data.catalog             the patterns, their cells, the rule, what each was checked to be, distinct or not
+  data.dependent           the boards, their sizes and points, k and the topology checked, distinct or not
   data.instances           the masks; in compare mode TP, FP, FN and the exact panoptic quality
   data.sequence            the indices, the scale, the largest term, the new terms checked
   data.bits                the indices, the lengths in bits, the combs and numbers of ones checked
@@ -129,6 +130,21 @@ def _catalog(p, data, w, h):
             f"({checked}{distinct}), drawn in a grid, live cells as squares.")
 
 
+def _dependent(p, data, w, h):
+    boards = data.boards
+    pops = sorted({len(c) for _, _, c in boards})
+    pop = f"{pops[0]} points" if len(pops) == 1 else f"{pops[0]} to {pops[-1]} points"
+    sizes = sorted({(bw, bh) for bw, bh, _ in boards})
+    size = (f"{sizes[0][0]} by {sizes[0][1]}" if len(sizes) == 1
+            else f"sizes from {sizes[0][0]} by {sizes[0][1]} to {sizes[-1][0]} by {sizes[-1][1]}")
+    where = "on the torus (rows and columns wrap around)" if p["topology"] == "torus" else "on the board"
+    stated = ", with the stated numbers of points" if p["populations"].strip() else ""
+    distinct = ", no two the same up to the symmetries of the board" if p["distinct"] else ""
+    return (f"{len(boards)} {'board' if len(boards) == 1 else 'boards'} of {size} cells with {pop}, each checked: "
+            f"every point has at most {p['k']} of its 8 neighbours {where}{stated}{distinct}. "
+            f"Each board is drawn whole and framed, its points as squares.")
+
+
 def _instances(p, data, w, h):
     from .instances import match, panoptic_quality
     if p["mode"] == "instances":
@@ -236,7 +252,7 @@ def _bits(p, data, w, h):
             + (f" Checked exactly before drawing: {'; '.join(done)}." if done else ""))
 
 
-DESCRIBE = {"data.bits": _bits, "data.bounds": _bounds, "data.enclosures": _enclosures, "data.catalog": _catalog, "data.instances": _instances, "data.sequence": _sequence,
+DESCRIBE = {"data.bits": _bits, "data.bounds": _bounds, "data.enclosures": _enclosures, "data.catalog": _catalog, "data.dependent": _dependent, "data.instances": _instances, "data.sequence": _sequence,
             "data.triangle": _triangles, "math.sandpile": _sandpile, "data.pratt": _pratt, "data.circuit": _circuit, "data.circuit_refutation": _circuit_refutation,
             "data.refutation": _refutation, "data.coloring": _coloring}
 

@@ -166,7 +166,7 @@ def _data_params() -> dict:
 
 
 def _gens() -> dict[str, Generator]:
-    from .forge import (annotate, bits, bounds, catalog, enclosures, circuit, circuit_refutation, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
+    from .forge import (annotate, bits, bounds, catalog, dependent, enclosures, circuit, circuit_refutation, coloring, datavis, flora, icons, instances, mathviz, motion, pratt,
                         refutation, sandpile, sequence, skies, sprites, tiles, triangle)
     from .music import composer, generator as music_gen
     from .music.sources import SOURCES
@@ -339,6 +339,26 @@ def _gens() -> dict[str, Generator]:
         }, pix + ("data", "forge/catalog.py", "forge/motion.py"),
             "a catalogue of cell patterns as a mosaic, checked first (still life / oscillator, population, count)",
             (256, 256), 2048, data="patterns"),
+        Generator("data.dependent", "1", "image", dependent.dependent, {
+            "k": P("int", 4, 0, 8, doc="every point has at most k of its 8 neighbours (kings graph) in the set"),
+            "topology": P("str", "torus", choices=("torus", "plane"),
+                          doc="torus: rows and columns wrap around; plane: cells outside the board are empty"),
+            "population": P("int", 0, 0, 10 ** 6, doc="every board has exactly this many points; 0 = any"),
+            "populations": P("text", "", maxlen=4000, doc="the numbers of points of the boards in file order, "
+                                                          "comma-separated (e.g. sequence terms); checked exactly"),
+            "count": P("int", 0, 0, 100000, doc="the file has exactly this many boards; 0 = any"),
+            "distinct": P("bool", True, doc="refuse two boards equal up to the symmetries of the board (on the "
+                                            "torus with its translations)"),
+            "columns": P("int", 0, 0, 1000, doc="0 = chosen from the number of boards and the aspect ratio"),
+            "padding": P("int", 2, 0, 64, doc="pixels around each board inside its tile"),
+            "cell_gap": P("int", 1, 0, 16, doc="pixels between neighbouring cells (at most a third of a cell)"),
+            "frame": P("bool", True, doc="draw the outline of each board, so the whole tile shows"),
+            "ramp": P("str", "seq", choices=DATA_RAMPS), "tone": P("float", 0.75, 0.0, 1.0, doc="position on the ramp"),
+            "frame_ramp": P("str", "grey", choices=DATA_RAMPS, doc="the outline of the boards"),
+            "background": P("str", "ink", choices=("",) + DATA_RAMPS),
+        }, pix + ("data", "forge/dependent.py"),
+            "boards of cells in which every point has at most k neighbours (kings graph, on the torus or the plane), "
+            "checked first: k, the populations, distinct up to symmetry", (256, 256), 2048, data="boards"),
         Generator("data.coloring", "1", "image", coloring.coloring, {
             "check": P("str", "ap", choices=("ap", "schur", "none"),
                        doc="refuse to draw unless no colour holds an arithmetic progression of its length (van der "

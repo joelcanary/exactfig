@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.17.0 (2026-11-27)
+
+- **New generator `data.dependent`: sets of cells in which every point has at most k neighbours, checked first.** A search
+  for the largest k-dependent sets of the kings graph (each point has at most k of its 8 neighbours in the set; OEIS
+  A101201 for k = 4 on the n×n torus) writes the sets it found. The new format `boards` gives one board per line with its
+  size, `WxH: row row …`, empty rows and columns included: on a torus the empty border is part of the period, and
+  `data.catalog` trims it. Before drawing, exactfig refuses a point with more than `k` neighbours, on the torus (rows and
+  columns wrap around; on a side of 1 or 2 a neighbour may be the same cell several times, as in A101201) or on the board
+  (`topology`), a board whose number of points is not the stated one (`population`, or `populations` for a list in file
+  order), the wrong number of boards (`count`), and two boards that are the same up to the symmetries of the board, the
+  translations of the torus included (`distinct`). Each board is drawn whole, with a frame.
+- **Gallery:** sets with a(n) points for n = 3 to 10, the published terms of A101201. Tests: a(1) = 0 and a(2) = 2 (a
+  cell of a small torus is its own neighbour), the periodic set {(x, y) : 2x + y mod 5 in {0, 1, 2}} with exactly 4
+  neighbours at every point, a set that is 4-dependent on the board but not on the torus, translates and mirror images
+  refused as repeats, every refusal of the reader.
+- The gallery was recorded again: the generators that read data hash the data readers, which changed; no picture changed.
+
 ## 0.16.0 (2026-11-24)
 
 - **New generator `data.bits`: exact integers in binary, their ones checked.** The terms of an OEIS b-file are drawn one per

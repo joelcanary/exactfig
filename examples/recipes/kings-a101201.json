@@ -1,0 +1,1 @@
+{"generator": "data.dependent", "seed": "a101201", "palette": "sci", "size": [480, 248], "input": {"path": "data/kings-a101201.boards", "format": "boards"}, "params": {"k": 4, "topology": "torus", "populations": "5,9,15,21,28,37,47,60", "count": 8, "columns": 4, "padding": 6}, "output": "kings-a101201.png", "scale": 2}

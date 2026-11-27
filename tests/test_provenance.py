@@ -48,6 +48,8 @@ SMALL = {
     "data.image": {"palette": "sci", "size": [24, 16], "input": {"path": "data/testcard-480x320.png"}},
     "data.catalog": {"palette": "sci", "size": [70, 70], "input": {"path": "data/A175001-n14.txt", "format": "catalog"},
                      "params": {"rule": "B368/S245", "count": 49, "population": 14, "columns": 7, "padding": 1}},
+    "data.dependent": {"palette": "sci", "size": [80, 40], "input": {"path": "data/kings-a101201.boards", "format": "boards"},
+                       "params": {"k": 4, "count": 8, "populations": "5,9,15,21,28,37,47,60", "columns": 4}},
     "data.instances": {"palette": "sci", "size": [40, 30], "input": {"path": "data/instances-demo.json", "format": "instances"},
                        "params": {"tp": 4, "fp": 2, "fn": 2}},
     "data.triangle": {"palette": "sci", "size": [40, 12], "input": {"path": "data/congruent-triangles.txt", "format": "triangles"},
@@ -77,7 +79,7 @@ SMALL = {
 DATA = os.path.join(os.path.abspath(ROOT), "gallery")   # input paths of the data recipes are relative to the gallery folder
 SEEDLESS = ("forge.icon.gem", "forge.fractal.julia", "data.field", "data.scatter", "anim.wave", "anim.lorenz", "anim.diffuse",
             "anim.frames", "compose", "draw.annotate", "math.domain", "math.logistic", "math.ulam", "math.modmult",
-            "data.image", "math.fourier", "anim.epicycles", "data.catalog", "data.coloring", "data.instances",
+            "data.image", "math.fourier", "anim.epicycles", "data.catalog", "data.dependent", "data.coloring", "data.instances",
             "data.triangle", "data.sequence", "data.bits", "data.bounds", "data.enclosures", "math.sandpile", "data.pratt", "data.refutation",
             "data.circuit", "data.circuit_refutation")   # the output does not depend on the seed
 

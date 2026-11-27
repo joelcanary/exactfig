@@ -90,6 +90,7 @@ POINT_FORMATS = ("csv", "json")
 FRAME_FORMATS = ("json",)
 IMAGE_FORMATS = ("png", "ppm")
 PATTERN_FORMATS = ("catalog",)
+BOARD_FORMATS = ("boards",)
 COLORING_FORMATS = ("coloring",)
 INSTANCE_FORMATS = ("instances",)
 TRIANGLE_FORMATS = ("triangles",)
@@ -110,7 +111,7 @@ MAX_TERMS = 100_000
 MAX_PROOF_STEPS = 2_000_000
 MAX_DIGITS = 4000            # below the 4300-digit limit Python 3.11+ (and 3.10.7+) puts on int(str)
 FORMATS = {"grid": GRID_FORMATS, "points": POINT_FORMATS, "frames": FRAME_FORMATS, "image": IMAGE_FORMATS,
-           "patterns": PATTERN_FORMATS, "colorings": COLORING_FORMATS, "instances": INSTANCE_FORMATS,
+           "patterns": PATTERN_FORMATS, "boards": BOARD_FORMATS, "colorings": COLORING_FORMATS, "instances": INSTANCE_FORMATS,
            "triangles": TRIANGLE_FORMATS, "sequence": SEQUENCE_FORMATS, "primes": PRIME_FORMATS,
            "proof": PROOF_FORMATS, "circuit": CIRCUIT_FORMATS,
            "bounds": BOUNDS_FORMATS, "enclosures": ENCLOSURE_FORMATS}
@@ -631,6 +632,53 @@ def read_catalog(path: str) -> Catalog:
 
 
 @dataclass
+class Boards:
+    """Boards in file order, each (W, H, cells): its declared size and its points (x, y), 0 <= x < W, 0 <= y < H."""
+    boards: list
+
+    def __len__(self):
+        return len(self.boards)
+
+    def describe(self) -> dict:
+        pops = [len(c) for _, _, c in self.boards]
+        return {"boards": len(pops), "population": [min(pops), max(pops)],
+                "sizes": sorted({f"{w}x{h}" for w, h, _ in self.boards})}
+
+
+def read_boards(path: str) -> Boards:
+    """One board per line: `WxH: row row …` (the size is required: empty rows and columns belong to the board),
+    `O`/`*` a point, `.` empty. An empty board is allowed."""
+    text = read_text(path)
+    out = []
+    for k, raw in enumerate(text.splitlines(), 1):
+        line = raw.strip()
+        if not line or line[0] in "#!":
+            continue
+        where = f"{path}, line {k}"
+        if ":" not in line:
+            raise DataError(f"{where}: a board starts with its size, WxH:")
+        head, line = (t.strip() for t in line.split(":", 1))
+        m = _SIZE.match(head)
+        if not m:
+            raise DataError(f"{where}: {head!r} before ':' must be WxH")
+        w, h = int(m.group(1)), int(m.group(2))
+        if not (1 <= w <= MAX_PATTERN_SIDE and 1 <= h <= MAX_PATTERN_SIDE):
+            raise DataError(f"{where}: a board side must be between 1 and {MAX_PATTERN_SIDE}")
+        rows = line.split()
+        if any(set(r) - set("O*.") for r in rows):
+            raise DataError(f"{where}: rows must be made of 'O', '*' and '.' only")
+        if len(rows) != h or any(len(r) != w for r in rows):
+            raise DataError(f"{where}: the rows do not form the declared {w}x{h} board")
+        cells = tuple(sorted((x, y) for y, r in enumerate(rows) for x, ch in enumerate(r) if ch != "."))
+        out.append((w, h, cells))
+        if len(out) > MAX_PATTERNS:
+            raise DataError(f"{path}: more than {MAX_PATTERNS} boards")
+    if not out:
+        raise DataError(f"{path}: no board")
+    return Boards(out)
+
+
+@dataclass
 class Colorings:
     """Colourings of 1..n in file order, each a tuple of colours (the colour of 1, of 2, …)."""
     colorings: list
@@ -1139,6 +1187,8 @@ def load(path: str, shape: str, fmt: str | None = None):
         readers = {"png": read_png, "ppm": read_ppm}
     elif shape == "patterns":
         readers = {"catalog": read_catalog}
+    elif shape == "boards":
+        readers = {"boards": read_boards}
     elif shape == "colorings":
         readers = {"coloring": read_coloring}
     elif shape == "instances":

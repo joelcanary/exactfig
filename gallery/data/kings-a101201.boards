@@ -1,0 +1,11 @@
+# A101201: for n = 3..10, a set of a(n) cells of the n x n torus (rows and columns wrap around) in which every
+# cell has at most 4 of its 8 neighbours; a(n) = 5, 9, 15, 21, 28, 37, 47, 60 are the published terms of OEIS A101201.
+# The sets were found with a SAT solver (Joel Cruz Cabrera, November 2026). Format: WxH: rows, O a point, . empty.
+3x3: O.. ..O OOO
+4x4: O... .OOO .O.O .OOO
+5x5: OO..O .OOO. O..OO OOO.. ..OOO
+6x6: OOOOOO O.O.O. O.O.O. O.O.O. OOOOOO ......
+7x7: O....O. .OOO.OO O.O.O.. O.O.OOO .OOOO.. O....OO OOOOOO.
+8x8: OOOOOOOO OO.OO.O. ......O. OOOOOOOO O.O.O... O.O.O.O. OOOOOOOO ........
+9x9: OO.O...O. OO.OOOOO. ..O.O.O.O OOO.O.O.O .O.OOOOO. .O.O...O. OO.OOOOO. OO.O...O. O..OOOOO.
+10x10: OOOO.OOO.O O.O.O...O. O.O.OOOOO. OOOO.O.O.O ...O.O.O.O OOOO.OOO.O O.O.O...O. O.O.OOOOO. OOOO.O.O.O ...O.O.O.O
